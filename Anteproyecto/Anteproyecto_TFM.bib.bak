@@ -1,0 +1,29 @@
+% Encoding: UTF-8
+
+@Misc{stegosploit,
+  author       = {Saumil Shah},
+  howpublished = {\url{https://stegosploit.info/}},
+  month        = jun,
+  title        = {Stegosploit. Exploit Delivery via Steganography and Polyglots},
+  year         = {2015},
+}
+
+@Misc{coco,
+  author       = {Tsung-Yi Lin and Genevieve Patterson and Matteo R.Ronchi and Yin Cui and Michael Maire and Serge Belongie and Lubomir Bourdev and Ross Girshick and James Hays and Pietro Perona and Deva Ramanan and Larry Zitnik andPiotr Dollár},
+  howpublished = {\url{https://cocodataset.org/#home}},
+  title        = {Coco. Common Objects In Context},
+}
+
+@Misc{cityscapes,
+  author       = {Cityscapes},
+  howpublished = {\url{https://www.cityscapes-dataset.com/}},
+  title        = {The Cityscapes Dataset},
+}
+
+@Misc{mapillary,
+  author       = {Mapillary},
+  howpublished = {\url{https://www.mapillary.com/}},
+  title        = {Mapillary},
+}
+
+@Comment{jabref-meta: databaseType:bibtex;}

@@ -1,0 +1,25 @@
+\begin{thebibliography}{1}
+
+\bibitem{cityscapes}
+Cityscapes.
+\newblock The cityscapes dataset.
+\newblock \url{https://www.cityscapes-dataset.com/}.
+
+\bibitem{coco}
+Tsung-Yi Lin, Genevieve Patterson, Matteo R.Ronchi, Yin Cui, Michael Maire,
+  Serge Belongie, Lubomir Bourdev, Ross Girshick, James Hays, Pietro Perona,
+  Deva Ramanan, and Larry~Zitnik andPiotr Dollár.
+\newblock Coco. common objects in context.
+\newblock \url{https://cocodataset.org/}.
+
+\bibitem{mapillary}
+Mapillary.
+\newblock Mapillary.
+\newblock \url{https://www.mapillary.com/}.
+
+\bibitem{stegosploit}
+Saumil Shah.
+\newblock Stegosploit. exploit delivery via steganography and polyglots.
+\newblock \url{https://stegosploit.info/}, June 2015.
+
+\end{thebibliography}
