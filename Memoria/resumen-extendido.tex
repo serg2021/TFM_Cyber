@@ -7,12 +7,12 @@ La principal diferencia de $ISA^{2}$ con estos sistemas reside en cuál es la ba
 
 En resumen, el sistema $ISA^{2}$ comienza capturando una imagen de la escena de tráfico que observa un vehículo. Sobre esta imagen se realiza un proceso de \ac{SS}. La \ac{SS} se puede explicar como el procedimiento de inteligencia artificial que es capaz de predecir qué clases (etiquetas) hay en una imagen, para cada uno de sus píxeles. Pero, ¿qué es una clase? O mejor dicho, ¿cómo definimos una clase en este contexto? Una clase (o etiqueta) es la forma de categorizar una parte de la imagen para diferenciarla de otras. Dicho de otra forma, sirve para que un programa sepa de qué partes se compone una imagen. Se hace dándole un mismo valor a un conjunto de píxeles en concreto, para distinguirlos de los demás (\cite{deeplab}).
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=8cm]{Figuras/Ejemplo_Imagen_Segmentada.eps}
-  \caption{Imagen Segmentada}
-    \label{fig:ImgSeg}
-\end{figure}
+%\begin{figure}[H]
+%  \centering
+%  \includegraphics[width=8cm]{Figuras/Ejemplo_Imagen_Segmentada.eps}
+%  \caption{Imagen Segmentada}
+%    \label{fig:ImgSeg}
+%\end{figure}
 
 En la Figura \ref{fig:ImgSeg} puede verse un ejemplo de \ac{SS} como la que utiliza nuestro modelo $ISA^{2}$. Una vez se ha completado la segmentación semántica, se utiliza esta información para entrenar un conjunto de regresores que son capaces de aprender a estimar la velocidad a la que debe ir el vehículo.
 
@@ -30,12 +30,12 @@ Una vez tenemos el modelo de segmentación semántica Swiftnet funcionando, pasa
 
 Con los histogramas creados, ya podemos ejecutar los sistemas de regresión para la parte final del proyecto: la estimación de la velocidad, y la comparación de la misma con la velocidad real de las imágenes (anotada en la base de datos $ISA^{2}$) . Todo esto lo hacemos replicando el modelo experimental descrito en \cite{isa2}, donde se proponen varias soluciones de inteligencia artificial para resolver el problema de la adaptación de la velocidad inteligente en base a imágenes.
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=8cm]{Figuras/Figura_Esquema_ISA2_Version_2.eps}
-  \caption{Esquema $ISA^{2}$}
-  \label{fig:isa2}
-\end{figure}
+%\begin{figure}[H]
+%  \centering
+%  \includegraphics[width=8cm]{Figuras/Figura_Esquema_ISA2_Version_2.eps}
+%  \caption{Esquema $ISA^{2}$}
+%  \label{fig:isa2}
+%\end{figure}
 
 En la figura \ref{fig:isa2} puede verse la solución global propuesta, desde la segmentación semántica con Swiftnet hasta la aplicación del modelo de regresión para la estimación de la velocidad.
 
@@ -81,26 +81,26 @@ Como se puede observar en la tabla \ref{tab:Resul_Resumen_LL}, tanto el sistema 
 
 A continuación podemos ver los resultados de las tablas gráficamente en las siguientes figuras:
 
-\begin{figure}[H]
-  \centering
-  \begin{subfigure}[b]{0.45\linewidth}
-    \includegraphics[width=\linewidth]{Figuras/Lineal_Highway(Nivel_1).eps}
-    \caption{Highway con Linear}
-  \end{subfigure}
-    \begin{subfigure}[b]{0.425\linewidth}
-    \includegraphics[width=\linewidth]{Figuras/Lasso_Highway(Nivel_1).eps}
-    \caption{Highway con Lasso}
-  \end{subfigure}
-    \begin{subfigure}[b]{0.45\linewidth}
-    \includegraphics[width=\linewidth]{Figuras/Boosting_Urban(Nivel_1).eps}
-    \caption{Urban con Boosting Trees}
-  \end{subfigure}
-      \begin{subfigure}[b]{0.45\linewidth}
-    \includegraphics[width=\linewidth]{Figuras/SVR_Urban(Nivel_1).eps}
-    \caption{Urban con SVR}
-  \end{subfigure}
-  \caption{Resultados gráficos}
-\end{figure}
+%\begin{figure}[H]
+%  \centering
+%  \begin{subfigure}[b]{0.45\linewidth}
+%    \includegraphics[width=\linewidth]{Figuras/Lineal_Highway(Nivel_1).eps}
+%    \caption{Highway con Linear}
+%  \end{subfigure}
+%    \begin{subfigure}[b]{0.425\linewidth}
+%    \includegraphics[width=\linewidth]{Figuras/Lasso_Highway(Nivel_1).eps}
+%    \caption{Highway con Lasso}
+%  \end{subfigure}
+%    \begin{subfigure}[b]{0.45\linewidth}
+%    \includegraphics[width=\linewidth]{Figuras/Boosting_Urban(Nivel_1).eps}
+%    \caption{Urban con Boosting Trees}
+%  \end{subfigure}
+%      \begin{subfigure}[b]{0.45\linewidth}
+%    \includegraphics[width=\linewidth]{Figuras/SVR_Urban(Nivel_1).eps}
+%    \caption{Urban con SVR}
+%  \end{subfigure}
+%  \caption{Resultados gráficos}
+%\end{figure}
 
 Analizando estos resultados, vemos cómo los datos en los sistemas \textit{Lineal} y \textit{Lasso} son prácticamente idénticos. Esto es porque ambos están actuando con imágenes de autovías, donde Swiftnet no lo hace tan bien como DeepLab. En las tablas anteriores se puede ver cómo ésto no sólo es así usando estos dos sistemas, lo es para todos ellos, porque Swiftnet en ese tipo de entornos es peor que DeepLab.
 
