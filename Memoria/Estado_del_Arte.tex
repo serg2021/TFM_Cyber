@@ -202,7 +202,7 @@ En este proyecto se trata una solución basada en machine learning para detectar
 
 Durante mucho tiempo, los archivos con formato JPEG han sido unos de los más utilizados tanto en el ámbito empresarial como en el del individuo. En gran parte ha sido gracias a su compresión con pérdidas basada en \ac{DCT}, y es por ello que se han convertido rápidamente en un atractivo vector de ataque para los cibercriminales. Para ello, la solución que se propone en este artículo se denomina MalJPEG, y su objetivo no es otro que saber clasificar correctamente si una imagen JPEG es maliciosa o no, mediante tecnología basada en machine learning.
 
-\subsection{MalJPEG}
+\subsection{Solución}
 
 El funcionamiento de MalJPEG se basa en extraer estadísticamente, es decir, sin mirar la imagen como tal, características del archivo (por ejemplo, el tamaño del archivo en bytes). Después se aplican diferentes algoritmos de machine learning que tomarán como entrada dichos datos, y clasificarán las imágenes como maliciosas o benignas; tal y como viene en la imagen:
 
@@ -230,3 +230,58 @@ Generalmente existen dos métodos de extracción de características que, en est
 \end{itemize}
 
 \subsubsection{Algoritmos de machine learning}
+
+De cara a utilizar las características de la imagen como parámetros de entrada de la parte de machine learning de esta solución, los autores cotejaron varios tipos de algoritmos usados comúnmente en el ámbito de clasificación de imágenes. Dentro de estos tenemos:
+
+\begin{itemize}
+\item \textbf{Decision Tree}
+\item \textbf{Random Forest}
+\item \textbf{Gradient Boosting en Decision Tree (XGBoost y LightGBM)}
+\end{itemize}
+
+Por lo general, estos algoritmos de clasificación son muy apropiados para datasets con más cantidad de objetos de una clase que de otra. Por otro lado, en este artículo también el clasificador \textbf{K-Nearest Neighbors} en los datasets de Min-Hash; ya que éste es el único capaz de comparar firmas de Min-Hash usando la función de la distancia de Hamming.
+
+\subsubsection{Métricas}
+
+Para evaluar la clasificación de las imágenes se han cogido métricas como la \ac{TPR} y la \ac{FPR} (derivadas presumiblemente de la \ac{DER}). Por otro lado, y considerando estas métricas podemos utilizar la \ac{ROC}: la \ac{ROC} es la curva creada en una gráfica entre los valores de la \ac{TPR} y la \ac{FPR} en diferentes umbrales. Teniendo la \ac{ROC} podemos medir la \ac{AUC}, es decir, el área bajo la curva de la \ac{ROC}; de este modo si el valor de la \ac{AUC} es alto, quiere decir que el valor de la \ac{TPR} también lo es, mientras que el valor de la \ac{FPR} es bajo. %cita
+
+Sin embargo, no sólo se necesitan esas métricas. Hace falta una que optimice los resultados de la detección de los clasificadores, sirviéndose de la \ac{TPR} y la \ac{FPR}: la \ac{IDR}. %cita
+
+%IMAGEN
+
+La \ac{IDR} indica el punto del clasificador en el que se ha optimizado adecuadamente, y todo pasa por tener un valor muy alto en \ac{TPR} y uno muy bajo en \ac{FPR}. Cuanto mayor sea la \ac{IDR}, tendremos un mejor clasificador.
+
+\section{ImageDetox}
+
+Esta solución se creó con el objetivo de detectar y neutralizar código malicioso oculto en imágenes, aunque para ello no utilice tecnología de machine learning. Sin embargo, es interesante comprobar en qué consiste y qué métricas decidieron utilizar los autores. %cita
+
+\subsection{Solución}
+
+ImageDetox es un método creado con el pretexto anterior incluso sin una información previa del código que se ha introducido. El método se compone de cuatro módulos:
+
+\begin{itemize}
+\item \textbf{Extracción del archivo de imagen}
+\item \textbf{Análisis del formato del archivo de imagen}
+\item \textbf{Conversión del archivo de imagen}
+\item \textbf{Gestión del archivo de imagen tras la conversión}
+\end{itemize}
+
+La solución propuesta puede servir, además, para evitar amenazas de seguridad resultantes del escondite de información confidencial en archivos de imagen, con el objetivo de sacar a la luz dichas amenazas. El esquema de la propuesta es como se muestra en la figura:
+
+%IMAGEN
+
+De forma resumida, ImageDetox funciona de la siguiente manera:
+\begin{enumerate}
+\item  El primer módulo extrae los archivos de imagen de todos los archivos introducidos al área de Internet (la red local).
+\item El segundo módulo identifica el formato de la imagen de la cabecera del archivo extraído en el paso anterior.
+\item El tercer módulo aplica una conversión en la imagen con la que se consigue eliminar el código oculto (aun sin saber si tiene uno o no).
+\item El cuarto módulo guarda el valor hash de la imagen original en la imagen convertida una vez que se almacena en la unidad de gestión por un período de tiempo. La información del valor de los hashes de las imágenes que han sobrepasado dicho período se borran del almacenamiento, y la información se va  actualizando periódicamente.
+\end{enumerate}
+
+\subsection{Métricas}
+
+En este artículo no se utiliza ninguna de las métricas usadas en los otros modelos vistos, aquí se crean dos tipos de métricas únicas para esta solución: \textbf{VT Detection (A)} y \textbf{VT Detection (B)}.
+
+VT Detection (A) hace referencia al número de antivirus que son capaces de detectar malware oculto en una imagen dividido entre el número de antivirus usados para detectar virus en una imagen. Dicho de otra forma, representa los resultados de analizar si cada imagen maliciosa original es maliciosa, según determina VirusTotal. %cite
+
+Por el contrario, VT Detection (B) hace referencia al resultado de la detección después de utilizar esta técnica de neutralización propuesta en las imágenes con código malicioso. Dicho de otra forma, representa los resultados de analizar si cada imagen maliciosa original es maliciosa tras aplicar esta técnica.
