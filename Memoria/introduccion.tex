@@ -1,52 +1,24 @@
-%**********************************************************
-%GENERA LA PORTADA OFICIAL PARA PROYECTOS FIN DE CARRERA
-%SEGÚN EL FORMATO DE LA UNIVERSIDAD DE ALCALÁ Y DEL DEPAR-
-%TAMENTO DE TEORÍA DE LA SEÑAL Y COMUNICACIONES.
-%**********************************************************
-\setcounter{page}{0}
+\chapter{Introducción}
+\label{ch:intro}
 
-\begin{center}
-\LARGE \textsc{Universidad de Alcalá}\\
-\vspace{0.5cm}
+Durante muchos años, ciberdelincuentes de todo el mundo se han servido de un gran número de tipos de ataques, generalmente, con la intención de lucrarse a costa de las víctimas o de, directamente, sembrar el caos (aunque puede haber más motivos); todo esto ha sido posible gracias a las vulnerabilidades que presentan los dispositivos informáticos, páginas web... En definitiva, elementos ``hackeables''.%cita
 
-%Nombre de la escuela-> seleccione el que corresponda.
-\textbf{Escuela Politécnica Superior}\\
-%\textbf{Escuela Técnica Superior de Ingeniería Informática}\\
+Sin embargo, y en contraparte, grandes expertos en ciberseguridad y empleados de grandes empresas como Google o IBM han sabido solucionar los problemas que presentan estos dispositivos mediante, por ejemplo, parches en los programas informáticos... No obstante, donde se cierra una puerta se abre una ventana, y las vulnerabilidades corregidas dan paso a otras nuevas potencialmente explotables.%cita
 
-%Titulación -> escriba su titulación
-La titulación del alumno\\
-\end{center}
+Y es de esta forma cómo se ha desarrollado este "diálogo" entre ambas partes desde, casi, los inicios de Internet inclusive. Sin embargo, con el paso del tiempo se han ido corrigiendo cada vez más cosas, y se está obligando a los ciberdelincuentes a ser más creativos con sus ataques: técnicas de phishing usando ingeniería social, ataques a cadenas de suministro, archivos con malware introducido en su interior...%cita %cita %cita
 
-\vspace{0.5cm}
+Cada vez cuesta más, pero poco a poco se van solucionando estos problemas... O al menos eso es lo que pretendemos hacer en este trabajo contribuyendo a la causa y resolviendo un problema que, como veremos, lleva durante mucho tiempo entre los usuarios: los archivos con malware introducido en su interior mediante \textbf{esteganografía}.
 
-%Logotipo de la universidad
+\section{Modelo para la detección de malware usando Deep Learning}
 
-\begin{center}
-%Para compilar en latex
-%\includegraphics[width=4cm]{Figuras/LogoUAH.eps}
-%Para compilar con pdflatex
-%\includegraphics[width=4cm]{Figuras/LogoUAH.png}
-\end{center}
+Como se puede apreciar en el capítulo \ref{ch:sota}, la mayoría de trabajos y revisiones adoptadas por la comunidad se han basado en Machine Learning y una pequeña parte en Deep Learning. De hecho, en muchos casos, se han obtenido buenos resultados en su detección, pero cabe destacar una observación muy importante: la mayoría de estos métodos basan su detección en información oculta, principalmente, en los \textbf{metadatos} del archivo.
 
+Lo que proponemos con este trabajo es, mediante el uso de Deep Learning, crear un modelo capaz de detectar malware oculto en la misma imagen, es decir, en sus \textbf{datos}. Dicho de otra forma, pretendemos detectar malware oculto en imágenes a nivel de bit de datos.
 
-\begin{center}
-\vspace{1cm}
+Esto tampoco es nada nuevo, ya ha sido planteado dentro del capítulo \ref{ch:sota}, sin embargo ha sido desde una perspectiva con vistas a Machine Learning y no a Deep Learning.
 
-\LARGE Proyecto Fin de Carrera\\
+El proceso que procederemos a ejecutar más adelante seguirá, grosso modo, la siguiente esquemática:
 
-\vspace{0.5cm}
+%IMAGEN
 
-\textbf{\Huge \textsc{{Título del Proyecto fin de carrera}}}\\
-
-\vspace{1.5cm}
-
-\large Autor: Nombre y apellidos\\
-Director: Nombre y apellidos\\
-
-\vspace{1.5cm}
-
-\large Año que corresponda 2007,2008, ...\\
-\end{center}
-
-
-%Final de la portada.
+Comenzamos descargando un set de imágenes de Internet. Haciendo uso de la herramienta \textbf{Stegosploit}, de la que hablaremos más adelante, insertaremos malware dentro de los datos de algunas imágenes. Por último, aplicaremos diferentes modelos de Deep Learning para su detección dentro de todo el set. Más tarde, comentaremos los resultados.
