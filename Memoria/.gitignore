@@ -1,6 +1,10 @@
+### LaTeX ###
+*.pdf
+
 ### Core latex/pdflatex auxiliary files:
 *.tex.backup
 *.tex~
+*.tmp
 *.aux
 *.lof
 *.log
