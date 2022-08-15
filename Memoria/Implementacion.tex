@@ -1,24 +1,10 @@
-\chapter{$ISA^{2}$}
+\chapter{Implementación de la solución}
 \label{ch:stego}
 
-Hemos hablado en la introducción sobre las soluciones \ac{ISA} a grandes rasgos y la principal novedad de $ISA^{2}$ frente a éstas. En este capítulo vamos a comenzar revisando el estado del arte (sección \ref{sec:isa2_estado_del_arte}), destacando trabajos relacionados en el ámbito de las soluciones \ac{ISA}. En la sección \ref{sec:isa2_model}, detallaremos el sistema $ISA^{2}$ sobre el que hemos trabajado en este proyecto. Finalmente, la sección \ref{sec:isa2_modelo_nuevo} incluye la descripción de los cambios que hemos implementado sobre el sistema original para hacerlo más rápido y eficaz.
+A continuación, en este capítulo, vamos a ver cómo fueron los primeros usos de Stegosploit junto con los problemas derivados de éstos. Más adelante pasaremos a ver qué solución propusimos para utilizar la herramienta y cómo insertamos el código malicioso en las imágenes. Por último, explicaremos cómo utilizamos FastAI con estas imágenes y qué modelos de Deep Learning acabamos usando.
 
-
-\section{Trabajos relacionados}
-\label{sec:isa2_estado_del_arte}
-
-Existen soluciones comerciales para \ac{ISA} como SpeedAlert (\cite{soluciones_comerciales}) y SpeedShield basadas en tecnología \ac{GPS} proporcionando información vial (como límites de velocidad y velocidad del vehículo) y regulando la velocidad según ésta (\cite{speedshield}).
-
-Actualmente, con la ayuda de una cámara frontal, estos sistemas son capaces de reconocer las señales de tráfico y trabajar en conjunto con una base de datos de límites de velocidad por \ac{GPS} para mantener la velocidad adecuada en cada tramo (\cite{sol_img}).
-
-Sin embargo, ninguno de éstos puede afrontar el problema estimando la velocidad en función de la situación real del tráfico.
-
-Lo más aproximado a nuestros intereses son una serie de trabajos que estiman la velocidad en vehículos con una secuencia de vídeos grabados por una cámara de vigilancia (\cite{isa2}, \cite{shukla}). En nuestro caso, la cámara iría en el propio vehículo distinguiendo cada parte del escenario y prediciendo la velocidad en consecuencia.
-
-%TODO_DONE: Añadir una revisión del estado del arte en tecnología ISA. Describir primero soluciones comerciales, y cómo funcionan. Luego añadir otro párrafo de soluciones que se basen en imágenes o que sean papers que soluiones el problema. Puedes traducir y reescibir de nuevo la sección del estado del arte del paper de ISA^2.
-
-\section{El modelo $ISA^{2}$}
-\label{sec:isa2_model}
+\section{Primeros intentos de uso de Stegosploit}
+\label{sec:stego_1}
 
 En esta sección vamos a describir cómo funciona todo el sistema $ISA^{2}$ (\cite{isa2}), centrándonos en cada parte que lo compone para que resulte más fácil su comprensión. He aquí unas figuras ilustrativas que nos servirán como punto de referencia durante todo el capítulo.
 
