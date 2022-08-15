@@ -1,82 +1,57 @@
 \chapter{Implementación de la solución}
 \label{ch:stego}
 
-A continuación, en este capítulo, vamos a ver cómo fueron los primeros usos de Stegosploit junto con los problemas derivados de éstos. Más adelante pasaremos a ver qué solución propusimos para utilizar la herramienta y cómo insertamos el código malicioso en las imágenes. Por último, explicaremos cómo utilizamos FastAI con estas imágenes y qué modelos de Deep Learning acabamos usando.
+A continuación, en este capítulo, vamos a ver cómo fueron los primeros usos de Stegosploit junto con los problemas derivados de éstos. Más adelante pasaremos a ver qué solución propusimos para utilizar la herramienta y cómo insertamos el código malicioso en las imágenes. Por último, explicaremos cómo utilizamos FastAI con estas imágenes y qué modelos de Deep Learning acabamos usando. %cita %cita
 
 \section{Primeros intentos de uso de Stegosploit}
 \label{sec:stego_1}
 
-En esta sección vamos a describir cómo funciona todo el sistema $ISA^{2}$ (\cite{isa2}), centrándonos en cada parte que lo compone para que resulte más fácil su comprensión. He aquí unas figuras ilustrativas que nos servirán como punto de referencia durante todo el capítulo.
+En primera instancia, leímos el paper correspondiente a la herramienta original de \textbf{Stegosploit}, y tratamos de extraer la herramienta según las indicaciones provistas por el creador de la misma.
 
+Sin embargo, y tras seguir sus pasos, obtuvimos un error (del que hablaremos más adelante) por el que no pudimos conseguir la herramienta y que, como veremos en otro contexto, nos obligó a tener que crear un \textbf{servidor HTTP} con algunas especificaciones sobre el que ejecutar la herramienta (una vez extraída de otra manera a la que proponía el creador). Durante el desarrollo del capítulo veremos cuál fue ese error, en qué consistía, y cómo se constituyó el servidor que creamos para solucionarlo.
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=8cm]{Figuras/Figura_Esquema_ISA2_Version_1_SegSem.eps}
-  \caption{Esquema $ISA^{2}$ Antiguo.}
-  \label{fig:Isa_v1}
-\end{figure}
+Para obtener la herramienta, investigamos y encontramos un repositorio de GitHub llamado \textbf{PyStegosploit} que contenía todos los útiles de la misma. De este modo, descargamos el repositorio y lo colocamos en una ubicación fácilmente accesible de nuestro sistema de archivos.
 
-Como se puede ver al pie de la figura \ref{fig:Isa_v1} (\cite{isa2}), este fue el esquema utilizado para la primera versión de $ISA^{2}$, publicada en \cite{isa2}, cuyo funcionamiento pasamos a detallar.
-%TODO_DONE: No lo hagas con item, hay que hacerlo con párrafos extensos, donde puedas resumir todo el artículo del ISA^2. Ya te anticipo que faltan bastantes detalles. El TFG no es un diario de trabajo, es un documento técnico, donde debes demostrar soltura, y reflejar los conocimientos que has aprendido.
+Una vez obtenida la herramienta, ejecutamos la utilidad que propicia el encriptado de información en imágenes. Para ello nos situamos en la siguiente carpeta de la herramienta y abrimos el HTML propio de esta utilidad:
 
+\begin{center}
+\textit{PyStegosploit\textbackslash{project-stegosploit}\textbackslash{encoding}\textbackslash{iterative\_encoding.html}}
+\end{center}
 
-En primera instancia el sistema recogía un set de imágenes que se correspondía con situaciones de tráfico, tanto en autovía (o autopista) como en núcleos urbanos. En concreto, la base de datos que se ofrece en \cite{isa2} consistía en dos carpetas: ``\textbf{Highway}'' y ``\textbf{Urban}'', que se correspondían con secuencias de imágenes de autovías y núcleos urbanos respectivamente. En cada una de ellas había una serie de subcarpetas en las que se almacenaban dichas secuencias; para \textbf{Highway} había dos (\textbf{H1} y \textbf{H2}) y para \textbf{Urban} tres (\textbf{U1}, \textbf{U2} y \textbf{U3}).
+Si ahora ejecutamos la herramienta, nos dará el error del que hablábamos antes, y que ahora procedemos a explicar:
 
-En ambas carpetas había \textbf{10417} imágenes en total (\textbf{4962} en Highway y \textbf{5455} en Urban).
+\subsection{Error \textit{getImageData()}}
 
-En la siguiente figura se puede ver un ejemplo del contenido de las mismas:
+Antes de explicar el error, vamos a poner en contexto al lector para que sepa en qué situación aparece y cómo solucionarlo.
 
-\begin{figure}[H]
-  \centering
-  \begin{subfigure}[b]{0.45\linewidth}
-    \includegraphics[width=\linewidth]{Figuras/Ejemplo_Highway.eps}
-    \caption{Highway}
-  \end{subfigure}
-    \begin{subfigure}[b]{0.45\linewidth}
-    \includegraphics[width=\linewidth]{Figuras/Ejemplo_Urban.eps}
-    \caption{Urban}
-  \end{subfigure}
-  \caption{Imágenes de $ISA^{2}$}
-  \label{fig:HyU}
-\end{figure}
+%IMAGEN
+
+Si ejecutamos la herramienta con una imagen del set de imágenes de COCO, y le introducimos un exploit, no funcionará. Saldrá el error que mencionamos debido a la siguiente función de Javascript: \textbf{getImageData()}.
+
+Esta función permite obtener los datos de los píxeles de una imagen y almacenarlos en un elemento \textbf{Canvas} del HTML. En principio no debería de haber ningún problema con ello, sin embargo sucede una cosa muy importante: el origen de la imagen no es \textbf{`'fiable"}, y la política \ac{CORS} de la solicitud HTTP impide la ejecución de dicha función. %cita
+%\begin{figure}[H]
+%  \centering
+%  \begin{subfigure}[b]{0.45\linewidth}
+%    \includegraphics[width=\linewidth]{Figuras/Ejemplo_Highway.eps}
+%    \caption{Highway}
+%  \end{subfigure}
+%    \begin{subfigure}[b]{0.45\linewidth}
+%    \includegraphics[width=\linewidth]{Figuras/Ejemplo_Urban.eps}
+%    \caption{Urban}
+%  \end{subfigure}
+%  \caption{Imágenes de $ISA^{2}$}
+%  \label{fig:HyU}
+%\end{figure}
 
 %TODO_DONE: añade detalles de las secuencias, número de imágenes, figura con las mismas, etc.
 
-Para cada imagen de la base de datos se dispone de la anotación de la velocidad a la que el vehículo debe de circular. Este proceso de anotación se hizo dando indicaciones a los conductores que participaron en la adquisición de las secuencias de vídeo mientras conducían. Así pues, se dispone de una base de datos con imágenes y velocidades asociadas, que se empleó para entrenar soluciones de inteligencia artificial y visión por computador, que fuesen capaces de realizar una regresión, para una imagen de entrada, de la velocidad a la que debía circular el vehículo. A continuación pasamos a describir todos los detalles de la implementación presentada en \cite{isa2}.
-
 %TODO_DONE: Empieza a dar más detalles técnicos de todas las partes del sistema. Hay que explicar todo.
-El sistema comienza realizando una \ac{SS} de la imagen de entrada. La \ac{SS} es un proceso por el cual los píxeles de una imagen son dotados de distintos valores para poder diferenciarlos en etiquetas unos de otros y así reconocer los elementos que componen dicha imagen (\cite{deeplab}). Se hace mediante el uso de modelos de inteligencia artificial configurados y entrenados para la \ac{SS}, usando en su interior herramientas de deep learning como \textbf{PyTorch} (\cite{pytorch}), de la que hablaremos más adelante. He aquí un ejemplo para mostrar el resultado del proceso:
-
-\begin{figure}[H]
-  \centering
-  \begin{subfigure}[b]{0.45\linewidth}
-    \includegraphics[width=\linewidth]{Figuras/Imagen_Original.eps}
-    \caption{Imagen Original}
-    \label{fig:Original}
-  \end{subfigure}
-    \begin{subfigure}[b]{0.5\linewidth}
-    \includegraphics[width=\linewidth]{Figuras/Ejemplo_Imagen_Segmentada.eps}
-    \caption{Imagen Segmentada}
-    \label{fig:Segmentada}
-  \end{subfigure}
-  \caption{Ejemplo de \ac{SS}}
-  \label{fig:SS}
-\end{figure}
 
 %TODO_DONE: añade imagen con segmentación semántica y laimagen sin segmentar, y adaptas el texto de este párrafo que de dejo comentado.
-En la figura \ref{fig:SS} se puede ver la imagen de un camión, entre otros elementos, en una autovía (\ref{fig:ImgOrig}). A priori, todos los píxeles de la imagen no están categorizados y no se sabe qué partes de la imagen corresponden al camión, a la carretera, a la señal... Gracias a la segmentación semántica los píxeles de la imagen adquieren los valores de las etiquetas referentes a un \textbf{camión}, una \textbf{carretera} y una \textbf{señal de tráfico} entre otros; y son fácilmente distinguibles entre sí (\ref{fig:ImgSegm}). 
-
-Para la \ac{SS}, el modelo en \cite{isa2} empleó la arquitectura conocida como \textbf{DeepLab} (\cite{deeplab}). \textbf{DeepLab} necesita recibir como entrada la imagen en diferentes escalas. Este modelo tenía como base una \ac{CNN}, es decir, una \textbf{Red Neuronal Convolucional} (\cite{cnn}), llamada \textbf{ResNet-101} (\cite{resnet}).
-
-Para la primera de versión de $ISA^{2}$ en \cite{isa2}, DeepLab se entrenó con imágenes en diferentes escalas como entrada, usando factores de escalado de \textbf{0.5}, \textbf{0.75} y \textbf{1}. Más adelante se fusionaban las predicciones de la segmentación para cada escala, cogiendo la mejor respuesta dada por la red en cada una. Puesto que la base de datos de $ISA^{2}$ no tenía máscaras de segmentación (anotaciones de \ac{SS} para poder compararlas con las predicciones), DeepLab se entrenó sobre la base de datos de \textbf{Cityscapes} (\cite{cityscapes}).
 %TODO_DONE: falta una breve descripción del modelo. Un párrafo es suficiente.
  
 
 %TODO_DONE: Falta convertir estos item en párrafos como yo he hecho con el primero. Hay que explicar cada paso en detalle: los histogramas, las pirámides (qué son?, niveles?, cómo se computan?), los modelos de regresión que se probaron, etc.
-
-Tras este proceso, mediante unos códigos de \textbf{Matlab} se recogían los datos de los píxeles ya segmentados y se organizaban en histogramas para cada imagen. Estos histogramas se organizaban según la subcarpeta de imágenes correspondiente (\textbf{H1} y \textbf{H2} para Highway y \textbf{U1}, \textbf{U2} y \textbf{U3} para Urban) para mostrar el porcentaje de píxeles referentes a una etiqueta en una determinada imagen. Basándonos en los histogramas generados, usábamos una estrategia crucial para el sistema llamada \ac{SPP} para crear un descriptor de imagen por cada histograma, los cuales usaríamos como dato de entrada para los sistemas de regresión posteriores.
-
-Sin embargo, ¿qué es \ac{SPP} y por qué es tan importante?
 
 \subsection{Spatial Pyramid Pooling (SPP)}
 
@@ -86,12 +61,6 @@ Sin embargo, ¿qué es \ac{SPP} y por qué es tan importante?
 La técnica \ac{SPP} consiste en organizar un histograma considerando la información espacial de los píxeles. En concreto, se basa en la concatenación de los histogramas, para niveles de subdivisión de la imagen. Si estamos en un nivel 1 por ejemplo, la imagen se divide en 4 secciones iguales, y se computan los histogramas por cada una de ellas, para luego ser concatenados para formar el vector final. Esto garantiza que el vector codifique de algún modo la información espacial de la imagen. A medida que aumentamos los niveles de la pirámide, aumentan de forma recurrente las divisiones y por lo tanto la granularidad del sistema. La técnica fue presentada originalmente para el problema del reconocimiento de escenas mediante visión por computador en el siguiente artículo \cite{spp_real}.
 %TODO_DONE: Añade esta referencia: https://hal.inria.fr/inria-00548585/document y puedes meter como figura explicativa, una como la figura 1 de este paper.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=12cm]{Figuras/SPP.eps}
-\caption{Técnica \ac{SPP}}
-\label{fig:spp2}
-\end{figure}
 
 Según el ejemplo de la figura \ref{fig:spp2}, podemos ver cómo se obtienen los histogramas para cada etiqueta de la imagen (representadas por círculos, diamantes y cruces). Para cada nivel de subdivisión obtenemos una serie de histogramas recogiendo los datos de las secciones de dichos niveles (como se puede ver en el nivel 1, por ejemplo). Finalmente, y tras recoger los histogramas generados se le aplica un peso a cada uno de ellos dependiendo del nivel que se use.
 
@@ -115,12 +84,6 @@ Como ya hemos dicho lo ideal sería encontrar un modelo en tiempo real que pueda
 
 En resumen, para conseguir un modelo $ISA^{2}$ más rápido y eficaz, hemos decidido cambiar el sistema de segmentación semántica Deeplab por el conocido como \textbf{Swiftnet} (\cite{swiftnet}). La idea puede verse reflejada en la Figura \ref{fig:Isa_v2}.
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=8cm]{Figuras/Figura_Esquema_ISA2_Version_2.eps}
-  \caption{Esquema $ISA^{2}$ Actual}
-    \label{fig:Isa_v2}
-\end{figure}
 
 
 Como se puede comprobar, el esquema de la figura \ref{fig:Isa_v2} sigue el mismo camino que el de la primera versión, salvo por unas modificaciones al principio que pasamos a explicar a continuación:
