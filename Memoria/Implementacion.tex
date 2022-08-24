@@ -28,7 +28,7 @@ Antes de explicar el error, vamos a poner en contexto al lector para que sepa en
 
 Si ejecutamos la herramienta con una imagen del set de imágenes de COCO, y le introducimos un exploit, no funcionará. Saldrá el error que mencionamos debido a la siguiente función de Javascript: \textbf{getImageData()}.
 
-Esta función permite obtener los datos de los píxeles de una imagen y almacenarlos en un elemento \textbf{Canvas} del HTML. En principio no debería de haber ningún problema con ello, sin embargo ocurre una cosa muy importante: el origen de la imagen no es \textbf{`'fiable"}, y la política \ac{CORS} de la solicitud HTTP impide la ejecución de dicha función. %cita
+Esta función permite obtener los datos de los píxeles de una imagen y almacenarlos en un elemento \textbf{Canvas} del HTML. En principio no debería de haber ningún problema con ello, sin embargo ocurre una cosa muy importante: el origen de la imagen no es \textbf{``fiable''}, y la política \ac{CORS} de la solicitud HTTP impide la ejecución de dicha función. %cita
 
 La política \ac{CORS} es un mecanismo que usa cabeceras HTTP adicionales para que un usuario obtenga permisos para acceder a recursos determinados de un servidor desde un origen distinto a éste. Cuando se solicita un recurso a través de una petición HTTP desde un origen distinto al que pertenece el mismo, es cuando la política entra en acción y permite, o no, el acceso a este recurso. %cita
 
@@ -37,7 +37,7 @@ Dicho esto, se entiende mejor la premisa del problema que nos atañe. Como el or
 La solución, tras investigar a conciencia, reside en añadir el siguiente atributo HTML dentro de la herramienta de encriptado de JPG de Stegosploit, concretamente en la etiqueta referente a la carga de la imagen en la página: %cita
 
 \begin{center}
-\textit{cross-origin="anonymous"}
+\textit{cross-origin=``anonymous''}
 \end{center}
 
 Con el siguiente atributo se omite el intercambio de las credenciales del usuario, por lo que no debería de haber problema para poder manipular la imagen independientemente de su origen. Aun así, no es suficiente para solucionar el problema, hay que añadir una cabecera HTTP en la respuesta a la solicitud realizada por el usuario... Para ello, hay muchas utilidades y programas con los que poder hacerlo; sin embargo, lo mejor es crear un servidor HTTP desde cero que añada la cabecera HTTP.
@@ -126,15 +126,36 @@ Por último, en esta figura se muestra el código usado para entrenar los modelo
 \item A continuación, usando la siguiente instrucción, liberamos la memoria en caché sin ocupar para poder usarse en otras aplicaciones.
 
 \begin{center}
-\textit{torch.cuda.empty_cache()}
+\textit{torch.cuda.empty\_cache()}
 \end{center}
 
 En principio no es necesario utilizar esta instrucción, pero la ejecutamos igualmente por si acaso.
 \item Más tarde, definimos la ruta en la que se encuentran las imágenes que usaremos para entrenar los modelos, y las almacenamos en la variable \textbf{\textit{files}} con la instrucción:
 
 \begin{center}
-\textit{get_image_files()}
+\textit{get\_image\_files()}
 \end{center}
 
-\item 
+\item A continuación definimos una etiqueta denominada \textit{``con\_exploit''} asociada al nombre de las imágenes a las que le hemos introducido el código por esteganografía. Los nombres de las imágenes que tengan el exploit empezarán por letra minúscula, como por ejemplo \textit{imagen\_1.jpg}. De esta forma, la clasificación se centrará en los nombres de los archivos.
+
+Al principio se basará en una clasificación por nombre, pero conforme se vaya agrandando el set de imágenes en futuros trabajos, los modelos consecuentemente irán aprendiendo bit a bit como explicábamos en anteriores capítulos y el nombre del archivo tomará un papel secundario en la clasificación.
+
+\item En este punto es donde definimos cómo se van a cargar los datos y con qué características y condiciones se van a presentar en los modelos. El tipo de variable que recoge esta información en Python, para este ámbito, se conoce como \textbf{DataLoader}.
+
+En primer lugar definimos la ruta en donde se encuentran las imágenes en la función como primer argumento, seguida de la variable que almacena las imágenes y de la etiqueta \textit{``con\_exploit''} que vimos anteriormente.
+
+El siguiente argumento es el tamaño del lote de imágenes que se van a entrenar en cada iteración. Para cada iteración se van a cotejar todas las imágenes, sin embargo, se tienen que distribuir de forma diferente en cada una para que haya una cierta aleatoriedad y que los modelos no aprendan siempre con las mismas imágenes en un mismo lote. Es decir, si queremos que el sistema prospere tenemos que forzar a que aprenda de todas las imágenes, no de sólo unas pocas que sean siempre las mismas. Eso lo conseguimos concretando este argumento y una instrucción que veremos más adelante.
+
+Son 5000 imágenes, con un tamaño de lote de 20 imágenes; si dividimos obtenemos 250 lotes con 20 imágenes cada uno.
+
+Por último, llegamos a un argumento polémico pero necesario: para que el \textbf{DataLoader} trate en condiciones las imágenes, todas ellas deben tener un mismo tamaño, lo cual es un problema ya que las imágenes tienen dimensiones muy dispares entre sí y el código introducido en unas puede suponer una gran parte de la información de la imagen. Este argumento redimensiona las imágenes para que tengan un mismo tamaño y así poder entrenarlas  en los modelos con mayor facilidad para el programa.
+
+El problema es que al redimensionarlas se puede perder parte de la información del exploit introducido, y a pesar de que para la clasificación final pueda no afectar demasiado, al final estamos quitando datos de la imagen que podrían servir para otros casos más avanzados de detección de malware. Tras realizar varias pruebas con Stegosploit, nos percatamos que para imágenes con dimensiones menores que \textbf{500x375} píxeles no se puede introducir el exploit que metimos; por otro lado, y haciendo pruebas con Google Colab, para obtener un rendimiento óptimo de la herramienta y para que no nos diese un error por falta de memoria en la \ac{GPU}, resolvimos en establecer un tamaño de redimensionado definido en \textbf{550} píxeles (es decir, \textbf{550x550} píxeles). De esta forma evitamos la pérdida de información en su mayoría, y la herramienta de Google Colab puede funcionar sin problemas.
+\item A continuación definimos una variable con la métrica que le vamos a pasar al \textit{Learner}. Un \textit{Learner} es un tipo de variable que define el modelo de Deep Learning, la métrica y el DataLoader a usar. Los hay de varios tipos, pero al tratarse de un problema de clasificación de imágenes trabajaremos con un \textit{Learner} enfocado a ese ámbito. El DataLoader ya está definido, de modo que lo pasamos como primer argumento. El modelo de Deep Learning es el segundo argumento que pasaremos, rondando entre 3 posibles opciones: \textit{ResNet-34}, \textit{ResNet-18} y \textit{AlexNet}. Por último, pasaremos como argumento final la métrica que hayamos definido previamente, y que en el capítulo \ref{ch:res} explicaremos.
+
+Los \textit{Learner} tienen más argumentos adicionales como por ejemplo la capacidad de aprendizaje del modelo, o qué porcentaje del set de imágenes irá destinado a entrenamiento y a validación... Por lo general, hemos decidido dejarlo por defecto, puesto que sus valores se ajustaban a nuestros objetivos y a nuestros recursos: \textbf{capacidad de aprendizaje de un 0,001\%, un 80\% de imágenes para entrenamiento y un 20\% para validación}.
+\item Como último paso de todos vamos a poner una instrucción utilizada para refinar el modelo de Deep Learning que hemos definido en el Learner. Como único argumento le hemos puesto el número de iteraciones que queremos que haga (cada una con el set de imágenes distribuido de forma aleatoria como indicábamos e anteriormente). En este caso hemos decidido poner 25, para que tenga así un rango de aprendizaje más amplio.
+
 \end{enumerate}
+
+En el siguiente capítulo hablaremos en detalle de las métricas utilizadas, mostraremos los resultados de los modelos y haremos una comparativa entre ellos, decidiendo cuál es el mejor y por qué.
