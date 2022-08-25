@@ -1,91 +1,63 @@
 \chapter{Resultados}
 \label{ch:res}
 
-En este capítulo pasaremos a explicar cada experimento realizado, las métricas que se usarán para medir los resultados, y haremos una serie de comentarios al respecto.
+En este capítulo pasaremos a explicar cada experimento realizado para cada modelo, las métricas que se usarán para medir los resultados y comentaremos qué modelo consigue mejores prestaciones en base a éstos.
 %TODO_DONE: introduce lo que se va a hacer en este capítulo
 
 \section{Métricas}
 
-Antes de pasar a mostrar los experimentos realizados vamos a explicar en qué consisten las dos métricas en las que nos basaremos para cotejarlos: el \ac{mIoU} y el \ac{MAE}.
+A continuación vamos a explicar en qué consisten las métricas en las que nos basaremos para cotejar los experimentos realizados.
 
-\subsection{mIoU}
+\subsection{Error Rate}
 
-Para saber qué porcentaje de acierto ha tenido el proceso de segmentación semántica utilizaremos la métrica conocida como \ac{mIoU} (\cite{miou-iou}). Esta métrica se basa en hacer la media de la \ac{IoU} de las diferentes etiquetas de clases.
+Para saber con cuánta veracidad y exactitud se han clasificado las imágenes usaremos esta métrica denominada \textbf{``Error Rate''} (o \textbf{Tasa de errores}). Simplemente indica el número de imágenes bien clasificadas junto con el número de imágenes mal clasificadas; a continuación se calcula en base a estos datos qué porcentaje de errores han habido durante la clasificación.
 
-La \ac{IoU} es la relación de superposición que existe entre la imagen segmentada y la original. Es decir, sirve para dictaminar con cuánta precisión se ha realizado el proceso de \ac{SS}. En las siguientes figuras se puede ver un ejemplo muy práctico:
+Realmente es una métrica muy común usada en una gran cantidad de ramas científicas, de modo que no es de sorprender que la hayamos escogido para este proyecto.
 
-\begin{figure}[H]
-  \centering
-  \begin{subfigure}[b]{0.45\linewidth}
+%\begin{figure}[H]
+%  \centering
+%  \begin{subfigure}[b]{0.45\linewidth}
     %\includegraphics[width=\linewidth]{Figuras/Iou_1.eps}
-    \caption{Imagen Original}
-  \end{subfigure}
-    \begin{subfigure}[b]{0.45\linewidth}
+%    \caption{Imagen Original}
+%  \end{subfigure}
+%    \begin{subfigure}[b]{0.45\linewidth}
     %\includegraphics[width=\linewidth]{Figuras/IoU_2.eps}
-    \caption{Predicción}
-  \end{subfigure}
-  \caption{Imágenes para visualizar el \ac{mIoU}}
-\end{figure}
+%    \caption{Predicción}
+%  \end{subfigure}
+%  \caption{Imágenes para visualizar el \ac{mIoU}}
+%\end{figure}
 
-\subsection{MAE}
+\subsection{Average Precision Score}
 
-Con el objetivo de evaluar con cuánta precisión se ha estimado la velocidad, vamos a servirnos de la métrica más adecuada para ello: el \ac{MAE} (\cite{mae}). Ésta se basa en calcular la media de la diferencia absoluta de los valores reales con los valores de predicción de la velocidad. Como se puede ver en la fórmula \ref{eq:mae}, \textit{X} es una matriz con los valores reales e \textit{Y} es una matriz con los valores de predicción.
+Con esta métrica se pretende evaluar la precisión media de los resultados de las predicciones. Para ello, se realiza la llamada curva \ac{PR} (o curva de \textbf{Precisión-Sensibilidad}); con ella se puede ver si la clasificación de las imágenes se ha realizado correctamente, es decir, sin falsos positivos en la misma (\textbf{Precisión}), y si se han detectado bien las imágenes por el modelo dentro de todo el set de imágenes , es decir, si han habido falsos negativos durante el proceso y si dentro de los mismos (y de los positivos reales) se han detectado correctamente los positivos (\textbf{Sensibilidad}). %cita
 
-\begin{equation}\label{eq:mae}
-MAE = \frac{\sum_{i=1}^{n}|X_i - Y_i|}{n}
+Es un poco confuso de entender, pero simplemente indica la efectividad del sistema en términos de falsos positivos y falsos negativos. En la curva los dos ejes están muy relacionados entre sí: si se aumenta la precisión, disminuirá la sensibilidad (y al revés).
+
+Sin embargo, esta  curva no es la métrica que aquí explicamos. La precisión media se calcula a partir de la misma y es, a grandes rasgos, una forma de representar todos los valores de la curva en uno solo.
+
+Para decirlo de forma resumida, la \textbf{precisión media} toma la curva \ac{PR} y realiza la media ponderada de los valores de la ``Precisión'' adquiridas en cada umbral de decisión, es decir, en cada valor de decisión que define la precisión del sistema (si variamos el umbral, variará a su vez la precisión del sistema, y por lo tanto servirá para dictaminar si el modelo es preciso o no); como pesos para realizar la media ponderada se utilizará el incremento de la sensibilidad del umbral anterior al actual. A continuación mostramos la fórmula para comprender mejor, de forma visual, lo explicado en este punto: %cita
+
+\begin{equation}\label{eq:apscore}
+AP = \sum_{n}(R_n - R_{n-1})P_n
 \end{equation}
 
-Con ello lo que conseguimos es saber de forma precisa el error medio que ha tenido la estimación en comparación con el valor real. Cuanto más bajo sea el \ac{MAE}, más veraz será la estimación.
+donde $P_n$ es la \textbf{Precisión} y $R_n$ es la \textbf{Sensibilidad} en el umbral \textbf{n}. Cuanto más cercana a 1 esta métrica, mejor será el sistema.
+
+Esta métrica realmente es muy buena para nuestros objetivos porque está pensada para usarse en un set de imágenes \textbf{no balanceado}, es decir, con más elementos del set con una etiqueta que con otra (recordemos que nuestro set se compone de 5000 imágenes, de las cuales 250 tienen un exploit en su interior).
 %TODO_DONE: yo suelo añadir una sección explicando las métricas, pero no es necesario, si las explicas en cada experimento. Recuerda traer aquí la explicación de la mIOU para evaluar la segmentación semántica.
 %TODO_DONE: organiza en secciones los distintos experimentos.
-\section{Evaluación de la segmentación semántica}
 
-Previo a mostrar los resultados finales del sistema $ISA^{2}$, vamos a ver qué resultados hemos obtenido en Swiftnet tanto para Cityscapes como para la base de datos de $ISA^{2}$.
+\subsection{Balanced Accuracy}
 
-\subsection{Swiftnet con Cityscapes}
+\textbf{Balanced Accuracy} es una métrica diseñada precisamente para problemas de clasificación con set de imágenes no balanceados, tanto para problemas de clasificación binarios (con dos etiquetas) como de multiclase (con más de dos etiquetas).
 
-Si se han seguido las indicaciones del capítulo anterior, tras ejecutar el modelo obtendremos el resultado de la figura \ref{fig:Res_Swift} en la terminal del sistema operativo:
+Esta métrica se define como la media de la \textbf{Sensibilidad} obtenida de cada clase (recordemos que la \textbf{Sensibilidad} sirve para medir cuántos positivos han sido detectados por el modelo correctamente). Se utiliza para evaluar el rendimiento de un modelo de clasificación. Cuanto más cercano a 1 su valor, mejor será el modelo. %cita
 
-\begin{figure}[H]
-\centering
-%\includegraphics[width=10cm]{Figuras/Res_Swiftnet_Cityscapes.eps}
-\caption{Resultados del modelo Swiftnet con la base de datos Cityscapes}
-\label{fig:Res_Swift}
-\end{figure}
+\subsection{ROC AUC Score}
 
-Como se puede ver, el resultado es el mismo que aparece en el paper de Swiftnet (75.52\% de \ac{mIoU}) junto a diferentes resultados de \ac{IoU} para cada una de las clases detectadas (\cite{swiftnet}). A continuación, y para aclarar los resultados de forma visual, mostramos una comparativa de una imagen real y otra segmentada de Cityscapes por Swiftnet:
+Como ya vimos en el capítulo \ref{ch:sota}, la curva \ac{ROC} se crea a partir de los valores de la \ac{TPR} y la \ac{FPR} en distintos umbrales. Consecuentemente, la \ac{AUC} se puede calcular a partir de la \ac{ROC},y es el área bajo la curva formada por ésta. Cuanto mayor sea su valor, más completo y eficaz será el modelo, ya que así se ve cómo aumenta el valor de la \ac{TPR} y cómo decrece el valor de la \ac{FPR}.
 
-\begin{figure}[H]
-\centering
-  \begin{subfigure}[b]{0.45\linewidth}
-    %\includegraphics[width=\linewidth]{Figuras/Imagen_Cityscapes_Real.eps}
-    \caption{Imagen real de Cityscapes}
-  \end{subfigure}
-    \begin{subfigure}[b]{0.45\linewidth}
-    %\includegraphics[width=\linewidth]{Figuras/Imagen_Cityscapes_Segmentada.eps}
-    \caption{Imagen segmentada de Cityscapes}
-  \end{subfigure}
-  \caption{Resultados de Swiftnet con Cityscapes}
-\end{figure}
-
-Como se puede apreciar (a simple vista), la segmentación ha sido correcta y el modelo ha sabido distinguir cada clase de la imagen con gran exactitud. En conclusión, la ejecución de Swiftnet ha sido un éxito.
-
-\subsection{Swiftnet con $ISA^{2}$}
-
-Para esta parte no contaremos con las métricas de \ac{mIoU} anteriores ya que la base de datos de $ISA^{2}$ no tiene máscaras de segmentación como Cityscapes, por lo que no se puede saber con cuánta precisión se van a segmentar las imágenes más que por los resultados de Cityscapes (\cite{swiftnet}). De este modo, sólo mostraremos la comparativa entre una imagen real de esta base de datos junto con la imagen segmentada de la misma:
-
-\begin{figure}[H]
-\centering
-  \begin{subfigure}[b]{0.45\linewidth}
-    %\includegraphics[width=\linewidth]{Figuras/Imagen_ISA2_Real.eps}
-    \caption{Imagen real de $ISA^{2}$}
-  \end{subfigure}
-    \begin{subfigure}[b]{0.45\linewidth}
-    %\includegraphics[width=\linewidth]{Figuras/Imagen_ISA2_Segmentada.eps}
-    \caption{Imagen segmentada de $ISA^{2}$}
-  \end{subfigure}
-  \caption{Resultados de Swiftnet con $ISA^{2}$}
-\end{figure}
+Todo este proceso se realiza bajo el contexto de la predicción realizada por el modelo para clasificar las imágenes. Se puede usar tanto para clasificación binaria y multiclase. %cita
 
 \section{Evaluación del sistema $ISA^{2}$}
 
