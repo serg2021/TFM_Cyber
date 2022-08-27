@@ -98,7 +98,7 @@ A continuación, vamos a mostrar en la siguiente tabla los resultados generados 
 \textbf{Modelos} & \textbf{Métricas} & \textbf{Epoch} & \textbf{Resultados}\\ \cline{1-4}
 \multirow{4}{3cm}{\textbf{\textit{ResNet-34}}} & \multirow{2}{3cm}{Error Rate} & 0 & 0.049 \\ \cline{3-4}
 & & 24 & 0.002 \\ \cline{2-4}
-& \multirow{2}{3cm}{Average Precision Score} & 0 & 0.60 \\ \cline{3-4}
+& \multirow{2}{3cm}{Average Precision Score} & 0 & \textbf{0.60} \\ \cline{3-4}
 & & 24 & 0.98 \\ \cline{2-4}
 & \multirow{2}{3cm}{Balanced Accuracy} & 0 & \textbf{0.92}\\ \cline{3-4}
 & & 24 & \textbf{1} \\ \cline{2-4}
@@ -114,7 +114,7 @@ A continuación, vamos a mostrar en la siguiente tabla los resultados generados 
 & & 24 & 0.99 \\ \cline{1-4}
 \multirow{4}{3cm}{\textbf{\textit{AlexNet}}} & \multirow{2}{3cm}{Error Rate} & 0 & 0.049 \\ \cline{3-4}
 & & 24 & 0.014 \\ \cline{2-4}
-& \multirow{2}{3cm}{Average Precision Score} & 0 & \textbf{0.32} \\ \cline{3-4}
+& \multirow{2}{3cm}{Average Precision Score} & 0 & 0.32 \\ \cline{3-4}
 & & 24 & 0.90 \\ \cline{2-4}
 & \multirow{2}{3cm}{Balanced Accuracy} & 0 & 0.59 \\ \cline{3-4}
 & & 24 & 0.88 \\ \cline{2-4}
@@ -125,21 +125,51 @@ A continuación, vamos a mostrar en la siguiente tabla los resultados generados 
 \label{tab:Resul_ISA2}
 \end{table}
 
-Los valores que aparecen \textbf{resaltados} indican que son los mejores valores de cada iteración (\textbf{``Epoch''}.
+Los valores que aparecen \textbf{resaltados} indican que son los mejores valores de cada iteración (\textbf{``Epoch''}) entre todos los modelos para cada una de las métricas.
 
-Como se puede apreciar para este experimento, los mejores resultados son los que da el sistema \textbf{\textit{\ac{SVR}}} en todos los niveles de agrupación para entornos urbanos (con la excepción del nivel 4 que, en autovías, es sensiblemente mejor usando Swiftnet, y en entornos urbanos el \ac{MAE} de ambos modelos está casi a la par). El sistema \textbf{\textit{Boosting Trees}} tampoco se queda atrás y en todos sus niveles consigue lo mismo que el sistema \textit{\ac{SVR}}: Una mejora del \ac{MAE} de Swiftnet con respecto del de DeepLab en entornos urbanos y, en el último nivel, vuelve a tener dicha mejora en autovías. El resto de sistemas (\textbf{\textit{Lasso y Lineal}}) siguen siendo peores ejecutándose con los resultados de Swiftnet, y en concreto el sistema de regresión \textit{Lineal}, para el nivel de agrupación 4, es el que da unos resultados realmente catastróficos a pesar de haber sido corregidos como explicamos más adelante.%TODO_DONE: da más detalles, donde se entrena, dódne se prueba, se trata de repetir lo del diseño del experimento
+Conviene destacar algo muy importante: la primera iteración, independientemente de su valor, indica más o menos cómo se va a desempeñar el modelo para las siguientes; sin embargo, lo que realmente importa es ver si en la última iteración ha habido una gran mejoría o, al menos, si se ha conseguido el mejor resultado posible para esa métrica.
 
-Es en este punto en que el que se puede ver la influencia que tiene \ac{SPP} sobre los descriptores de imagen y, por lo tanto, sobre los resultados de la tabla.
+\subsection{Error Rate}
 
-Cuando generamos los descriptores de imagen estamos utilizando \ac{SPP} para que, según el nivel de agrupación que se use, se obtenga más o menos información en éstos. Recordemos que el nivel de agrupación indica el nivel de granularidad que tendrán los descriptores, y por lo tanto la cantidad de información que llevarán consigo.
+En términos de \textbf{``Error Rate''}, el mejor modelo es \textbf{ResNet-18}: tanto para la primera iteración como para la última se obtienen los mejores resultados para esta métrica (\textbf{0.036} y \textbf{0}). Con \textbf{ResNet-34} se obtienen resultados muy parejos con el anterior modelo, sobre todo para la última iteración (\textbf{0.049} y \textbf{0.002}), mientras que con \textbf{AlexNet} hemos conseguido los peores resultados (\textbf{0.049} y \textbf{0.014}).
 
-Analizando la tabla \ref{tab:Resul_ISA2}, vemos cómo para mayores niveles de agrupación, la precisión de los sistemas de regresión va en aumento. Esto puede verse en los niveles 3 y 4 de todos los sistemas, exceptuando el \textit{Lineal} que de ahora en adelante excluiremos por la poca certeza de sus resultados en comparación con el resto. Entre estos niveles, la diferencia entre el \ac{MAE} de un modelo en un determinado escenario con el \ac{MAE} del mismo modelo en el mismo escenario (pero en un distinto nivel) es muy pequeña. Esto es porque cuando aumentamos al nivel 4, el grado de granularidad es superior y tendrá más precisión para estimar la velocidad en comparación con el anterior. Sin embargo, el nivel 3 también aporta una granularidad muy alta y, por ende, una estimación muy precisa; por lo tanto, si con el nivel 3 ya obtenemos resultados concisos, con el nivel 4 podemos refinarlos hasta obtener una estimación con mayor nivel de certeza.
+Un apunte muy interesante es ver cómo con ResNet-34 se obtiene un valor en la última iteración muy parecido al de ResNet-18; recordemos que ResNet-18 es un modelo muy parecido a ResNet-34 pero con menos capas convolucionales, es decir, ResNet-34 es un modelo más ``completo''. De esta forma, al entrenar ambos modelos con nuestro set de imágenes se puede entender por qué con ResNet-34 no se llega a obtener el mejor valor de esta métrica: porque la \ac{CNN}, al tener una mayor profundidad, necesitaría de más iteraciones para llegar a entrenarse de manera óptima. Sin embargo, con ResNet-18, se entiende que al tener pocas capas no necesita de tantas iteraciones para obtener dicho valor... En resumen, para pocas iteraciones es mejor usar ResNet-18, mientras que para un número mayor de iteraciones ResNet-34 conseguiría resultados mucho mejores.
 
-Esto no siempre es así, porque puede pasar que en el nivel 4 se tomen en consideración datos que el nivel 3 había pasado por alto y como resultado nos dé un \ac{MAE} mayor en el último nivel. A lo que nos referimos con todo esto es a la posibilidad de que mientras los sistemas de regresión se ejecutan con datos de nivel 3, al no tener la misma profundidad que los de nivel 4, pueden obviar información relevante que con un nivel superior serían capaces de procesar. Esto se puede ver, por ejemplo, en la estimación del sistema \textit{Lasso} tanto para Swiftnet como para DeepLab. Sin embargo, este suceso no ocurre sólo en los niveles 3 y 4, para comprobarlo basta con revisar los niveles iniciales del sistema \textit{\ac{SVR}}.
+\subsection{Average Precision Score}
 
-Dicho todo esto, y comparando los valores de la tabla, podemos asegurar que los mejores sistemas con Swiftnet son \textbf{\textit{Boosting Trees}} y \textbf{\textit{\ac{SVR}}}. Para concretar más, vamos a puntualizar cómo el sistema \textit{\ac{SVR}} es mejor incluso, y es debido al reducido \ac{MAE} que tiene en todos sus niveles en comparación con el sistema \textit{Boosting Trees}.
+Para esta métrica, el mejor valor en la primera iteración se obtiene con \textbf{ResNet-34} (\textbf{0.60}), mientras que para la última iteración se obtiene con \textbf{ResNet-18} (\textbf{1}).
 
-En conclusión, podemos afirmar que el mejor sistema de regresión que se puede utilizar para el modelo Swiftnet es \textbf{\textit{\ac{SVR}}}.
+Con esta métrica medíamos en un solo valor de 0 a 1 la curva \ac{PR}, por lo que como se puede ver para ambos modelos, se obtienen cifras muy parecidas y realmente buenas que indican que la precisión del modelo (junto con la sensibilidad del mismo) son las mejores que cabrían esperar para el set de imágenes que hemos entrenado.
+
+Por el contrario, con \textbf{AlexNet} no se consiguen datos tan brillantes, pero ello tampoco es indicativo de que sea un mal modelo. Simplemente, no consigue las mismas prestaciones que ambos ResNet.
+
+\subsection{Balanced Accuracy}
+
+Dentro de \textbf{Balanced Accuracy} el mejor modelo sin lugar a dudas es \textbf{ResNet-34}, obteniendo para la primera y última iteración estos valores: \textbf{0.92} y \textbf{1}.
+
+Conviene señalar un punto muy importante para la primera iteración de esta métrica: el valor obtenido nos indica que este modelo puede ser un fuerte candidato a ser el mejor de todos para los objetivos de este trabajo, ya que, como dijimos antes, la primera iteración nos indica cómo se va a desempeñar el modelo para las siguientes iteraciones (prueba de ello es cómo en la última iteración se obtiene el mejor valor posible para esta métrica). Dicho de otra forma, \textbf{ResNet-34} es, para esta métrica, con mucha diferencia el mejor modelo posible.
+
+Recordemos que esta métrica es muy importante para sets de imágenes no equilibrados, esto es, que hay más elementos de una clase que de otra. De este modo, al estar trabajando con un set de imágenes con tan pocos elementos con exploits en su interior, en comparación con el resto de imágenes, podemos declarar que esta métrica tomará un papel muy importante para decidir qué modelo es el mejor.
+
+\subsection{ROC AUC Score}
+
+Por último, pasamos a observar y comentar los resultados obtenidos para \textbf{ROC AUC Score}. Al igual que con el resto de métricas, los mejores valores oscilan entre los dos modelos más representativos del trabajo: \textbf{ResNet-34} y \textbf{ResNet-18}.
+
+A pesar de que el mejor valor para la primera iteración lo consiguió el modelo \textbf{ResNet-18} con \textbf{0.89}, y de que el mejor valor para la última iteración lo obtenemos con el modelo \textbf{ResNet-34} con \textbf{1}; se podría decir que para esta métrica ambos modelos son los mejores, ya que se obtienen valores realmente muy cercanos y parecidos entre sí para cada una de las iteraciones vistas en la tabla.
+
+A modo de conclusión, para \textbf{ROC AUC Score} lo mejor es utilizar los modelos de la familia ResNet. AlexNet, por el contrario, no ha resultado ser tan prometedor como cabría esperar.
+
+\subsection{Conclusión}
+
+Como ya hemos explicado en el punto anterior, la diferencia entre los modelos \textbf{ResNet-34} y \textbf{ResNet-18} reside en la profundidad de su red neuronal... aun así se puede apreciar cómo ambos modelos son de la misma familia aunque tengan sus diferencias, ya que los valores en dichas iteraciones son muy parecidos en la mayoría de las métricas.
+
+Por otro lado, y como contraste, podemos ver cómo \textbf{AlexNet} ha acabado resultando en uno de los peores modelos, a pesar de tener buenos resultados. Sin embargo, no ha podido compararse con las tan buenas prestaciones servidas por los modelos de ResNet.
+
+En definitiva, podemos aventurarnos a decidir cuál ha sido el mejor modelo de entre todos los experimentos realizados: en nuestra opinión, y viendo los resultados obtenidos, hemos decidido que el mejor modelo es \textbf{ResNet-34}.
+
+Es una decisión un tanto controvertida, porque se ha observado cómo en varias métricas \textbf{ResNet-18} ha podido ser mejor, pero tiene un fundamento: \textbf{ResNet-34} es un modelo que a la larga, puede proporcionar mejores resultados que \textbf{ResNet-18}. Esto es, si entrenamos ambos modelos con un set de imágenes mayor, y con un número de iteraciones más grande, la precisión en la detección de malware será mejor en aquel modelo cuya profundidad, en cuanto a capas convolucionales se refiere, sea mayor; ya que analizará las imágenes con mayor detalle y las clasificará mejor.
+
+En el siguiente capítulo, finalizaremos este trabajo señalando qué conclusiones e ideas finales hemos sacado en claro.
 
 %TODO: faltan muchas cosas.
 %TODO_DONE: 1) Hay que aclarar que los anteriores resultados, para cada regresor, han sido obtenidos con unos parámetros para el spatial pyramids concretos. Debemos ponerlos.
