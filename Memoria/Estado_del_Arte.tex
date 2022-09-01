@@ -5,7 +5,14 @@ En el siguiente capítulo pasaremos a mencionar los artículos que conforman el 
 
 \section{Uso de Machine Learning para detectar imágenes con políglotas maliciosos}
 
-%IMAGEN
+\begin{figure}[h]
+  \centering
+  %\begin{subfigure}
+  \includegraphics[width=12cm]{Figuras/Introduccion/Shawat.eps}
+  \caption{}
+  \label{fig:diagrama_bloques}
+  %\end{subfigure}
+\end{figure}
 
 El objetivo de este proyecto no era otro que hacer una herramienta de Machine Learning para detectar políglotas en imágenes (\cite{ml-stenography-shawat}). A continuación, pasaremos a listar y explicar de forma resumida el proceso que realizaron los autores para ello. %cita
 
@@ -282,6 +289,6 @@ De forma resumida, ImageDetox funciona de la siguiente manera:
 
 En este artículo no se utiliza ninguna de las métricas usadas en los otros modelos vistos, aquí se crean dos tipos de métricas únicas para esta solución: \textbf{VT Detection (A)} y \textbf{VT Detection (B)}.
 
-VT Detection (A) hace referencia al número de antivirus que son capaces de detectar malware oculto en una imagen dividido entre el número de antivirus usados para detectar virus en una imagen. Dicho de otra forma, representa los resultados de analizar si cada imagen maliciosa original es maliciosa, según determina VirusTotal (\cite{virustotal}). %cite
+VT Detection (A) hace referencia al número de antivirus que son capaces de detectar malware oculto en una imagen dividido entre el número de antivirus usados para detectar virus en una imagen. Dicho de otra forma, representa los resultados de analizar si cada imagen maliciosa original es maliciosa, según determina VirusTotal (\cite{virustotal}). %cita
 
 Por el contrario, VT Detection (B) hace referencia al resultado de la detección después de utilizar esta técnica de neutralización propuesta en las imágenes con código malicioso. Dicho de otra forma, representa los resultados de analizar si cada imagen maliciosa original es maliciosa tras aplicar esta técnica.
