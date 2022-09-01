@@ -1,41 +1,18 @@
 \chapter{Conclusiones}
 \label{ch:conc}
 
-En este trabajo hemos contribuido a la evolución del sistema $ISA^{2}$ como respuesta a los sistemas \ac{ISA} ya existentes (\cite{isa2}). Hemos podido comprobar cómo al implementar un modelo \textbf{Real-Time} con una mayor precisión para la \ac{SS} como lo es Swiftnet \cite{swiftnet}, el propio sistema mejora en aspectos muy importantes, entre los que destacan:
+Durante el desarrollo de este proyecto hemos introducido código malicioso en imágenes y hemos utilizado una serie de modelos de Deep Learning para detectar dicho código en las imágenes. Al implementar dichos modelos hemos comprobado, en base a una serie de métricas, cómo de buenos han sido a la hora de la detección del malware y cuál de ellos ha sido el mejor.
+
+En el capítulo \ref{ch:res} ya comprobamos en una tabla comparativa los tres modelos utilizados, y resolvimos finalmente en declarar como mejor modelo \textbf{ResNet-34}. Un factor muy importante para decidirlo fue ver las semejanzas que tenía con el segundo mejor modelo \textbf{ResNet-18} y cómo en la métrica de \textbf{Balanced Accuracy}, ResNet-34 superaba con creces al resto de modelos (\textbf{0.92} y \textbf{1}); dicha métrica, tal y como redactamos anteriormente, resulta ser un factor de gran relevancia para tomar la decisión de elegir a ResNet-34 como el mejor modelo posible de entre todos los valorados.
+
+Cabe recordar de nuevo que \textbf{Balanced Accuracy} sirve para medir la exactitud media de los modelos, es decir, es una forma de medir su rendimiento. Es por ello que la tomamos en tanta consideración para discernir cual es, de entre todos, el mejor modelo.
+
+Por todo ello, hemos concluido en que el modelo adecuado para realizar la detección de malware es \textbf{ResNet-34}, con el cual, a largo plazo, prevemos que se obtendrán unos resultados incluso mejores que los actuales. Con vistas al futuro, hemos pensado las siguientes aplicaciones para esta línea de trabajo
 
 \begin{itemize}
-\item Mayor precisión en entornos urbanos para la estimación de la velocidad.
-\item Menor tiempo de procesado, lo que posibilita la integración del sistema en un vehículo inteligente.
+\item Mayor número de imágenes en el set para entrenar y optimizar los resultados del modelo.
+\item Buscar y probar con nuevos modelos de Deep Learning para obtener mejores resultados.
+\item Probar la detección con nuevas formas de ocultación de malware por esteganografía, usando otras herramientas aparte de Stegosploit y utilizando otro tipo de exploits como código a introducir en las imágenes.
 \end{itemize}
 
-%De modo que, usando este modelo, con las variaciones que ello conlleva, podemos asegurar que este sistema es mejor que su predecesor.
-
-En la siguiente tabla \ref{tab:Resul_SVR} comprobamos que esto es así mostrando el mejor resultado del modelo en núcleos urbanos en comparación con DeepLab utilizando el mismo sistema de regresión (\ac{SVR}): 
-
-\begin{table}[H]
-\centering
-\resizebox{12cm}{!}{
-\begin{tabular}{|l|l|l|l|l|}\cline{1-5}
-& \multicolumn{2}{|l|}{\textbf{MAE Swiftnet}} & \multicolumn{2}{|l|}{\textbf{MAE DeepLab}} \\ \cline{1-5}
-\textbf{Regresión} & \textbf{Highway (\%)} & \textbf{Urban (\%)} & \textbf{Highway (\%)} & \textbf{Urban (\%)}\\ \cline{1-5}
-\textbf{\textit{SVR}} & 11.13 & \textbf{8.74} & 9.69 & \textbf{9.55} \\ \cline{1-5}
-\end{tabular}
-}
-\caption{Resultados de \ac{SVR}}
-\label{tab:Resul_SVR}
-\end{table}
-
-Podemos comprobar que, efectivamente, Swiftnet (\textbf{8.74\%}) es mejor que DeepLab (\textbf{9.55}) en términos de \ac{MAE} para estos escenarios, aportando una mayor rapidez de procesado de imágenes (9 \ac{FPS} para analizar la base de datos de $ISA^{2}$) y un menor coste de implementación del mismo en un vehículo inteligente (por ser un modelo Real-Time). 
-
-%TODO_DONE: Modifica esta frase, no me convence, y pon una comparativa explícita con el anterior modelo en términos de MAE, de modo que el lector termine el documento sabiendo cuanto mejor es la solución propuesta que el anterior. Añade también información sobre la velocidad del sistema en frames por segundo.
-
-Por todo ello, concluimos con la idea de que esta nueva versión de $ISA^{2}$ sirva como punto de referencia para futuras mejoras del mismo. Como futuras líneas de trabajo proponemos las siguientes:
-
-\begin{itemize}
-\item La sustitución del modelo Swiftnet por otro con mayor precisión (por ejemplo \cite{hierarchical-multiscale}).
-\item La posibilidad de añadir nuevos sistemas de regresión al esquema (como por ejemplo \cite{ridge}).
-\item Un nuevo esquema con una estructura diferente para $ISA^{2}$, por ejemplo uno basado en una arquitectura con \ac{CNN} que realice la regresión por sí misma, como se hizo en la primera versión del sistema (\cite{isa2}), usando nuevas arquitecturas (\cite{cnn-ss}).
-\end{itemize}
-%TODO_DONE: Añade, bosqueja, algunas líneas de mejora que se deriven de tu trabajo. Pueden/deben ser muy técnicas.
-
-Al principio de este trabajo, contamos cómo con los sistemas \ac{ISA} se habían reducido cuantiosamente el número de accidentes de tráfico en España y Europa. Con este sistema, y con los que se deriven de éste, esperemos que, en un futuro no muy lejano, esa cifra deje de existir.
+La ciberseguridad es un reto que sigue sin resolverse. Cuanto más nos esforzamos en solucionar un problema aparecen otros tres y cada vez cuesta más superarlo. Parece ser algo recurrente, pero gracias a la investigación de líneas de trabajo como esta, poco a poco se consiguen resolver estas incidencias y vulnerabilidades, y así conseguimos asegurar un futuro digital más seguro. Tenemos la esperanza de que con este proyecto, lograremos alcanzar dicho futuro más pronto de lo esperado.

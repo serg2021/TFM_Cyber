@@ -1,7 +1,7 @@
 \chapter{Implementación de la solución}
 \label{ch:stego}
 
-A continuación, en este capítulo, vamos a ver cómo fueron los primeros usos de Stegosploit junto con los problemas derivados de éstos. Más adelante pasaremos a ver qué solución propusimos para utilizar la herramienta y cómo insertamos el código malicioso en las imágenes. Por último, explicaremos cómo utilizamos FastAI con estas imágenes y qué modelos de Deep Learning acabamos usando. %cita %cita
+A continuación, en este capítulo, vamos a ver cómo fueron los primeros usos de Stegosploit junto con los problemas derivados de éstos (\cite{stegosploit}). Más adelante pasaremos a ver qué solución propusimos para utilizar la herramienta y cómo insertamos el código malicioso en las imágenes. Por último, explicaremos cómo utilizamos FastAI con estas imágenes y qué modelos de Deep Learning acabamos usando (\cite{fastai}). %cita %cita
 
 \section{Primeros intentos de uso de Stegosploit}
 \label{sec:stego_1}
@@ -10,7 +10,7 @@ En primera instancia, leímos el paper correspondiente a la herramienta original
 
 Sin embargo, y tras seguir sus pasos, obtuvimos un error (del que hablaremos más adelante) por el que no pudimos conseguir la herramienta y que, como veremos en otro contexto, nos obligó a tener que crear un \textbf{servidor HTTP} con algunas especificaciones sobre el que ejecutar la herramienta (una vez extraída de otra manera a la que proponía el creador). Durante el desarrollo del capítulo veremos cuál fue ese error, en qué consistía, y cómo se constituyó el servidor que creamos para solucionarlo.
 
-Para obtener la herramienta, investigamos y encontramos un repositorio de GitHub llamado \textbf{PyStegosploit} que contenía todos los útiles de la misma. De este modo, descargamos el repositorio y lo colocamos en una ubicación fácilmente accesible de nuestro sistema de archivos.
+Para obtener la herramienta, investigamos y encontramos un repositorio de GitHub llamado \textbf{PyStegosploit} que contenía todos los útiles de la misma (\cite{pystegosploit}). De este modo, descargamos el repositorio y lo colocamos en una ubicación fácilmente accesible de nuestro sistema de archivos.
 
 Una vez obtenida la herramienta, ejecutamos la utilidad que propicia el encriptado de información en imágenes. Para ello nos situamos en la siguiente carpeta de la herramienta y abrimos el HTML propio de esta utilidad:
 
@@ -28,25 +28,25 @@ Antes de explicar el error, vamos a poner en contexto al lector para que sepa en
 
 Si ejecutamos la herramienta con una imagen del set de imágenes de COCO, y le introducimos un exploit, no funcionará. Saldrá el error que mencionamos debido a la siguiente función de Javascript: \textbf{getImageData()}.
 
-Esta función permite obtener los datos de los píxeles de una imagen y almacenarlos en un elemento \textbf{Canvas} del HTML. En principio no debería de haber ningún problema con ello, sin embargo ocurre una cosa muy importante: el origen de la imagen no es \textbf{``fiable''}, y la política \ac{CORS} de la solicitud HTTP impide la ejecución de dicha función. %cita
+Esta función permite obtener los datos de los píxeles de una imagen y almacenarlos en un elemento \textbf{Canvas} del HTML (\cite{getimagedata}). En principio no debería de haber ningún problema con ello, sin embargo ocurre una cosa muy importante: el origen de la imagen no es \textbf{``fiable''}, y la política \ac{CORS} de la solicitud HTTP impide la ejecución de dicha función. %cita
 
-La política \ac{CORS} es un mecanismo que usa cabeceras HTTP adicionales para que un usuario obtenga permisos para acceder a recursos determinados de un servidor desde un origen distinto a éste. Cuando se solicita un recurso a través de una petición HTTP desde un origen distinto al que pertenece el mismo, es cuando la política entra en acción y permite, o no, el acceso a este recurso. %cita
+La política \ac{CORS} es un mecanismo que usa cabeceras HTTP adicionales para que un usuario obtenga permisos para acceder a recursos determinados de un servidor desde un origen distinto a éste (\cite{CORS}). Cuando se solicita un recurso a través de una petición HTTP desde un origen distinto al que pertenece el mismo, es cuando la política entra en acción y permite, o no, el acceso a este recurso. %cita
 
 Dicho esto, se entiende mejor la premisa del problema que nos atañe. Como el origen de la imagen es de otro dominio, \ac{CORS} impide la ejecución de la función \textit{getImageData()} por ser una función que interactúa con los datos de la misma.
 
-La solución, tras investigar a conciencia, reside en añadir el siguiente atributo HTML dentro de la herramienta de encriptado de JPG de Stegosploit, concretamente en la etiqueta referente a la carga de la imagen en la página: %cita
+La solución, tras investigar a conciencia, reside en añadir el siguiente atributo HTML dentro de la herramienta de encriptado de JPG de Stegosploit, concretamente en la etiqueta referente a la carga de la imagen en la página:
 
 \begin{center}
 \textit{cross-origin=``anonymous''}
 \end{center}
 
-Con el siguiente atributo se omite el intercambio de las credenciales del usuario, por lo que no debería de haber problema para poder manipular la imagen independientemente de su origen. Aun así, no es suficiente para solucionar el problema, hay que añadir una cabecera HTTP en la respuesta a la solicitud realizada por el usuario... Para ello, hay muchas utilidades y programas con los que poder hacerlo; sin embargo, lo mejor es crear un servidor HTTP desde cero que añada la cabecera HTTP.
+Con el siguiente atributo se omite el intercambio de las credenciales del usuario, por lo que no debería de haber problema para poder manipular la imagen independientemente de su origen (\cite{cross-origin-anonymous}). Aun así, no es suficiente para solucionar el problema, hay que añadir una cabecera HTTP en la respuesta a la solicitud realizada por el usuario... Para ello, hay muchas utilidades y programas con los que poder hacerlo; sin embargo, lo mejor es crear un servidor HTTP desde cero que añada la cabecera HTTP. %cita
 
 \subsection{Solución del error \textit{getImageData()}}
 
 Antes de comenzar a explicar la creación del servidor vamos a explicar qué cabecera vamos a utilizar dentro de las peticiones HTTP, ya que sin ésta no se podría hacer nada con la herramienta.
 
-La cabecera a añadir se denomina \textbf{Access-Control-Allow-Origin}, y es la que permite que los recursos de la respuesta HTTP puedan ser compartidos. De forma resumida, un usuario realiza una petición HTTP (en nuestro caso, cargar una imagen del set de imágenes de COCO o activar la función de encriptado de la herramienta), y la respuesta de la web (modificada con el atributo \textit{cross-origin} y con la cabecera HTTP bien configurada) permitirá que la función \textit{getImageData()} y el resto de funciones que manipulen los datos de la imagen se puedan ejecutar correctamente.
+La cabecera a añadir se denomina \textbf{Access-Control-Allow-Origin}, y es la que permite que los recursos de la respuesta HTTP puedan ser compartidos (\cite{access-control-allow-origin}). De forma resumida, un usuario realiza una petición HTTP (en nuestro caso, cargar una imagen del set de imágenes de COCO o activar la función de encriptado de la herramienta), y la respuesta de la web (modificada con el atributo \textit{cross-origin} y con la cabecera HTTP bien configurada) permitirá que la función \textit{getImageData()} y el resto de funciones que manipulen los datos de la imagen se puedan ejecutar correctamente. %cita
 
 A continuación pasamos a explicar la creación del servidor HTTP:
 
@@ -54,7 +54,7 @@ A continuación pasamos a explicar la creación del servidor HTTP:
 
 Como se puede ver en la figura, el servidor lo hemos realizado usando Python e importando las librerías necesarias para que pueda servir como un servidor local para realizar pruebas (ya que no hace falta mucho más). El servidor está diseñado para que, por cada petición HTTP que se realice por parte del usuario, se obtenga una respuesta con la cabecera HTTP de la que hablábamos; de esta forma no habrá inconvenientes para manipular los datos de las imágenes en la herramienta y, por lo tanto, el origen de las imágenes no supondrá ningún problema durante su ejecución.
 
-Según la figura, todo parece tener el mismo aspecto que un servidor de HTTP normal y corriente; sin embargo, hay que destacar la inserción de la cabecera \textbf{Access-Control-Allow-Origin}. La cabecera como tal puede admitir dos valores: %cita
+Según la figura, todo parece tener el mismo aspecto que un servidor de HTTP normal y corriente; sin embargo, hay que destacar la inserción de la cabecera \textbf{Access-Control-Allow-Origin} (\cite{server-http}). La cabecera como tal puede admitir dos valores:
 
 \begin{itemize}
 \item \textbf{*}: Permite que cualquier origen pueda acceder al recurso. El acceso será permitido si el atributo \textbf{cross-origin} está definido como \textit{anonymous}.
@@ -71,7 +71,7 @@ Si ejecutamos el servidor HTTP, lo abrimos desde el navegador, y nos posicionamo
 
 %IMAGEN
 
-El código que hemos introducido aparece en el paper de Stegosploit y hace referencia a una vulnerabilidad que permite al atacante ejecutar código arbitrario en el contexto de los privilegios del proceso del navegador usando la corrupción de memoria. Afectaba a las versiones de Internet Explorer 8, 9 y 10 que aún no estaban parcheadas. %cita
+El código que hemos introducido aparece en el paper de Stegosploit y hace referencia a una vulnerabilidad que permite al atacante ejecutar código arbitrario en el contexto de los privilegios del proceso del navegador usando la corrupción de memoria. Afectaba a las versiones de Internet Explorer 8, 9 y 10 que aún no estaban parcheadas (\cite{CVE-2014-0282}). %cita
 
 %IMAGEN
 
@@ -84,7 +84,7 @@ Ya hemos explicado la parte que más problemas nos ha dado del proyecto, ahora v
 
 \subsection{FastAI}
 
-La herramienta que hemos usado para realizar este apartado tanto por sus buenas prestaciones como por la facilidad de su implementación ha sido \textbf{FastAI}. FastAI es una librería de Deep Learning que brinda de componentes de alto nivel, con los que se puede rápida y fácilmente obtener muy buenos resultados desde una base estándar de Deep Learning, es decir, sin tener que utilizar herramientas demasiado complicadas para construir la estructura sobre la que se van a usar estos componentes. %cita
+La herramienta que hemos usado para realizar este apartado tanto por sus buenas prestaciones como por la facilidad de su implementación ha sido \textbf{FastAI}. FastAI es una librería de Deep Learning que brinda de componentes de alto nivel, con los que se puede rápida y fácilmente obtener muy buenos resultados desde una base estándar de Deep Learning, es decir, sin tener que utilizar herramientas demasiado complicadas para construir la estructura sobre la que se van a usar estos componentes (\cite{fastai}). %cita
 
 Para usar FastAI, al igual que cualquier facilidad de Deep Learning, existen dos maneras:
 
@@ -93,21 +93,21 @@ Para usar FastAI, al igual que cualquier facilidad de Deep Learning, existen dos
 \item Usando una \ac{CPU}
 \end{itemize}
 
-La primera de ellas es, en cuanto a rendimiento, tiempo de ejecución, y uso de recursos; bastante mejor que la segunda. Esto es debido a que una \ac{GPU} tiene, por lo general, muchos más procesadores que una \ac{CPU}, por lo tanto, lo que le llevaría entrenar un modelo de Deep Learning a una \ac{CPU} podría llegar a ser incluso 10 veces más que a una \ac{GPU}. %cita
+La primera de ellas es, en cuanto a rendimiento, tiempo de ejecución, y uso de recursos; bastante mejor que la segunda. Esto es debido a que una \ac{GPU} tiene, por lo general, muchos más procesadores que una \ac{CPU}, por lo tanto, lo que le llevaría entrenar un modelo de Deep Learning a una \ac{CPU} podría llegar a ser incluso 10 veces más que a una \ac{GPU} (\cite{gpu-cpu}). %cita
 
 \subsection{Google Colab}
 
-Para este proyecto no disponíamos de una máquina con una ac{GPU} propia, de modo que hemos utilizado \textbf{Google Colab} para poder ejecutar Python desde el navegador usando una \ac{GPU} que la propia herramienta nos permite utilizar (limitada por un tiempo de uso, es decir, si excedes los recursos de procesado que se te permite utilizar, no puedes volver a utilizar la \ac{GPU} durante un tiempo). %cita
+Para este proyecto no disponíamos de una máquina con una ac{GPU} propia, de modo que hemos utilizado \textbf{Google Colab} para poder ejecutar Python desde el navegador usando una \ac{GPU} que la propia herramienta nos permite utilizar (limitada por un tiempo de uso, es decir, si excedes los recursos de procesado que se te permite utilizar, no puedes volver a utilizar la \ac{GPU} durante un tiempo) (\cite{google-colab}). %cita
 
 Mientras usamos Colab, vimos que se nos permitía hacer varias secciones de código para poder ejecutarlo alternativamente, lo cual nos ayudó a optimizar el tiempo de ejecución de la herramienta. En la siguiente figura explicaremos qué hicimos en cada sección:
 
 %IMAGEN
 
-La primera figura indica la instalación de la librería \textbf{Fastbook} de Deep Learning, utilizada específicamente en Google Colab mientras se usa FastAI en la misma herramienta. Básicamente, y de forma general, es un código que ayuda a conectar el cuaderno de Google Colab con Google Drive usando un token de autenticación. %cita %cita
+La primera figura indica la instalación de la librería \textbf{Fastbook} de Deep Learning, utilizada específicamente en Google Colab mientras se usa FastAI en la misma herramienta. Básicamente, y de forma general, es un código que ayuda a conectar el cuaderno de Google Colab con Google Drive usando un token de autenticación (\cite{fastbook-1}, \cite{fastbook-2}). %cita %cita
 
 %IMAGEN
 
-La segunda figura indica que el sistema de archivos de Google Drive se iba a montar en Colab. Quisimos hacerlo así ya que era la forma más rápida de obtener las imágenes alteradas con Stegosploit y las imágenes normales. Las imágenes estaban almacenadas en un archivo \textbf{.zip}
+La segunda figura indica que el sistema de archivos de Google Drive se iba a montar en Colab. Quisimos hacerlo así ya que era la forma más rápida de obtener las imágenes alteradas con Stegosploit y las imágenes normales. Las imágenes estaban almacenadas en un archivo \textbf{.zip}.
 
 %IMAGEN
 
@@ -122,14 +122,14 @@ Esta figura indica la descompresión del archivo \textbf{.zip} que contenía las
 Por último, en esta figura se muestra el código usado para entrenar los modelos, la cual vamos a pasar a explicar paso a paso:
 
 \begin{enumerate}
-\item En primer lugar, importamos el módulo \textit{visions} de la librería FastAI que contenga todos los útiles necesarios para definir un set de imágenes y entrenar un modelo para realizar tareas como la clasificación de imágenes. Seguidamente, importamos la librería \textit{torch}, necesaria para poder entrenar el modelo sobre una \ac{GPU}. %cita
+\item En primer lugar, importamos el módulo \textit{visions} de la librería FastAI que contenga todos los útiles necesarios para definir un set de imágenes y entrenar un modelo para realizar tareas como la clasificación de imágenes. Seguidamente, importamos la librería \textit{torch}, necesaria para poder entrenar el modelo sobre una \ac{GPU} (\cite{pytorch}). %cita
 \item A continuación, usando la siguiente instrucción, liberamos la memoria en caché sin ocupar para poder usarse en otras aplicaciones.
 
 \begin{center}
 \textit{torch.cuda.empty\_cache()}
 \end{center}
 
-En principio no es necesario utilizar esta instrucción, pero la ejecutamos igualmente por si acaso.
+En principio no es necesario utilizar esta instrucción, pero la ejecutamos igualmente por si acaso (\cite{cuda-empty-cache}).
 \item Más tarde, definimos la ruta en la que se encuentran las imágenes que usaremos para entrenar los modelos, y las almacenamos en la variable \textbf{\textit{files}} con la instrucción:
 
 \begin{center}

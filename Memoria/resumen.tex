@@ -1,16 +1,14 @@
 \chapter{Resumen}
 %\textcolor{red}{Resumen de 100 palabras MÁXIMO}\\
 
-%En el siguiente trabajo vamos a tratar de solucionar un problema que lleva existiendo desde la invención del automóvil de una forma que no se había visto antes. Con la creación de las normas que regulan el tráfico en las carreteras y la fabricación masiva de vehículos, es un hecho que la probabilidad de que ocurra un accidente es muy alta. Para solucionarlo se inventaron los sistemas \ac{ISA} \cite{reduccion} que ayudaron a reducir este número... Sin embargo, no son perfectos y tienen fallos.
+En el siguiente trabajo, presentamos un modelo de \ac{IA} que sea capaz de detectar malware oculto en imágenes. Para ello usamos la herramienta Stegosploit (\cite{stegosploit}) para introducir un exploit dentro de un set de imágenes, y utilizamos éstas para entrenar una serie de modelos de Deep Learning que servirán para detectar el malware en imágenes. Para realizar la detección se partirá de base la clasificación de las imágenes: los modelos clasificarán las imágenes en \textbf{``imágenes normales''} y en \textbf{``imágenes con exploit''}. Durante los entrenamientos, se usarán distintas métricas para poder valorar y decidir cuál es el mejor modelo para la detección. Como veremos más adelante, el modelo ganador es \textbf{ResNet-34} (\cite{resnet34}), y nos servirá para que en un futuro se pueda utilizar en distintas aplicaciones de la misma índole. %cita %cita
 
-%Es por ello que aquí sugerimos nuestra solución con un nuevo y mejorado sistema: \[ISA^{2}\]
-En el siguiente trabajo mostramos una versión mejorada del sistema de adaptación de la velocidad $ISA^{2}$. Éste consiste en la estimación apropiada de la velocidad para un vehículo basándose en la situación del tráfico en un determinado momento capturada por una cámara. A diferencia de otros sistemas, éste predice la velocidad apropiada en lugar de la velocidad real, y para ello usamos diferentes sistemas de regresión de inteligencia artificial. El sistema realiza la regresión tomando como entrada una segmentación semántica de la imagen. En concreto, proponemos utilizar el sistema de segmentación conocido como Swiftnet, que combinado con un sistema de regresión empleando la técnica llamada \ac{SPP}, consigue un error medio para la estimación de la velocidad adecuada de tan solo 8.65 km\textbackslash{h}.
 %TODO_DONE: Completa esto y luego lo traduces al Inglés abajo.
 
 
 \vspace{0.5cm}
 
-\textbf{Palabras clave}: visión por computador, inteligencia artificial, sistema de adaptación de la velocidad inteligente, vehículos inteligentes.
+\textbf{Palabras clave}: \ac{IA}, imágenes, malware, Stegosploit, ResNet-34.
 %\textbf{Palabras clave}: cinco palabras como máximo, separadas por comas.
 
 %Introduce hoja en blanco
@@ -21,11 +19,12 @@ En el siguiente trabajo mostramos una versión mejorada del sistema de adaptaci�
 
 \chapter{Abstract}
 %\textcolor{red}{Resumen de 100 palabras MÁXIMO - Es OBLIGATORIO}\\
-In this work, we show an improved version of the intelligent speed adaptation system  $ISA^{2}$. It consists in the appropriate speed estimation for a vehicle on the basis of the traffic situation at a certain point of time captured by a camera. Unlike other systems, this one predicts the appropriate speed instead of the real speed, that is why we use different artificial intelligence regression systems. The system performs the regression taking as input the semantic segmentation of the image. To be more specific, we propose to use the segmentation system known as Swiftnet, which is combined with a regression system using the \ac{SPP} technique, getting a mean error for the estimation of the appropriate speed of just 8.65 km\textbackslash{h}.
+
+In this work, we show an AI model capable of detect hidden malware on images by stenography. Then we use the Stegosploit toolkit to introduce an exploit inside of an image dataset, and then use them to train a set of Deep Learning models to detect the malware on that images. The detection will be made on the basis of an image classification problem: the models will classify the images between two classes (\textbf{``normal images''} and \textbf{``exploit images''}). During the training, we will use different metrics to assess and decide which one is the best model to do the detection. As we'll see later, the winning model is \textbf{ResNet-34}, and this one will lead to a future in which it can be used in different applications of the same theme.
 
 \vspace{0.5cm}
 
-\textbf{Keywords}: computer vision, artificial intelligence, intelligent speed adaptation, intelligent vehicles.
+\textbf{Keywords}: AI, images, malware, Stegosploit, ResNet-34.
 %\textbf{Keywords}: cinco palabras como máximo, separadas por comas.
 %Introduce hoja en blanco
 \newpage
