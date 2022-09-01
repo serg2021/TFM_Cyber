@@ -24,7 +24,12 @@ Si ahora ejecutamos la herramienta, nos dará el error del que hablábamos antes
 
 Antes de explicar el error, vamos a poner en contexto al lector para que sepa en qué situación aparece y cómo solucionarlo.
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Implementacion/getimagedata.png}
+  \label{fig:getimagedata}
+  \caption{Error de \textit{getImageData()}}
+\end{figure}
 
 Si ejecutamos la herramienta con una imagen del set de imágenes de COCO, y le introducimos un exploit, no funcionará. Saldrá el error que mencionamos debido a la siguiente función de Javascript: \textbf{getImageData()}.
 
@@ -50,7 +55,12 @@ La cabecera a añadir se denomina \textbf{Access-Control-Allow-Origin}, y es la 
 
 A continuación pasamos a explicar la creación del servidor HTTP:
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Implementacion/Server\_HTTP.png}
+  \label{fig:server-http}
+  \caption{Servidor HTTP}
+\end{figure}
 
 Como se puede ver en la figura, el servidor lo hemos realizado usando Python e importando las librerías necesarias para que pueda servir como un servidor local para realizar pruebas (ya que no hace falta mucho más). El servidor está diseñado para que, por cada petición HTTP que se realice por parte del usuario, se obtenga una respuesta con la cabecera HTTP de la que hablábamos; de esta forma no habrá inconvenientes para manipular los datos de las imágenes en la herramienta y, por lo tanto, el origen de las imágenes no supondrá ningún problema durante su ejecución.
 
@@ -67,13 +77,42 @@ Dicho esto, y como se puede apreciar en la figura, usaremos el primer valor.
 
 Si ejecutamos el servidor HTTP, lo abrimos desde el navegador, y nos posicionamos en la carpeta donde se encuentra la herramienta, podremos ejecutarla sin problemas.
 
-%IMAGEN
-
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[H]{0.45\linewidth}
+  	\includegraphics[width=\linewidth]{Figuras/Implementacion/Iterative\_Encoding\_1.png}
+  	\label{fig:iter-encod}
+  	\caption{Imagen principal de la herramienta}
+  \end{subfigure}
+  \begin{subfigure}[H]{0.45\linewidth}
+  	\includegraphics[width=\linewidth]{Figuras/Implementacion/Iterative\_Encoding\_2.png}
+  	\label{fig:iter-encod-2}
+  	\caption{Exploit a introducir}
+  \end{subfigure}
+  \caption{Stegosploit}
+\end{figure}
 
 El código que hemos introducido aparece en el paper de Stegosploit y hace referencia a una vulnerabilidad que permite al atacante ejecutar código arbitrario en el contexto de los privilegios del proceso del navegador usando la corrupción de memoria. Afectaba a las versiones de Internet Explorer 8, 9 y 10 que aún no estaban parcheadas (\cite{CVE-2014-0282}). %cita
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[H]{0.45\linewidth}
+  	\includegraphics[width=\linewidth]{Figuras/Implementacion/Stegosploit\_1.png}
+  	\label{fig:stegosploit-uso}
+  	\caption{Primera imagen de uso del servidor}
+  \end{subfigure}
+  \begin{subfigure}[H]{0.45\linewidth}
+  	\includegraphics[width=\linewidth]{Figuras/Implementacion/Stegosploit\_2.png}
+  	\label{fig:stegosploit-uso-2}
+  	\caption{Primera visualización de Stegosploit}
+  \end{subfigure}
+  \begin{subfigure}[H]{0.45\linewidth}
+  	\includegraphics[width=\linewidth]{Figuras/Implementacion/Stegosploit\_3.png}
+  	\label{fig:stegosploit-uso-3}
+  	\caption{Exploit introducido}
+  \end{subfigure}
+  \caption{Usando Stegosploit}
+\end{figure}
 
 Como se puede ver, cuando acaba la herramienta se muestra la imagen bordeada con un marco de color rojo y con el código introducido en la imagen tras su desencriptación, para ver cómo quedaría cuando se realizase.
 
@@ -101,23 +140,48 @@ Para este proyecto no disponíamos de una máquina con una ac{GPU} propia, de mo
 
 Mientras usamos Colab, vimos que se nos permitía hacer varias secciones de código para poder ejecutarlo alternativamente, lo cual nos ayudó a optimizar el tiempo de ejecución de la herramienta. En la siguiente figura explicaremos qué hicimos en cada sección:
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Implementacion/Colab\_1.png}
+  \label{fig:colab-1}
+  \caption{Fastbook}
+\end{figure}
 
 La primera figura indica la instalación de la librería \textbf{Fastbook} de Deep Learning, utilizada específicamente en Google Colab mientras se usa FastAI en la misma herramienta. Básicamente, y de forma general, es un código que ayuda a conectar el cuaderno de Google Colab con Google Drive usando un token de autenticación (\cite{fastbook-1}, \cite{fastbook-2}). %cita %cita
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Implementacion/Colab\_2.png}
+  \label{fig:colab-2}
+  \caption{Montar Google Drive}
+\end{figure}
 
 La segunda figura indica que el sistema de archivos de Google Drive se iba a montar en Colab. Quisimos hacerlo así ya que era la forma más rápida de obtener las imágenes alteradas con Stegosploit y las imágenes normales. Las imágenes estaban almacenadas en un archivo \textbf{.zip}.
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Implementacion/Colab\_3.png}
+  \label{fig:colab-3}
+  \caption{Quitar Google Drive}
+\end{figure}
 
 Este código es opcional. En nuestro caso no queríamos que los archivos de Google Drive permaneciesen en la sesión de Colab todo el rato, de modo que movimos el archivo \textbf{.zip} que contenía las imágenes a usar durante los entrenamientos de los modelos y lo pusimos en una subcarpeta de Colab que estuviera más a mano. Una vez hecho eso, ejecutábamos el código de la figura y así contábamos con las imágenes sin tener los archivos de Google Drive en la misma sesión.
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Implementacion/Colab\_4.png}
+  \label{fig:colab-4}
+  \caption{Descomprimir el \textbf{.zip}}
+\end{figure}
 
 Esta figura indica la descompresión del archivo \textbf{.zip} que contenía las imágenes a usar. De esta forma tenemos las imágenes en una carpeta y el acceso a las mismas es más sencillo.
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Implementacion/Colab\_5.png}
+  \label{fig:colab-5}
+  \caption{Código para entrenar los modelos}
+\end{figure}
 
 Por último, en esta figura se muestra el código usado para entrenar los modelos, la cual vamos a pasar a explicar paso a paso:
 

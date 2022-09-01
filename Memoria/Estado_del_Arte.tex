@@ -5,15 +5,6 @@ En el siguiente capítulo pasaremos a mencionar los artículos que conforman el 
 
 \section{Uso de Machine Learning para detectar imágenes con políglotas maliciosos}
 
-\begin{figure}[h]
-  \centering
-  %\begin{subfigure}
-  \includegraphics[width=12cm]{Figuras/Introduccion/Shawat.eps}
-  \caption{}
-  \label{fig:diagrama_bloques}
-  %\end{subfigure}
-\end{figure}
-
 El objetivo de este proyecto no era otro que hacer una herramienta de Machine Learning para detectar políglotas en imágenes (\cite{ml-stenography-shawat}). A continuación, pasaremos a listar y explicar de forma resumida el proceso que realizaron los autores para ello. %cita
 
 Este estudio ha sido realizado tomando como base el artículo de Stegosploit del que también nos hemos servido para este trabajo (\cite{stegosploit}). %cita
@@ -21,6 +12,13 @@ Este estudio ha sido realizado tomando como base el artículo de Stegosploit del
 \subsection{Estudiar y construir ataques XSS y CSRF}
 
 En esta fase se procede a ver cómo se puede distribuir a las víctimas las imágenes con el código malicioso en su interior. Para ello, se estudiaron diferentes tipos de ataques sobre los que poder hacerlo, de tal forma que la víctima no se diera cuenta. A continuación, vamos a ver de manera muy superficial en qué consisten:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Shawat.png}
+  \label{fig:shawat}
+  \caption{Ataques XSS y CSRF}
+\end{figure}
 
 \subsubsection{Reflected XSS}
 
@@ -46,11 +44,25 @@ Este tipo de ataques fuerzan a un usuario a ejecutar acciones no deseadas en una
 
 Para crear los políglotas con los que explotar el ataque nos basaremos completamente en Stegosploit (\cite{stegosploit}).
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Shawat-2.png}
+  \label{fig:shawat-2}
+  \caption{Creación de políglotas}
+\end{figure}
+
 Todo comienza cifrando el código malicioso en los bits de una imagen. Después pasamos a insertar un decodificador en la cabecera de la imagen para crear IMAJS, formando así un políglota. Por último, nos servimos de alguno de los ataques de la fase anterior para atacar a un servidor web con el políglota como recurso.
 
 \subsection{Uso de Machine Learning para detectar imágenes con políglotas maliciosos}
 
 A continuación, pasamos a explicar la última parte de este modelo.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Shawat-3.png}
+  \label{fig:shawat-3}
+  \caption{Detección de políglotas}
+\end{figure}
 
 Comenzamos extrayendo 20.000 imágenes del dataset \textbf{CIFAR-10} (\cite{cifar10}) para después insertar en la mitad de ellas código malicioso mediante Stegosploit (\cite{stegosploit}). %cita #cita
 
@@ -94,7 +106,12 @@ El modelo está pensado para aplicarse dentro del ámbito de la empresa y, depen
 
 En general, el proceso es como sigue en la imagen:
 
-%PONER IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.60\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/Modelo\_Autores.png}
+  \label{fig:modelo-autores}
+  \caption{Modelo de los autores}
+\end{figure}
 
 \begin{itemize}
 \item Un empleado informa de un archivo de imagen sospechoso en un correo de phishing (por ejemplo), y la imagen será subida a una ubicación de almacenamiento estándar, la cual está aislada del resto de la infraestructura de la aplicación por motivos obvios. Adicionalmente, el equipo de seguridad podrá subir, si precisa, el archivo para analizarlo.
@@ -124,10 +141,20 @@ En esta revisión se han utilizado numerosas métricas para medir las técnicas 
 
 Esta métrica es muy útil para evaluar la calidad de la imagen. Se puede usar para medir la distorsión entre imágenes con esteganografía e imágenes sin ésta. Se sirve de la función \ac{MSE} (o Error Cuadrático Medio), tal y como viene en la siguiente figura (\cite{mse-ssim}): %cita
 
-%IMAGEN
-
-%IMAGEN
-
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[H]{0.45\linewidth}
+  	\includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/PSNR.png}
+  	\label{fig:PSNR}
+  	\caption{PSNR}
+  \end{subfigure}
+  \begin{subfigure}[H]{0.45\linewidth}
+  	\includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/MSE.png}
+  	\label{fig:MSE}
+  	\caption{MSE}
+  \end{subfigure}
+  \caption{Ecuaciones de PSNR}
+\end{figure}
 
 Donde la \textit{N} es la máxima diferencia entre píxeles en una imagen. Si el \ac{MSE} es alto en un algoritmo de esteganografía, es más complicado realizar el estegoanálisis que en un algoritmo con el \ac{MSE} bajo. Con la métrica \ac{PSNR} pasa lo mismo: si tiene un valor alto, es más complejo saber si una imagen tiene o no, datos introducidos por esteganografía. Dicho de otra forma, si el \ac{PSNR} está por encima de los 30 dB, es muy difícil para el ojo humano saber distinguir entre una imagen con esteganografía y otra sin ella.
 
@@ -135,7 +162,12 @@ Donde la \textit{N} es la máxima diferencia entre píxeles en una imagen. Si el
 
 La métrica \ac{SSIM} se utiliza para la medida de la calidad de imagen. La fórmula toma como base dos imágenes \textit{A} y \textit{B}, junto con sus respectivos valores medios \textit{X} y \textit{Y}; sus varianzas $X^{2}$ y $Y^{2}$; y su covarianza $XY^{2}$:
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/SSIM.png}
+  \label{fig:SSIM}
+  \caption{SSIM}
+\end{figure}
 
 En general, los valores de las variables \textit{K1} y \textit{K2} serán de 0.01 y 0.03 respectivamente. Los resultados de \ac{SSIM} pueden variar desde -1 a 1, siendo el primero un indicativo de que las imágenes con esteganografía son más difíciles de identificar que las imágenes sin ésta. Para un buen algoritmo esteganográfico, lo mejor sería tener un valor bajo en esta métrica.
 
@@ -143,7 +175,12 @@ En general, los valores de las variables \textit{K1} y \textit{K2} serán de 0.0
 
 La \ac{EC} es la relación del número total de bits embebidos en una imagen con el tamaño total de la imagen. También se la conoce como \ac{BPP}. Para una imagen con esteganografía con altura \textit{H}, anchura \textit{W}, y siendo el número de bits embebidos \textbf{E}, la \ac{EC} se representa como:
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/EC.png}
+  \label{fig:EC}
+  \caption{EC}
+\end{figure}
 
 \subsubsection{BPNZAC}
 
@@ -157,7 +194,12 @@ El \ac{QF} es la métrica usada para medir la calidad de una imagen tras la comp
 
 La \ac{PE}, también conocida como \ac{DER}, de un método de estegoanálisis en imágenes es el número total promedio de imágenes con y sin esteganografía mal identificadas. Es decir, es el número promedio de falsos positivos y falsos negativos. Se representa por la siguiente fórmula:
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/PE.png}
+  \label{fig:PE}
+  \caption{PE}
+\end{figure}
 
 \textit{PFA} es la probabilidad de falsa alarma, la cual indica la probabilidad de que las imágenes normales se clasifiquen como imágenes con esteganografía; y \textit{PMD} es la probabilidad de detecciones fallidas, la cual indica la probabilidad de que se hayan clasificado erróneamente las imágenes con esteganografía como imágenes normales. Esta métrica es usada principalmente para evaluar en sistemas de Machine Learning (y Deep Learning), técnicas de estegoanálisis en imágenes para detectar información oculta.
 
@@ -165,25 +207,45 @@ La \ac{PE}, también conocida como \ac{DER}, de un método de estegoanálisis en
 
 La \ac{DA} es otra métrica usada comúnmente en este ámbito de evaluación de rendimiento en estegoanálisis y esteganografía, ya que mide la relación entre el número total de clasificaciones correctas entre imágenes con y sin esteganografía dividida por el número total de clasificaciones correctas e incorrectas para ambos tipos de imágenes. Esta fórmula se representa de la siguiente forma:
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/DA.png}
+  \label{fig:DA}
+  \caption{DA}
+\end{figure}
 
 Donde \textit{TP} son el número de clasificaciones correctas para imágenes con esteganografía, \textit{TN} son el número de clasificaciones correctas para imágenes normales, \textit{FP} son el número de falsos positivos (clasificaciones incorrectas de las imágenes normales) y \textit{FN} son el número de falsos negativos (clasificaciones incorrectas de las imágenes con esteganografía).
 
 Alternativamente, podemos representar con la siguiente ecuación la \ac{PE}, ya que la suma de ambas métricas siempre da 1:
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/DA\_2.png}
+  \label{fig:DA-2}
+  \caption{Ecuación alternativa de PE}
+\end{figure}
 
 \subsubsection{BER}
 
 La \ac{BER} cuantifica la robustez de los datos embebidos en la imagen. Sea un algoritmo de esteganografía en el que \textit{B} es el número de bits embebidos en la imagen y \textit{BE} es el número de errores ocurridos durante la extracción de los datos embebidos, la ac{BER} se representa como:
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/BER.png}
+  \label{fig:BER}
+  \caption{BER}
+\end{figure}
 
 \subsubsection{MAE}
 
 El \ac{MAE} se identifica como el promedio del valor absoluto de los errores. El error absoluto es el valor absoluto de la diferencia entre los valores predichos y los valores reales. Se representa mediante la siguiente figura:
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/MAE.png}
+  \label{fig:MAE}
+  \caption{MAE}
+\end{figure}
 
 Siendo \textit{A} y \textit{B} dos imágenes monocromáticas con una anchura \textit{W} y una altura \textit{H}.
 
@@ -193,7 +255,12 @@ El \ac{MAE} puede ser usado para medir la calidad de una imagen con esteganograf
 
 El \ac{QI} es la medida de la distorsión de la imagen usando factores como la pérdida de correlación, la distorsión de luminancia y la distorsión de contraste. Se puede representar por la siguiente fórmula:
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/QI.png}
+  \label{fig:QI}
+  \caption{QI}
+\end{figure}
 
 La \textit{x} y \textit{y} son las imágenes normales y con esteganografía respectivamente, y la media y la varianza de los valores de los píxeles de éstas se representan como \textit{$\bar{x}$}, \textit{$x^{2}$} y \textit{$\bar{y}$}, \textit{$y^{2}$} (\cite{qi}).%#cita
 
@@ -213,7 +280,12 @@ Durante mucho tiempo, los archivos con formato JPEG han sido unos de los más ut
 
 El funcionamiento de MalJPEG se basa en extraer estadísticamente, es decir, sin mirar la imagen como tal, características del archivo (por ejemplo, el tamaño del archivo en bytes). Después se aplican diferentes algoritmos de Machine Learning que tomarán como entrada dichos datos, y clasificarán las imágenes como maliciosas o benignas; tal y como viene en la imagen:
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/MalJPEG.png}
+  \label{fig:MalJPEG}
+  \caption{Esquema de MalJPEG}
+\end{figure}
 
 \subsubsection{Métodos genéricos de extracción de características}
 
@@ -224,9 +296,7 @@ Generalmente existen dos métodos de extracción de características que, en est
 \begin{itemize}
 \item Los métodos de extracción basados en histogramas crean un histograma en el que se recogen datos y valores propios del archivo en cuestión, para poder utilizarlos como entradas en algoritmos de Machine Learning. En este artículo, se han usado dos tipos de histogramas: \textbf{Histogramas simples} e \textbf{histogramas de entropía de bytes avanzados}.
 \item Para los primeros se usan 2 configuraciones: histogramas basados en valores de bytes e histogramas basados en valores de caracteres. El histograma cuenta la frecuencia de estos valores en el archivo para cada configuración. Para poder comparar archivos con diferente tamaño es necesario normalizar los valores de los histogramas entre 0 y 1.
-\item Para los segundos, se desliza una ventana de bytes de tamaño \textit{K}, con un salto de \textit{S} bytes, sobre la representación en bytes del archivo. Para cada ventana, calculamos la entropía en base 2 del archivo (véase la \textbf{figura fórmula entropía}). Guardamos cada valor individual de los bytes en la ventana con el valor de la entropía de toda la ventana (en pares) en una lista; de este modo, habrá \textit{K} pares por cada ventana. Por último, calculamos un histograma en 2 dimensiones con un eje \textit{E} que representará la entropía, y un eje \textit{B} que representarán los bytes. En este punto es donde se obtiene el vector de carcterísticas de la imagen basado en el histograma.
-
-%IMAGEN
+\item Para los segundos, se desliza una ventana de bytes de tamaño \textit{K}, con un salto de \textit{S} bytes, sobre la representación en bytes del archivo. Para cada ventana, calculamos la entropía en base 2 del archivo (véase la \textbf{figura fórmula entropía}). Guardamos cada valor individual de los bytes en la ventana con el valor de la entropía de toda la ventana (en pares) en una lista; de este modo, habrá \textit{K} pares por cada ventana. Por último, calculamos un histograma en 2 dimensiones con un eje \textit{E} que representará la entropía, y un eje \textit{B} que representarán los bytes. En este punto es donde se obtiene el vector de características de la imagen basado en el histograma.
 \end{itemize}
 \item \textbf{Min-Hash}
 \begin{itemize}
@@ -254,7 +324,12 @@ Para evaluar la clasificación de las imágenes se han cogido métricas como la 
 
 Sin embargo, no sólo se necesitan esas métricas. Hace falta una que optimice los resultados de la detección de los clasificadores, sirviéndose de la \ac{TPR} y la \ac{FPR}: la \ac{IDR} (\cite{idr}). %cita
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/IDR_Metric_MalJPEG.png}
+  \label{fig:IDR}
+  \caption{IDR}
+\end{figure}
 
 La \ac{IDR} indica el punto del clasificador en el que se ha optimizado adecuadamente, y todo pasa por tener un valor muy alto en \ac{TPR} y uno muy bajo en \ac{FPR}. Cuanto mayor sea la \ac{IDR}, tendremos un mejor clasificador.
 
@@ -275,7 +350,12 @@ ImageDetox es un método creado con el pretexto anterior incluso sin una informa
 
 La solución propuesta puede servir, además, para evitar amenazas de seguridad resultantes del escondite de información confidencial en archivos de imagen, con el objetivo de sacar a la luz dichas amenazas. El esquema de la propuesta es como se muestra en la figura:
 
-%IMAGEN
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/ImageDetox.png}
+  \label{fig:ImageDetox}
+  \caption{Esquema de ImageDetox}
+\end{figure}
 
 De forma resumida, ImageDetox funciona de la siguiente manera:
 \begin{enumerate}
