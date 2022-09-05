@@ -3,11 +3,11 @@
 
 Durante el desarrollo de este proyecto hemos introducido código malicioso en imágenes y hemos utilizado una serie de modelos de Deep Learning para detectar dicho código en las imágenes. Al implementar dichos modelos hemos comprobado, en base a una serie de métricas, cómo de buenos han sido a la hora de la detección del malware y cuál de ellos ha sido el mejor.
 
-En el capítulo \ref{ch:res} ya comprobamos en una tabla comparativa los tres modelos utilizados, y resolvimos finalmente en declarar como mejor modelo \textbf{ResNet-34}. Un factor muy importante para decidirlo fue ver las semejanzas que tenía con el segundo mejor modelo \textbf{ResNet-18} y cómo en la métrica de \textbf{Balanced Accuracy}, ResNet-34 superaba con creces al resto de modelos (\textbf{0.92} y \textbf{1}); dicha métrica, tal y como redactamos anteriormente, resulta ser un factor de gran relevancia para tomar la decisión de elegir a ResNet-34 como el mejor modelo posible de entre todos los valorados.
+En el capítulo \ref{ch:res} ya comprobamos en una tabla comparativa los tres modelos utilizados, y resolvimos finalmente en declarar como mejor modelo \textbf{ResNet-34}. Un factor muy importante para decidirlo fue ver las semejanzas que tenía con el segundo mejor modelo \textbf{ResNet-18} y cómo en la métrica de \textbf{Balanced Accuracy}, ResNet-34 superaba con creces al resto de modelos (\textbf{0.92} y \textbf{1}); dicha métrica, tal y como redactamos anteriormente, resulta ser un factor de gran relevancia para tomar la decisión de elegir a ResNet-34 como el mejor modelo posible de entre los tres valorados.
 
 Cabe recordar de nuevo que \textbf{Balanced Accuracy} sirve para medir la exactitud media de los modelos, es decir, es una forma de medir su rendimiento. Es por ello que la tomamos en tanta consideración para discernir cual es, de entre todos, el mejor modelo.
 
-Por todo ello, hemos concluido en que el modelo adecuado para realizar la detección de malware es \textbf{ResNet-34}, con el cual, a largo plazo, prevemos que se obtendrán unos resultados incluso mejores que los actuales. Con vistas al futuro, hemos pensado las siguientes aplicaciones para esta línea de trabajo
+Por todo ello, hemos concluido en que el modelo adecuado para realizar la detección de malware es \textbf{ResNet-34}, con el cual a largo plazo, prevemos que se obtendrán unos resultados incluso mejores que los actuales. Con vistas al futuro, hemos pensado las siguientes aplicaciones para esta línea de trabajo:
 
 \begin{itemize}
 \item Mayor número de imágenes en el set para entrenar y optimizar los resultados del modelo.

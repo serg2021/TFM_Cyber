@@ -1,8 +1,7 @@
 \chapter{Resultados}
 \label{ch:res}
 
-En este capítulo pasaremos a explicar cada experimento realizado para cada modelo, las métricas que se usarán para medir los resultados y comentaremos qué modelo consigue mejores prestaciones en base a éstos.
-%TODO_DONE: introduce lo que se va a hacer en este capítulo
+En este capítulo pasaremos a explicar cada experimento realizado por cada modelo, las métricas que se usarán para medir los resultados y comentaremos qué modelo consigue mejores prestaciones en base a éstos.
 
 \section{Métricas}
 
@@ -10,7 +9,7 @@ A continuación vamos a explicar en qué consisten las métricas en las que nos 
 
 \subsection{Error Rate}
 
-Para saber con cuánta veracidad y exactitud se han clasificado las imágenes usaremos esta métrica denominada \textbf{``Error Rate''} (o \textbf{Tasa de errores}) (\cite{error-rate}). Simplemente indica el número de imágenes bien clasificadas junto con el número de imágenes mal clasificadas; a continuación se calcula en base a estos datos qué porcentaje de errores han habido durante la clasificación.
+Para saber con cuánta veracidad y exactitud se han clasificado las imágenes usaremos esta métrica denominada \textbf{``Error Rate''} (o \textbf{Tasa de errores}) (\cite{error-rate}). Simplemente indica el número de imágenes bien clasificadas junto con el número de imágenes mal clasificadas; a continuación se calcula en base a estos datos qué porcentaje de error ha habido durante la clasificación.
 
 Realmente es una métrica muy común usada en una gran cantidad de ramas científicas, de modo que no es de sorprender que la hayamos escogido para este proyecto.
 
@@ -20,7 +19,7 @@ Con esta métrica se pretende evaluar la precisión media de los resultados de l
 
 Es un poco confuso de entender, pero simplemente indica la efectividad del sistema en términos de falsos positivos y falsos negativos. En la curva los dos ejes están muy relacionados entre sí: si se aumenta la precisión, disminuirá la sensibilidad (y al revés).
 
-Sin embargo, esta  curva no es la métrica que aquí explicamos. La precisión media se calcula a partir de la misma y es, a grandes rasgos, una forma de representar todos los valores de la curva en uno solo.
+Sin embargo, esta curva no es la métrica que aquí explicamos. La precisión media se calcula a partir de la misma y es, a grandes rasgos, una forma de representar todos los valores de la curva en uno solo.
 
 Para decirlo de forma resumida, la \textbf{precisión media} toma la curva \ac{PR} y realiza la media ponderada de los valores de la ``Precisión'' adquiridas en cada umbral de decisión, es decir, en cada valor de decisión que define la precisión del sistema (si variamos el umbral, variará a su vez la precisión del sistema, y por lo tanto servirá para dictaminar si el modelo es preciso o no); como pesos para realizar la media ponderada se utilizará el incremento de la sensibilidad del umbral anterior al actual (\cite{apscore}). A continuación mostramos la fórmula para comprender mejor, de forma visual, lo explicado en este punto: %cita
 
@@ -40,7 +39,7 @@ Esta métrica se define como la media de la \textbf{Sensibilidad} obtenida de ca
 
 \subsection{ROC AUC Score}
 
-Como ya vimos en el capítulo \ref{ch:sota}, la curva \ac{ROC} se crea a partir de los valores de la \ac{TPR} y la \ac{FPR} en distintos umbrales. Consecuentemente, la \ac{AUC} se puede calcular a partir de la \ac{ROC},y es el área bajo la curva formada por ésta. Cuanto mayor sea su valor, más completo y eficaz será el modelo, ya que así se ve cómo aumenta el valor de la \ac{TPR} y cómo decrece el valor de la \ac{FPR}.
+Como ya vimos en el capítulo \ref{ch:sota}, la curva \ac{ROC} se crea a partir de los valores de la \ac{TPR} y la \ac{FPR} en distintos umbrales. Consecuentemente, la \ac{AUC} se puede calcular a partir de la \ac{ROC}, y es el área bajo la curva formada por ésta. Cuanto mayor sea su valor, más completo y eficaz será el modelo, ya que así se ve cómo aumenta el valor de la \ac{TPR} y cómo decrece el valor de la \ac{FPR}.
 
 Todo este proceso se realiza bajo el contexto de la predicción realizada por el modelo para clasificar las imágenes. Se puede usar tanto para clasificación binaria como para multiclase (\cite{roc-auc-score}). %cita
 
@@ -52,13 +51,13 @@ A continuación vamos a explicar en qué consisten los modelos de Deep Learning 
 
 \textbf{ResNet-34} es una \ac{CNN} de 34 capas utilizada, en parte, como un modelo de clasificación de imágenes, siendo ésta una de las tecnologías más avanzadas en esta materia (\cite{resnet34}). Este modelo ha sido entrenado bajo el set de imágenes de \textbf{ImageNet} (con más de 100.000 imágenes de 200 clases diferentes en su haber) (\cite{imagenet}). No obstante, y antes de seguir, conviene explicar qué es una \ac{CNN}. %cita %cita
 
-Una \ac{CNN} es una clase de red neuronal formada por capas convolucionales, mayormente usada para el análisis y la clasificación de imágenes. La primera capa extrae información de una imagen, generará una serie de funciones que, finalmente, se acabarán activando para tratar los datos de entrada, y el resultado se pasará a la siguiente capa. Este procedimiento sigue para el resto de capas.
+Una \ac{CNN} es una clase de red neuronal formada por capas convolucionales, mayormente usada para el análisis y la clasificación de imágenes. La primera capa extrae información de una imagen, generará una serie de funciones que, finalmente, se acabarán activando para tratar los datos de entrada y el resultado se pasará a la siguiente capa. Este procedimiento sigue para el resto de capas.
 
 Hay un detalle que se debe señalar: cuanto más profunda sea una \ac{CNN} (esto es, cuantas más capas tenga), mayor precisión y mayor detalle habrá para analizar las imágenes (\cite{cnn}). Este dato es muy importante, ya que, como veremos en la siguiente sección entre ResNet-34 y ResNet-18, indicará por qué con uno de estos modelos se ha conseguido una mayor precisión en la clasificación que con el otro. %cita
 
 \subsection{ResNet-18}
 
-\textbf{ResNet-18}, al igual que ResNet-34, es una \ac{CNN} que se compone de 18 capas convolucionales. Ha sido preentrenada, como ResNet-34, bajo el set de imágenes de ImageNet (\cite{resnet18}).
+\textbf{ResNet-18}, al igual que ResNet-34, es una \ac{CNN} que se compone de 18 capas convolucionales y ha sido preentrenada bajo el set de imágenes de ImageNet (\cite{resnet18}).
 
 En esencia, es una escisión de ResNet-34 que hemos escogido para ver si, usando una \ac{CNN} con menos capas, varía mucho o no la efectividad en la clasificación para un set de imágenes tan pequeño (en comparación con ImageNet).
 
@@ -110,7 +109,7 @@ A continuación, vamos a mostrar en la siguiente tabla los resultados generados 
 \label{tab:Resul_ISA2}
 \end{table}
 
-Los valores que aparecen \textbf{resaltados} indican que son los mejores valores de cada iteración (\textbf{``Epoch''}) entre todos los modelos para cada una de las métricas.
+Los valores que aparecen \textbf{resaltados} indican que son los mejores valores de cada iteración (\textbf{``Epoch''}) de entre todos los modelos para cada una de las métricas.
 
 Conviene destacar algo muy importante: la primera iteración, independientemente de su valor, indica más o menos cómo se va a desempeñar el modelo para las siguientes; sin embargo, lo que realmente importa es ver si en la última iteración ha habido una gran mejoría o, al menos, si se ha conseguido el mejor resultado posible para esa métrica.
 
@@ -118,11 +117,11 @@ Conviene destacar algo muy importante: la primera iteración, independientemente
 
 En términos de \textbf{``Error Rate''}, el mejor modelo es \textbf{ResNet-18}: tanto para la primera iteración como para la última se obtienen los mejores resultados para esta métrica (\textbf{0.036} y \textbf{0}). Con \textbf{ResNet-34} se obtienen resultados muy parejos con el anterior modelo, sobre todo para la última iteración (\textbf{0.049} y \textbf{0.002}), mientras que con \textbf{AlexNet} hemos conseguido los peores resultados (\textbf{0.049} y \textbf{0.014}).
 
-Un apunte muy interesante es ver cómo con ResNet-34 se obtiene un valor en la última iteración muy parecido al de ResNet-18; recordemos que ResNet-18 es un modelo muy parecido a ResNet-34 pero con menos capas convolucionales, es decir, ResNet-34 es un modelo más ``completo''. De esta forma, al entrenar ambos modelos con nuestro set de imágenes se puede entender por qué con ResNet-34 no se llega a obtener el mejor valor de esta métrica: porque la \ac{CNN}, al tener una mayor profundidad, necesitaría de más iteraciones para llegar a entrenarse de manera óptima. Sin embargo, con ResNet-18, se entiende que al tener pocas capas no necesita de tantas iteraciones para obtener dicho valor... En resumen, para pocas iteraciones es mejor usar ResNet-18, mientras que para un número mayor de iteraciones ResNet-34 conseguiría resultados mucho mejores.
+Un apunte muy interesante es ver cómo con ResNet-34 se obtiene un valor en la última iteración muy parecido al de ResNet-18; recordemos que ResNet-18 es un modelo muy parecido a ResNet-34 pero con menos capas convolucionales, es decir, ResNet-34 es un modelo más ``completo''. Sin embargo, ResNet-18 consigue un mejor resultado en la última iteración (aunque sea por muy poco). Esto no es un indicativo para elegir a ResNet-18 como el mejor modelo, porque aunque tenga mejor resultado, ResNet-34 se queda muy cerca y hay más métricas que valorar. No obstante, es interesante ver cómo dos modelos de la misma familia con diferente número de capas consiguen resultados muy parejos.
 
 \subsection{Average Precision Score}
 
-Para esta métrica, el mejor valor en la primera iteración se obtiene con \textbf{ResNet-34} (\textbf{0.60}), mientras que para la última iteración se obtiene con \textbf{ResNet-18} (\textbf{1}).
+Para esta métrica, el mejor valor en la primera iteración se obtiene con \textbf{ResNet-34} (\textbf{0.60}), mientras que en la última iteración se obtiene con \textbf{ResNet-18} (\textbf{1}).
 
 Con esta métrica medíamos en un solo valor de 0 a 1 la curva \ac{PR}, por lo que como se puede ver para ambos modelos, se obtienen cifras muy parecidas y realmente buenas que indican que la precisión del modelo (junto con la sensibilidad del mismo) son las mejores que cabrían esperar para el set de imágenes que hemos entrenado.
 
@@ -132,7 +131,7 @@ Por el contrario, con \textbf{AlexNet} no se consiguen datos tan brillantes, per
 
 Dentro de \textbf{Balanced Accuracy} el mejor modelo sin lugar a dudas es \textbf{ResNet-34}, obteniendo para la primera y última iteración estos valores: \textbf{0.92} y \textbf{1}.
 
-Conviene señalar un punto muy importante para la primera iteración de esta métrica: el valor obtenido nos indica que este modelo puede ser un fuerte candidato a ser el mejor de todos para los objetivos de este trabajo, ya que, como dijimos antes, la primera iteración nos indica cómo se va a desempeñar el modelo para las siguientes iteraciones (prueba de ello es cómo en la última iteración se obtiene el mejor valor posible para esta métrica). Dicho de otra forma, \textbf{ResNet-34} es, para esta métrica, con mucha diferencia el mejor modelo posible.
+Conviene señalar un punto muy importante para la primera iteración de esta métrica: el valor obtenido nos indica que este modelo puede ser un fuerte candidato a ser el mejor de todos para los objetivos de este trabajo, ya que, como dijimos antes, la primera iteración nos indica cómo se va a desempeñar el modelo para las siguientes iteraciones (prueba de ello es cómo en la última iteración se obtiene el mejor valor posible para esta métrica). Dicho de otra forma, \textbf{ResNet-34} es, para esta métrica y con mucha diferencia, el mejor modelo posible.
 
 Recordemos que esta métrica es muy importante para sets de imágenes no equilibrados, esto es, que hay más elementos de una clase que de otra. De este modo, al estar trabajando con un set de imágenes con tan pocos elementos con exploits en su interior, en comparación con el resto de imágenes, podemos declarar que esta métrica tomará un papel muy importante para decidir qué modelo es el mejor.
 
@@ -148,10 +147,10 @@ A modo de conclusión, para \textbf{ROC AUC Score} lo mejor es utilizar los mode
 
 Como ya hemos explicado en el punto anterior, la diferencia entre los modelos \textbf{ResNet-34} y \textbf{ResNet-18} reside en la profundidad de su red neuronal... aun así se puede apreciar cómo ambos modelos son de la misma familia aunque tengan sus diferencias, ya que los valores en dichas iteraciones son muy parecidos en la mayoría de las métricas.
 
-Por otro lado, y como contraste, podemos ver cómo \textbf{AlexNet} ha acabado resultando en uno de los peores modelos, a pesar de tener buenos resultados. Sin embargo, no ha podido compararse con las tan buenas prestaciones servidas por los modelos de ResNet.
+Por otro lado, y como contraste, podemos ver cómo \textbf{AlexNet} ha acabado resultando ser uno de los peores modelos. A pesar de tener buenos resultados, no ha podido compararse con las tan buenas prestaciones servidas por los modelos de ResNet.
 
 En definitiva, podemos aventurarnos a decidir cuál ha sido el mejor modelo de entre todos los experimentos realizados: en nuestra opinión, y viendo los resultados obtenidos, hemos decidido que el mejor modelo es \textbf{ResNet-34}.
 
-Es una decisión un tanto controvertida, porque se ha observado cómo en varias métricas \textbf{ResNet-18} ha podido ser mejor, pero tiene un fundamento: \textbf{ResNet-34} es un modelo que a la larga, puede proporcionar mejores resultados que \textbf{ResNet-18}. Esto es, si entrenamos ambos modelos con un set de imágenes mayor, y con un número de iteraciones más grande, la precisión en la detección de malware será mejor en aquel modelo cuya profundidad, en cuanto a capas convolucionales se refiere, sea mayor; ya que analizará las imágenes con mayor detalle y las clasificará mejor. Todo ello, sin olvidarnos de un motivo no menos importante: con la métrica \textbf{Balanced Accuracy} podemos ver el rendimiento de los modelos, y siendo ResNet-34 la que mejores valores ha obtenido podemos concluir en que este modelo, a la larga, será el apropiado para futuras aplicaciones.
+Es una decisión un tanto controvertida, porque se ha observado cómo en varias métricas \textbf{ResNet-18} ha podido ser mejor, pero tiene un fundamento: \textbf{ResNet-34} es un modelo que a la larga, puede proporcionar mejores resultados que \textbf{ResNet-18}. Esto es, si entrenamos ambos modelos con un set de imágenes mayor, y con un número de iteraciones más grande, la precisión en la detección de malware será mejor en aquel modelo cuya profundidad, en cuanto a capas convolucionales se refiere, sea mayor; ya que analizará las imágenes con mayor detalle y las clasificará mejor. Todo ello, sin olvidarnos de un motivo no menos importante: con la métrica \textbf{Balanced Accuracy} podemos ver el rendimiento de los modelos, y siendo ResNet-34 el que mejores valores ha obtenido podemos concluir en que este modelo, a la larga, será el apropiado para futuras aplicaciones.
 
 En el siguiente capítulo, finalizaremos este trabajo señalando qué conclusiones e ideas finales hemos sacado en claro.

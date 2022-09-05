@@ -5,20 +5,13 @@ En el siguiente capítulo pasaremos a mencionar los artículos que conforman el 
 
 \section{Uso de Machine Learning para detectar imágenes con políglotas maliciosos}
 
-El objetivo de este proyecto no era otro que hacer una herramienta de Machine Learning para detectar políglotas en imágenes (\cite{ml-stenography-shawat}). A continuación, pasaremos a listar y explicar de forma resumida el proceso que realizaron los autores para ello. %cita
+El objetivo de este proyecto no era otro que hacer una herramienta de Machine Learning para detectar políglotas maliciosos en imágenes (\cite{ml-stenography-shawat}). A continuación, pasaremos a listar y explicar de forma resumida el proceso que realizaron los autores para ello. %cita
 
 Este estudio ha sido realizado tomando como base el artículo de Stegosploit del que también nos hemos servido para este trabajo (\cite{stegosploit}). %cita
 
 \subsection{Estudiar y construir ataques XSS y CSRF}
 
 En esta fase se procede a ver cómo se puede distribuir a las víctimas las imágenes con el código malicioso en su interior. Para ello, se estudiaron diferentes tipos de ataques sobre los que poder hacerlo, de tal forma que la víctima no se diera cuenta. A continuación, vamos a ver de manera muy superficial en qué consisten:
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Shawat.png}
-  \label{fig:shawat}
-  \caption{Ataques XSS y CSRF}
-\end{figure}
 
 \subsubsection{Reflected XSS}
 
@@ -44,22 +37,15 @@ Este tipo de ataques fuerzan a un usuario a ejecutar acciones no deseadas en una
 
 Para crear los políglotas con los que explotar el ataque nos basaremos completamente en Stegosploit (\cite{stegosploit}).
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Shawat-2.png}
-  \label{fig:shawat-2}
-  \caption{Creación de políglotas}
-\end{figure}
-
 Todo comienza cifrando el código malicioso en los bits de una imagen. Después pasamos a insertar un decodificador en la cabecera de la imagen para crear IMAJS, formando así un políglota. Por último, nos servimos de alguno de los ataques de la fase anterior para atacar a un servidor web con el políglota como recurso.
 
 \subsection{Uso de Machine Learning para detectar imágenes con políglotas maliciosos}
 
-A continuación, pasamos a explicar la última parte de este modelo.
+A continuación, pasamos a explicar la última parte de este modelo:
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Shawat-3.png}
+  \includegraphics[width=16cm]{Figuras/Estado\_del\_Arte/Shawat-3.png}
   \label{fig:shawat-3}
   \caption{Detección de políglotas}
 \end{figure}
@@ -74,37 +60,37 @@ Con esta métrica se quiere comprobar a qué velocidad detecta este método el c
 
 \section{Stegomalware}
 
-Uno de los trabajos más recientes en cuanto a detección de malware en imágenes se refiere, nos presenta una revisión de los modelos de de detección usados durante los últimos tiempos junto con una propuesta de modelo original generada con la base de los mismos (\cite{stegomalware}). %cita
+Uno de los trabajos más recientes en cuanto a detección de malware en imágenes se refiere nos presenta una revisión de los modelos de detección usados durante los últimos tiempos junto con una propuesta de modelo original generada con la base de los mismos (\cite{stegomalware}). %cita
 
 Dentro del trabajo se extiende una alta gama de contenidos como las herramientas usadas para insertar malware en imágenes mediante esteganografía, el tipo de formato de archivos usados para ello, los algoritmos de esteganografía en imágenes... Para este apartado de la memoria sólo trataremos las técnicas de estegoanálisis usadas para la detección de esteganografía en imágenes, el modelo de detección propuesto por los autores y las métricas usadas durante los experimentos.
 
 \subsection{Técnicas de estegoanálisis}
 
-El estegoanálisis es el acto de determinar si hay datos ocultos en el medio en el que supuestamente están, y el algoritmo esteganográfico usado para introducirlo (además de extraer los datos si los hubiere). A continuación vamos a pasar a explicar cronológicamente, y de forma resumida, el estado del arte de estas técnicas:
+El estegoanálisis es el acto de determinar si hay datos ocultos en el medio en el que supuestamente están y el algoritmo esteganográfico usado para introducirlo (además de extraer los datos si los hubiere). A continuación vamos a pasar a explicar cronológicamente, y de forma resumida, el estado del arte de estas técnicas:
 
 \subsubsection{Soluciones de modelos de estegoanálisis enriquecidos y de características basadas en el dominio de imágenes}
 
 Durante las dos últimas décadas se han ido desarrollando diferentes soluciones para abordar el problema de la esteganografía desde este enfoque. Desde un principio la investigación se concentró en detecciones basadas en Machine Learning y en características de la imagen, seguidas por modelos enriquecidos y por soluciones basadas en clasificadores de conjunto. 
 
-Algunos de los métodos de estegoanálisis como \textbf{PHARM} (\cite{pharm}) y \textbf{GFR} (\cite{gfr}) siguieron siendo efectivos antes de la aparición del Deep Learning. Sin embargo, en el momento en el que surge el Deep Learning, la investigación de estegoanálisis en imágenes convencional se reduce, y es más difícil hacer contribuciones en este ámbito mejorando los métodos anteriormente mencionados. Con el Deep Learning se da un salto de calidad, y la rapidez con la que se desarrolla es mucho más alta en comparación (incluyendo el estegoanálisis). %cita #cita
+Algunos de los métodos de estegoanálisis como \textbf{PHARM} (\cite{pharm}) y \textbf{GFR} (\cite{gfr}) siguieron siendo efectivos antes de la aparición del Deep Learning. Sin embargo, en el momento en el que surge esta tecnología, la investigación de estegoanálisis en imágenes convencional se reduce, y es más difícil hacer contribuciones científicas en este ámbito mejorando los métodos anteriormente mencionados. Con el Deep Learning se da un salto de calidad, y la rapidez en el desarrollo de esta rama es mucho más alta en comparación (incluyendo el estegoanálisis). %cita #cita
 
 Aun con la aparición de esta nueva tecnología, el rendimiento ofrecido por estos métodos sirvió como pie de apoyo para mejorar las soluciones que posteriormente aparecerían gracias al Deep Learning. Las soluciones de este apartado se evaluaron y compararon con otras usando métricas de error y de precisión de detección. Los investigadores, además, usaron algoritmos de esteganografía estándar como \textbf{HUGO} (\cite{hugo}), \textbf{UNIWARD} (\cite{uniward}) o \textbf{WOW} (\cite{wow}) para evaluar la efectividad de las soluciones de estegoanálisis.%#cita #cita #cita
 
-Los resultados de la evaluación iban mejorando cada año y, consecuentemente, iban apareciendo más soluciones que probar. Hasta 2015, año de aparición de Deep Learning, técnicas como GRF o PHARM fueron de lo mejor que hubo. No obstante, ninguno de estos modelos fue evaluado según la detección de malware. Es en este punto donde el Deep Learning toma partida con el estegoanálisis.
+Los resultados de la evaluación iban mejorando cada año y, consecuentemente, aparecieron más soluciones por probar. Hasta 2015, año de aparición de Deep Learning, técnicas como GRF o PHARM fueron de lo mejor que hubo. No obstante, ninguno de estos modelos fue evaluado según la detección de malware: es en este punto donde el Deep Learning toma partida en el estegoanálisis.
 
 \subsubsection{Modelos de Deep Learning para el estegoanálisis de imágenes}
 
-Dentro de la lectura de este trabajo, se proponen una buena cantidad de soluciones de Deep Learning para conseguir la tan ansiada detección de esteganografía en imágenes con unos resultados más prometedores que en el enfoque anterior. Las soluciones principalmente se enfocan en proponer cambios en la capa de preprocesado, en la función de activación, en la disposición de las capas convolucionales y en la fusión de bloques, en la clasificación lineal para capturar elementos esteganográficos.
+Dentro de la lectura de este trabajo, se proponen una buena cantidad de soluciones de Deep Learning para conseguir la tan ansiada detección de esteganografía en imágenes con unos resultados muy prometedores. Las soluciones principalmente se enfocan en proponer cambios en la capa de preprocesado, en la función de activación, en la disposición de las capas convolucionales y en la fusión de bloques; y en la clasificación lineal para capturar elementos esteganográficos.
 
 Al experimentar con las soluciones se ha sacado en claro que hay varios modelos como \textbf{SR-Net} o \textbf{Zhu-Net}, que han conseguido muy buenos resultados en lo que a errores y precisión de detección se refiere. De hecho, estos modelos pueden llegar a ser una referencia para hacer comparativas en el futuro cuando surjan nuevas contribuciones.
 
-Sin embargo, y a pesar de que el campo de Deep Learning ofrece muchas más posibilidades y caminos que tomar para seguir desarrollándose, todavía no hay trabajos que utilicen esta tecnología para la detección de malware... A continuación veremos la propuesta del modelo de los autores para abarcar un nuevo enfoque en la tecnología de Deep Learning.
+Sin embargo, y a pesar de que el campo de Deep Learning ofrece muchas más posibilidades y caminos a tomar para seguir desarrollándose, todavía no hay trabajos que utilicen esta tecnología para la detección de malware... A continuación veremos la propuesta del modelo de los autores para abarcar un nuevo enfoque en la tecnología de Deep Learning.
 
 \subsection{Modelo de detección de stegomalware}
 
-El modelo está pensado para aplicarse dentro del ámbito de la empresa y, dependiendo del tamaño de ésta, de la frecuencia de imágenes con esteganografía cotejadas por la misma, el número de archivos multimedia recibidos por la organización y de las operaciones de negocio de ésta; la estructura del modelo variará.
+El modelo está pensado para aplicarse dentro del ámbito de la empresa y, dependiendo del tamaño de ésta, de la frecuencia de imágenes con esteganografía cotejadas por la misma, del número de archivos multimedia recibidos por la organización y de las operaciones de negocio de ésta; la estructura del modelo variará.
 
-En general, el proceso es como sigue en la imagen:
+En general, el proceso es como se ve en la imagen, en el contexto de una aplicación de una empresa:
 
 \begin{figure}[H]
   \centering
@@ -114,18 +100,18 @@ En general, el proceso es como sigue en la imagen:
 \end{figure}
 
 \begin{itemize}
-\item Un empleado informa de un archivo de imagen sospechoso en un correo de phishing (por ejemplo), y la imagen será subida a una ubicación de almacenamiento estándar, la cual está aislada del resto de la infraestructura de la aplicación por motivos obvios. Adicionalmente, el equipo de seguridad podrá subir, si precisa, el archivo para analizarlo.
-\item El archivo puede ser escaneado por poder tener un posible malware y, además, se puede determinar cuán malicioso es mediante herramientas de detección de firma (\cite{signature-based-detection}). Estas herramientas indican si la amenaza es conocida o no (si no es conocida, se le pone un identificador para el futuro). %cita
-\item Si efectivamente el archivo tiene un malware, marcamos la imagen y realizamos acciones preventivas como aislar la máquina infectada o actualizar el hash de la firma del malware de la imagen en las políticas de seguridad de la organización para bloquear el malware de la imagen y detener la infección de la red.
-\item Si por el contrario, no se identifica el archivo como malicioso dentro de este sistema de detección preliminar lo pasamos al siguiente paso: Identificar el tipo de archivo que es y el formato que tiene.
-\item Actualmente existen muchos tipos de formato en los archivos multimedia, y uno de los principales retos es identificar el malware en estas condiciones en donde el archivo puede tener cualquier tipo de formato.
+\item Un empleado informa de un archivo de imagen sospechoso en un correo de phishing (por ejemplo), entonces la imagen se sube a una ubicación de almacenamiento estándar, la cual está aislada del resto de la infraestructura de la aplicación por motivos obvios. Adicionalmente, el equipo de seguridad podrá subir, si precisa, el archivo para analizarlo.
+\item El archivo puede ser escaneado debido a la posibilidad de tener un posible malware, además de poder determinarse cuán malicioso es mediante herramientas de detección de firma (\cite{signature-based-detection}). Estas herramientas indican si la amenaza es conocida o no (si no es conocida, se le pone un identificador para el futuro). %cita
+\item Si efectivamente el archivo tiene un malware, marcamos la imagen y realizamos acciones preventivas como aislar la máquina infectada o actualizar el hash de la firma del malware de la imagen en las políticas de seguridad de la organización para bloquear el malware y detener la infección de la red.
+\item Si por el contrario, no se identifica el archivo como malicioso dentro de este sistema de detección preliminar lo pasamos al siguiente paso: \textbf{Identificar el tipo de archivo que es y el formato que tiene}.
+\item Actualmente existen muchos tipos de formato en los archivos multimedia, y uno de los principales retos es identificar el malware en estas condiciones en donde el archivo puede ser de cualquier tipo.
 \item Si el archivo no es multimedia se seguirá el procedimiento normal de enviarlo a la herramienta anti-malware para su análisis.
-\item Si por el contrario, sí se identifica como archivo multimedia, debemos realizar un análisis estructural y estadístico del archivo para la detección del malware. El análisis estructural incluye cambios en la marca de tiempo y en las fechas, propiedades del archivo inusuales como el tamaño del archivo, el checksum y la modificación del contenido, anomalías en el contenido de la cabecera \textbf{Exif} (\cite{exif-header})... Para ello, usamos las herramientas de código abierto \textbf{StegSpy} (\cite{stegspy}) y \textbf{stego-toolkit} (\cite{stego-toolkit}). %cita #cita #cita
+\item Si por el contrario, sí se identifica como archivo multimedia, debemos realizar un análisis estructural y estadístico del archivo para la detección del malware. El análisis estructural incluye: cambios en la marca de tiempo y en las fechas, propiedades del archivo inusuales como el tamaño del archivo, el checksum y la modificación del contenido, anomalías en el contenido de la cabecera \textbf{Exif} (\cite{exif-header})... Para ello, usamos las herramientas de código abierto \textbf{StegSpy} (\cite{stegspy}) y \textbf{stego-toolkit} (\cite{stego-toolkit}). %cita #cita #cita
 \item Si hubiera alguna propiedad anómala detectada, se marcaría el archivo como sospechoso para realizar más análisis.
-\item Por otro lado, tenemos el análisis estadístico del archivo. Este es realizado para encontrar más pruebas de cuánto de malicioso es el archivo. Las propiedades estadísticas pueden incluir histogramas de bytes y n-gramas del archivo, los cambios de patrón en los píxeles de la imagen o en los frames de un vídeo y cambios en los bit menos significativos de las imágenes. Las herramientas usadas en este tipo de análisis para esta propuesta son: \textbf{StegExpose} (\cite{stegexpose}) y \textbf{Stegdetect} (\cite{stegdetect}). %cita #cita
+\item Por otro lado, tenemos el análisis estadístico del archivo. Este es realizado para encontrar más pruebas para saber cuán malicioso es el archivo. Las propiedades estadísticas pueden incluir histogramas de bytes y n-gramas del archivo, los cambios de patrón en los píxeles de la imagen o en los frames de un vídeo y los cambios en los bit menos significativos de las imágenes. Las herramientas usadas en este tipo de análisis para esta propuesta son: \textbf{StegExpose} (\cite{stegexpose}) y \textbf{Stegdetect} (\cite{stegdetect}). %cita #cita
 \item La respuesta colectiva de los resultados de ambos análisis se combinan y se evalúa de nuevo cuán malicioso es el archivo, o si es sospechoso de tener un malware en su interior.
 \item Si el archivo se indica como sospechoso o malicioso, se envía a un entorno de \textbf{Cuckoo Sandbox} (\cite{cuckoo-sandbox}) para aplicar un análisis de malware dinámico e identificar las características de comportamiento del archivo.%#cita
-\item Hay una alta probabilidad de que el contenido malicioso oculto en el archivo pueda ser extraído y ejecutado como resultado de unas instrucciones de código embebido.Por ejemplo, un código de shell embebido en el archivo de imagen puede ser ejecutado e intentar conectarse a un servidor remoto para ejecutar comandos maliciosos y exfiltrar datos de la organización.
+\item Hay una alta probabilidad de que el contenido malicioso oculto en el archivo pueda ser extraído y ejecutado como resultado de unas instrucciones de código embebido. Por ejemplo, un código de shell embebido en el archivo de imagen puede ser ejecutado e intentar conectarse a un servidor remoto para ejecutar comandos maliciosos y exfiltrar datos de la organización.
 \item De este modo, basándonos en el comportamiento del malware, tenemos que tomar acciones preventivas en el entorno si el archivo acaba siendo finalmente malicioso.
 \item Las acciones preventivas pasan por poder actualizar, de nuevo, la firma del malware para los indicadores de compromiso como direcciones IP, dominios, y otras firmas de código hexadecimal para la detección de malware en el entorno de la infraestructura.
 \item Sin embargo, si el archivo se comporta con normalidad durante el análisis dinámico, podemos ignorar el archivo para futuras acciones y podemos seguir la pista del mismo por si se diese el caso de que fuese un falso positivo en el futuro.
@@ -144,27 +130,29 @@ Esta métrica es muy útil para evaluar la calidad de la imagen. Se puede usar p
 \begin{figure}[H]
   \centering
   \begin{subfigure}[H]{0.45\linewidth}
-  	\includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/PSNR.png}
+  \centering
+  	\includegraphics[width=0.60\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/PSNR.png}
   	\label{fig:PSNR}
   	\caption{PSNR}
   \end{subfigure}
   \begin{subfigure}[H]{0.45\linewidth}
-  	\includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/MSE.png}
+  \centering
+  	\includegraphics[width=0.80\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/MSE.png}
   	\label{fig:MSE}
   	\caption{MSE}
   \end{subfigure}
   \caption{Ecuaciones de PSNR}
 \end{figure}
 
-Donde la \textit{N} es la máxima diferencia entre píxeles en una imagen. Si el \ac{MSE} es alto en un algoritmo de esteganografía, es más complicado realizar el estegoanálisis que en un algoritmo con el \ac{MSE} bajo. Con la métrica \ac{PSNR} pasa lo mismo: si tiene un valor alto, es más complejo saber si una imagen tiene o no, datos introducidos por esteganografía. Dicho de otra forma, si el \ac{PSNR} está por encima de los 30 dB, es muy difícil para el ojo humano saber distinguir entre una imagen con esteganografía y otra sin ella.
+Donde la \textit{N} es la máxima diferencia entre píxeles en una imagen. Si el \ac{MSE} es alto en un algoritmo de esteganografía, es más complicado realizar el estegoanálisis que en un algoritmo con el \ac{MSE} bajo. Con la métrica \ac{PSNR} pasa lo mismo: si tiene un valor alto, es más complejo saber si una imagen tiene o no datos introducidos por esteganografía. Dicho de otra forma, si el \ac{PSNR} está por encima de los 30 dB, es muy difícil para el ojo humano saber distinguir entre una imagen con esteganografía y otra sin ella.
 
 \subsubsection{SSIM}
 
-La métrica \ac{SSIM} se utiliza para la medida de la calidad de imagen. La fórmula toma como base dos imágenes \textit{A} y \textit{B}, junto con sus respectivos valores medios \textit{X} y \textit{Y}; sus varianzas $X^{2}$ y $Y^{2}$; y su covarianza $XY^{2}$:
+La métrica \ac{SSIM} se utiliza para la medida de la calidad de imagen. La fórmula toma como base dos imágenes \textit{A} y \textit{B}, junto con sus respectivos valores medios \textit{X} e \textit{Y}; sus varianzas $X^{2}$ e $Y^{2}$; y su covarianza $XY^{2}$:
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/SSIM.png}
+  \includegraphics[width=0.60\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/SSIM.png}
   \label{fig:SSIM}
   \caption{SSIM}
 \end{figure}
@@ -175,16 +163,13 @@ En general, los valores de las variables \textit{K1} y \textit{K2} serán de 0.0
 
 La \ac{EC} es la relación del número total de bits embebidos en una imagen con el tamaño total de la imagen. También se la conoce como \ac{BPP}. Para una imagen con esteganografía con altura \textit{H}, anchura \textit{W}, y siendo el número de bits embebidos \textbf{E}, la \ac{EC} se representa como:
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/EC.png}
-  \label{fig:EC}
-  \caption{EC}
-\end{figure}
+\begin{equation}
+EC = \frac{E}{WH}
+\end{equation}
 
 \subsubsection{BPNZAC}
 
-El \ac{BPNZAC} es el número de bits embebidos en los coeficientes \ac{DCT} de la imagen (\cite{dct}). Este número se selecciona para escoger la proporción de los bits embebidos, y usado para evaluar el rendimiento. Dicho de otra forma, esta métrica es el equivalente a \ac{EC} en imágenes con formato JPEG. %cita
+El \ac{BPNZAC} es el número de bits embebidos en los coeficientes \ac{DCT} de la imagen (\cite{dct}). Este número se selecciona para escoger la proporción de los bits embebidos, y es usado para evaluar el rendimiento. Dicho de otra forma, esta métrica es el equivalente al \ac{EC} en imágenes con formato JPEG. %cita
 
 \subsubsection{QF}
 
@@ -192,49 +177,37 @@ El \ac{QF} es la métrica usada para medir la calidad de una imagen tras la comp
 
 \subsubsection{PE}
 
-La \ac{PE}, también conocida como \ac{DER}, de un método de estegoanálisis en imágenes es el número total promedio de imágenes con y sin esteganografía mal identificadas. Es decir, es el número promedio de falsos positivos y falsos negativos. Se representa por la siguiente fórmula:
+La \ac{PE}, también conocida como \ac{DER}, de un método de estegoanálisis en imágenes es el número total promedio de imágenes con y sin esteganografía mal identificadas. Es decir, es el número promedio de falsos positivos y falsos negativos que hay. Se representa por la siguiente fórmula:
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/PE.png}
-  \label{fig:PE}
-  \caption{PE}
-\end{figure}
+\begin{equation}
+P_E = \frac{1}{2}(P_{F_A} + P_{M_D})
+\end{equation}
 
-\textit{PFA} es la probabilidad de falsa alarma, la cual indica la probabilidad de que las imágenes normales se clasifiquen como imágenes con esteganografía; y \textit{PMD} es la probabilidad de detecciones fallidas, la cual indica la probabilidad de que se hayan clasificado erróneamente las imágenes con esteganografía como imágenes normales. Esta métrica es usada principalmente para evaluar en sistemas de Machine Learning (y Deep Learning), técnicas de estegoanálisis en imágenes para detectar información oculta.
+\textit{$P_{F_A}$} es la probabilidad de falsa alarma, la cual indica la probabilidad de que las imágenes normales se clasifiquen como imágenes con esteganografía; y \textit{$P_{M_D}$} es la probabilidad de detecciones fallidas, la cual indica la probabilidad de que se hayan clasificado erróneamente las imágenes con esteganografía como imágenes normales. Esta métrica es usada principalmente para evaluar en sistemas de Machine Learning (y de Deep Learning) técnicas de estegoanálisis en imágenes para detectar información oculta.
 
 \subsubsection{DA}
 
-La \ac{DA} es otra métrica usada comúnmente en este ámbito de evaluación de rendimiento en estegoanálisis y esteganografía, ya que mide la relación entre el número total de clasificaciones correctas entre imágenes con y sin esteganografía dividida por el número total de clasificaciones correctas e incorrectas para ambos tipos de imágenes. Esta fórmula se representa de la siguiente forma:
+La \ac{DA} es otra métrica usada comúnmente en este ámbito de evaluación de rendimiento en estegoanálisis y esteganografía, ya que mide la relación entre el número total de clasificaciones correctas entre imágenes con y sin esteganografía, dividida por el número total de clasificaciones correctas e incorrectas para ambos tipos de imágenes. Esta fórmula se representa de la siguiente forma:
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/DA.png}
-  \label{fig:DA}
-  \caption{DA}
-\end{figure}
+\begin{equation}
+Detection Accuracy (DA) = \frac{TP + TN}{TP + TN + FP + FN}
+\end{equation}
 
 Donde \textit{TP} son el número de clasificaciones correctas para imágenes con esteganografía, \textit{TN} son el número de clasificaciones correctas para imágenes normales, \textit{FP} son el número de falsos positivos (clasificaciones incorrectas de las imágenes normales) y \textit{FN} son el número de falsos negativos (clasificaciones incorrectas de las imágenes con esteganografía).
 
 Alternativamente, podemos representar con la siguiente ecuación la \ac{PE}, ya que la suma de ambas métricas siempre da 1:
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/DA\_2.png}
-  \label{fig:DA-2}
-  \caption{Ecuación alternativa de PE}
-\end{figure}
+\begin{equation}
+Probability of error (P_E) = 1 - DA
+\end{equation}
 
 \subsubsection{BER}
 
 La \ac{BER} cuantifica la robustez de los datos embebidos en la imagen. Sea un algoritmo de esteganografía en el que \textit{B} es el número de bits embebidos en la imagen y \textit{BE} es el número de errores ocurridos durante la extracción de los datos embebidos, la ac{BER} se representa como:
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/BER.png}
-  \label{fig:BER}
-  \caption{BER}
-\end{figure}
+\begin{equation}
+BER = \frac{B_E}{B}
+\end{equation}
 
 \subsubsection{MAE}
 
@@ -242,7 +215,7 @@ El \ac{MAE} se identifica como el promedio del valor absoluto de los errores. El
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/MAE.png}
+  \includegraphics[width=0.45\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/MAE.png}
   \label{fig:MAE}
   \caption{MAE}
 \end{figure}
@@ -257,7 +230,7 @@ El \ac{QI} es la medida de la distorsión de la imagen usando factores como la p
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/QI.png}
+  \includegraphics[width=0.45\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/QI.png}
   \label{fig:QI}
   \caption{QI}
 \end{figure}
@@ -266,7 +239,7 @@ La \textit{x} y \textit{y} son las imágenes normales y con esteganografía resp
 
 \subsubsection{Conclusión}
 
-Dentro de todas las posibilidades vistas,y de forma convencional, las métricas usadas en la evaluación de rendimiento para estegoanálisis en imágenes suelen ser \ac{DER} y \ac{DA}. Las tendremos en cuenta cuando realicemos los experimentos.
+Dentro de todas las posibilidades vistas, y de forma convencional, las métricas usadas en la evaluación de rendimiento para estegoanálisis en imágenes suelen ser \ac{DER} y \ac{DA}. Cuando llegue el momento de realizar los experimentos las tendremos en cuenta.
 
 \section{MalJPEG}
 
@@ -274,7 +247,7 @@ En este proyecto se trata una solución basada en Machine Learning para detectar
 
 \subsection{Contexto}
 
-Durante mucho tiempo, los archivos con formato JPEG han sido unos de los más utilizados tanto en el ámbito empresarial como en el del individuo. En gran parte ha sido gracias a su compresión con pérdidas basada en \ac{DCT}, y es por ello que se han convertido rápidamente en un atractivo vector de ataque para los cibercriminales. Para ello, la solución que se propone en este artículo se denomina MalJPEG, y su objetivo no es otro que saber clasificar correctamente si una imagen JPEG es maliciosa o no, mediante tecnología basada en Machine Learning.
+Durante mucho tiempo, los archivos con formato JPEG han sido unos de los más utilizados tanto en el ámbito empresarial como en el del individuo. En gran parte ha sido gracias a su compresión con pérdidas basada en \ac{DCT}, y es por ello que se han convertido rápidamente en un atractivo vector de ataque para los cibercriminales. Para ello, la solución que se propone en este artículo se denomina \textbf{MalJPEG}, y su objetivo no es otro que saber clasificar correctamente si una imagen JPEG es maliciosa o no, mediante tecnología basada en Machine Learning.
 
 \subsection{Solución}
 
@@ -282,21 +255,29 @@ El funcionamiento de MalJPEG se basa en extraer estadísticamente, es decir, sin
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/MalJPEG.png}
+  \includegraphics[width=0.75\linewidth]{Figuras/Estado\_del\_Arte/MalJPEG.png}
   \label{fig:MalJPEG}
   \caption{Esquema de MalJPEG}
 \end{figure}
 
 \subsubsection{Métodos genéricos de extracción de características}
 
-Generalmente existen dos métodos de extracción de características que, en este artículo, se utilizan: los basados en \textbf{histogramas} y la técnica \textbf{Min-Hash}. A continuación, pasamos a explicarlos brevemente:
+Generalmente existen dos métodos de extracción de características que, en este artículo, se utilizan: los que están basados en \textbf{histogramas} y la técnica \textbf{Min-Hash}. A continuación, pasamos a explicarlos brevemente:
 
 \begin{itemize}
 \item \textbf{Histogramas}
 \begin{itemize}
-\item Los métodos de extracción basados en histogramas crean un histograma en el que se recogen datos y valores propios del archivo en cuestión, para poder utilizarlos como entradas en algoritmos de Machine Learning. En este artículo, se han usado dos tipos de histogramas: \textbf{Histogramas simples} e \textbf{histogramas de entropía de bytes avanzados}.
+\item Los métodos de extracción basados en histogramas crean un histograma en el que se recogen datos y valores propios del archivo en cuestión, para poder utilizarlos como entradas en algoritmos de Machine Learning. En este artículo, se han usado dos tipos de histogramas: \textbf{histogramas simples} e \textbf{histogramas de entropía de bytes avanzados}.
 \item Para los primeros se usan 2 configuraciones: histogramas basados en valores de bytes e histogramas basados en valores de caracteres. El histograma cuenta la frecuencia de estos valores en el archivo para cada configuración. Para poder comparar archivos con diferente tamaño es necesario normalizar los valores de los histogramas entre 0 y 1.
-\item Para los segundos, se desliza una ventana de bytes de tamaño \textit{K}, con un salto de \textit{S} bytes, sobre la representación en bytes del archivo. Para cada ventana, calculamos la entropía en base 2 del archivo (véase la \textbf{figura fórmula entropía}). Guardamos cada valor individual de los bytes en la ventana con el valor de la entropía de toda la ventana (en pares) en una lista; de este modo, habrá \textit{K} pares por cada ventana. Por último, calculamos un histograma en 2 dimensiones con un eje \textit{E} que representará la entropía, y un eje \textit{B} que representarán los bytes. En este punto es donde se obtiene el vector de características de la imagen basado en el histograma.
+\item Para los segundos, se desliza una ventana de bytes de tamaño \textit{K}, con un salto de \textit{S} bytes, sobre la representación en bytes del archivo. Para cada ventana, calculamos la entropía en base 2 del archivo (véase la \textbf{figura} \ref{fig:entropia}). Guardamos cada valor individual de los bytes en la ventana con el valor de la entropía de toda la ventana (en pares) en una lista; de este modo, habrá \textit{K} pares por cada ventana. Por último, calculamos un histograma en 2 dimensiones con un eje \textit{E} que representará la entropía, y un eje \textit{B} que representarán los bytes. En este punto es donde se obtiene el vector de características de la imagen basado en el histograma.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.75\linewidth]{Figuras/Estado\_del\_Arte/Entropia.png}
+  \label{fig:entropia}
+  \caption{Fórmula de la entropía}
+\end{figure}
+
 \end{itemize}
 \item \textbf{Min-Hash}
 \begin{itemize}
@@ -316,7 +297,7 @@ De cara a utilizar las características de la imagen como parámetros de entrada
 \item \textbf{Gradient Boosting en Decision Tree (XGBoost y LightGBM)}
 \end{itemize}
 
-Por lo general, estos algoritmos de clasificación son muy apropiados para datasets con más cantidad de objetos de una clase que de otra. Por otro lado, en este artículo también el clasificador \textbf{K-Nearest Neighbors} en los datasets de Min-Hash; ya que éste es el único capaz de comparar firmas de Min-Hash usando la función de la distancia de Hamming.
+Por lo general, estos algoritmos de clasificación son muy apropiados para datasets con más cantidad de objetos de una clase que de otra. Por otro lado, en este artículo también se cotejó el clasificador \textbf{K-Nearest Neighbors} en los datasets de Min-Hash; ya que éste es el único capaz de comparar firmas de Min-Hash usando la función de la distancia de Hamming.
 
 \subsubsection{Métricas}
 
@@ -324,12 +305,9 @@ Para evaluar la clasificación de las imágenes se han cogido métricas como la 
 
 Sin embargo, no sólo se necesitan esas métricas. Hace falta una que optimice los resultados de la detección de los clasificadores, sirviéndose de la \ac{TPR} y la \ac{FPR}: la \ac{IDR} (\cite{idr}). %cita
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/IDR_Metric_MalJPEG.png}
-  \label{fig:IDR}
-  \caption{IDR}
-\end{figure}
+\begin{equation}
+IDR = TPR*(1 - FPR) = TPR*TNR
+\end{equation}
 
 La \ac{IDR} indica el punto del clasificador en el que se ha optimizado adecuadamente, y todo pasa por tener un valor muy alto en \ac{TPR} y uno muy bajo en \ac{FPR}. Cuanto mayor sea la \ac{IDR}, tendremos un mejor clasificador.
 
@@ -352,7 +330,7 @@ La solución propuesta puede servir, además, para evitar amenazas de seguridad 
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\linewidth]{Figuras/Estado\_del\_Arte/ImageDetox.png}
+  \includegraphics[width=0.75\linewidth]{Figuras/Estado\_del\_Arte/ImageDetox.png}
   \label{fig:ImageDetox}
   \caption{Esquema de ImageDetox}
 \end{figure}
@@ -362,7 +340,7 @@ De forma resumida, ImageDetox funciona de la siguiente manera:
 \item  El primer módulo extrae los archivos de imagen de todos los archivos introducidos al área de Internet (la red local).
 \item El segundo módulo identifica el formato de la imagen de la cabecera del archivo extraído en el paso anterior.
 \item El tercer módulo aplica una conversión en la imagen con la que se consigue eliminar el código oculto (aun sin saber si tiene uno o no).
-\item El cuarto módulo guarda el valor hash de la imagen original en la imagen convertida una vez que se almacena en la unidad de gestión por un período de tiempo. La información del valor de los hashes de las imágenes que han sobrepasado dicho período se borran del almacenamiento, y la información se va  actualizando periódicamente.
+\item El cuarto módulo guarda el valor del hash de la imagen original en la imagen convertida, por un período de tiempo, una vez que se almacena en la unidad de gestión. El valor de los hashes de los archivos de imagen que han sobrepasado un cierto período de tiempo de almacenado, se borra del almacenamiento junto con el archivo de imagen, y la información se actualiza periódicamente según los futuros hashes que puedan llegar.
 \end{enumerate}
 
 \subsection{Métricas}
