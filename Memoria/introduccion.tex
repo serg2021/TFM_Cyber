@@ -3,11 +3,13 @@
 
 Durante muchos años, ciberdelincuentes de todo el mundo se han servido de un gran número de tipos de ataques, generalmente, con la intención de lucrarse a costa de las víctimas o de, directamente, ``sembrar el caos'' (aunque puede haber más motivos); todo esto ha sido posible gracias a las vulnerabilidades que presentan los dispositivos informáticos, páginas web... En definitiva, elementos ``hackeables'' (\cite{historia-ciber}).%cita
 
-Sin embargo, y en contraparte, grandes expertos en ciberseguridad y empleados de grandes empresas como Google o IBM han sabido solucionar los problemas que presentan estos dispositivos mediante, por ejemplo, parches en los programas informáticos... No obstante, cuando se cierra una puerta se abre una ventana, y las vulnerabilidades corregidas dan paso a otras potencialmente explotables (\cite{guerra-ciber}).%cita
+Sin embargo, y en contraparte, grandes expertos en ciberseguridad y empleados de grandes empresas como Google o IBM han sabido solucionar los problemas que presentan estos dispositivos mediante, por ejemplo, parches en los programas informáticos... No obstante, las vulnerabilidades corregidas dan paso a otras potencialmente explotables y ello posibilita una mayor incidencia en el cibercrimen (Según \textit{FortiGuard Labs} de \textit{Fortinet}, el promedio de actividad semanal de ransomware en junio de 2021 fue más de 10 veces mayor que en 2020 \cite{guerra-ciber}).%cita
 
-Y es de esta forma cómo se ha desarrollado este ``diálogo'' entre ambas partes desde, casi, los inicios de Internet inclusive. Sin embargo, con el paso del tiempo se han ido corrigiendo cada vez más cosas, y se está obligando a los ciberdelincuentes a ser más creativos con sus ataques: técnicas de phishing usando ingeniería social (\cite{phishing}), ataques a cadenas de suministro (\cite{cadena-suministro}), archivos con malware introducido en su interior (\cite{malware-imagen})... %cita %cita %cita
+Y es de esta forma cómo se ha desarrollado este ``diálogo'' entre ambas partes desde, casi, los inicios de Internet inclusive. Sin embargo, con el paso del tiempo se han ido corrigiendo cada vez más cosas, y se está obligando a los ciberdelincuentes a ser más creativos con sus ataques: técnicas de phishing usando ingeniería social (\cite{phishing}), ataques a cadenas de suministro (\cite{cadena-suministro}), archivos con malware introducido en su interior (\cite{malware-imagen}), entre otras. %cita %cita %cita
 
-Cada vez cuesta más, pero poco a poco se van solucionando estos problemas... O al menos eso es lo que pretendemos hacer en este trabajo contribuyendo a la causa y resolviendo un problema que, como veremos, lleva durante mucho tiempo entre los usuarios: los archivos con malware introducido en su interior mediante \textbf{esteganografía}.
+A pesar de que existen muchos tipos de ataques, nos vamos a centrar en aquellos que utilizan archivos con malware introducido en su interior mediante \textbf{esteganografía}. Concretamente, trataremos de solucionar el problema que conlleva usar la herramienta Stegosploit (\cite{stegosploit}). Stegosploit es una herramienta que permite a un atacante introducir código malicioso (como un exploit de una vulnerabilidad) para ser ejecutado en el navegador de la víctima. Dependiendo de su uso, es posible que el atacante pueda infectar el equipo de la víctima con algún tipo de malware y que el mismo sea el objetivo de, por ejemplo, ``botnets'' \cite{botnet}.
+
+Para evitar este tipo de incidencias, proponemos la utilización de un modelo de Deep Learning que pueda detectar el malware oculto dentro de las imágenes.
 
 \section{Modelo para la detección de malware usando Deep Learning}
 
@@ -30,7 +32,14 @@ Según la figura \ref{fig:diagrama_bloques}, comenzamos descargando un set de im
 
 \section{Objetivo principal}
 
-El objetivo principal del proyecto es conseguir confeccionar un modelo de detección de malware oculto en imágenes mediante esteganografía, haciendo uso de herramientas de Deep Learning. Como ya hemos dicho anteriormente, los modelos creados para este fin se basan en tecnología Machine Learning, por ello esperamos que este trabajo sea uno de los primeros pasos en el largo camino que queda dentro de esta rama de investigación.
+El objetivo principal del proyecto es conseguir confeccionar un modelo de detección de malware oculto en imágenes mediante esteganografía, haciendo uso de herramientas de Deep Learning. Más concretamente:
+
+\begin{itemize}
+\item Trataremos de introducir código malicioso correctamente usando la herramienta Stegosploit y,
+\item Trataremos de entrenar de forma eficaz una serie de modelos de Deep Learning para la detección de malware en imágenes.
+\end{itemize}
+
+Como ya hemos dicho anteriormente, los modelos creados para este fin se basan en tecnología Machine Learning, por ello esperamos que este trabajo sea uno de los primeros pasos en el largo camino que queda dentro de esta rama de investigación.
 
 \section{Campos de aplicación}
 
@@ -42,5 +51,7 @@ Dentro de las posibilidades que se presentan, podemos destacar las siguientes ap
 \item Implementación de nuevas funciones de detección de malware en antivirus.
 \item Desarrollo de nuevas tecnologías para facilitar la interacción de los usuarios de forma segura.
 \end{enumerate}
+
+\section{Organización del trabajo}
 
 Este documento se organiza de la siguiente manera: en el siguiente capítulo hablaremos del estado del arte sobre los sistemas de detección de malware en imágenes para tener una idea clara de los avances que se han ido dando poco a poco durante los últimos años. En el capítulo \ref{ch:det_mal} explicaremos qué es la esteganografía digital (con una breve introducción histórica) y pasaremos a mostrar cómo se estructura nuestro modelo tras la revisión del estado del arte. En el capítulo \ref{ch:stego}, veremos el proceso que hemos seguido para poner en práctica el modelo propuesto utilizando la herramienta \textbf{Stegosploit} para introducir malware en imágenes (\cite{stegosploit}). Más tarde, en el capítulo de \ref{ch:res}, realizaremos una comparativa del sistema para diferentes modelos de Deep Learning usados en el anterior capítulo, y decidiremos cual es el mejor según las métricas usadas. Por último y para acabar, comentaremos las conclusiones finales de los resultados obtenidos en el capítulo anterior. %cita

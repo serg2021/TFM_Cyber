@@ -1,7 +1,82 @@
 \chapter{Estado del arte}
 \label{ch:sota}
 
-En el siguiente capítulo pasaremos a mencionar los artículos que conforman el estado del arte del proyecto para poder hacer una comparativa tanto de los modelos como de las métricas utilizadas y tener una base sobre la que movernos durante la implementación del mismo, la cual veremos más adelante.
+En el siguiente capítulo pasaremos explicar qué es la esteganografía digital junto con una breve introducción a la herramienta Stegosploit. Después, pasaremos a ver brevemente los usos del Deep Learning en la esteganografía de forma general y, por último, mencionaremos los artículos que conforman el estado del arte del proyecto para poder hacer una comparativa tanto de los modelos como de las métricas utilizadas y tener una base sobre la que movernos durante la implementación del mismo, la cual veremos más adelante.
+
+\section{¿Qué es la esteganografía?}
+
+La esteganografía es el arte de ocultar información a simple vista dentro, o por encima, de algo que no es secreto (\cite{esteganografia-digital}). Por ejemplo, un documento de texto, un cuadro, una grabación... Sin embargo, esto no es nada nuevo: según la historia, han habido antecedentes que han podido marcar sucesos tan importantes como la Segunda Guerra Mundial, tal y como podemos ver a continuación.%cita
+
+\subsection{Un poco de historia}
+
+Durante la Primera Guerra Mundial se utilizó tinta invisible como aplicación de esta técnica. Durante la Segunda Guerra Mundial también se llegó a utilizar un método muy interesante: los \textbf{micropuntos}. Los micropuntos, básicamente, eran fotografías del tamaño de una página reducidas hasta ocupar un punto de 1 mm de diámetro y, para ocultarlos, se pegaban sobre un punto del texto que los encubría (\cite{cera-micropuntos}). %cita
+
+\section{Esteganografía digital}
+
+Con la modernización de la sociedad en cuanto a tecnología y computación se refiere, aparecieron diversas aplicaciones de esta técnica con las que se consiguió un nivel de sofisticación y detalle en la técnica adecuado a la época: ahora no sólo era mucho más fácil realizar el escondite del mensaje, también era más complicado detectarlo (\cite{esteganografia-digital}). %cita 
+
+A continuación mencionaremos de forma superficial algunas técnicas de esteganografía digital para poner en contexto la base sobre la que se va a realizar el trabajo:
+
+\subsection{Clasificación tradicional}
+\label{sec:trad}
+
+Este tipo de clasificación se basa en cómo se ocultan los datos. A continuación vamos a ver algunas de las técnicas que se comprenden dentro de esta rama:
+
+\subsubsection{Técnicas basadas en la inserción (Insertion-Based)}
+
+Estas técnicas trabajan con la inserción de bloques de datos dentro de un archivo publicable. El dato es insertado en el mismo punto del archivo. Se suelen ocultar en las partes redundantes de un archivo, de forma que el bloque de datos puede estar dividido en varias secciones, haciendo su detección muy difícil (\cite{esteganografia-digital}).%cita
+
+Un ejemplo de uso muy bueno para esta técnica es insertar en los \ac{LSB} de un archivo de 8 ó 16 bits. Lo que se hace es codificar el mensaje en binario e introducirlo dentro de los bits 0, 1, 2 y, tal vez, 3. De esta forma, al ser una de las partes más redundantes de información del archivo, el usuario no es consciente de que ha sido modificado, y por lo tanto puede interactuar con el archivo sin saber que puede haber un mensaje o incluso un malware en su interior que se esté ejecutando.
+
+\subsubsection{Técnicas basadas en algoritmos (Algorithmic-Based)} 
+
+Estas técnicas utilizan alguna clase de algoritmo para decidir dónde se debería ocultar un mensaje dentro de un archivo de datos: es por ello que el bloque de datos no se inserta siempre en el mismo punto, puede estar tanto en las partes más redundantes y olvidadas como en las más importantes... Lo cual es un problema, ya que si no se efectúa bien el algoritmo la ocultación de datos sería fácilmente detectable si se comparan el archivo original con el modificado (\cite{esteganografia-digital}). %cita
+
+El quid de la cuestión de estas técnicas reside en utilizar un algoritmo idóneo para cada tipo de archivo. Optimizando el espacio del archivo con un buen algoritmo, los resultados para la ocultación serán idóneos.
+
+\subsubsection{Técnicas basadas en gramática (Grammar-Based)}
+
+Existe una gran diferencia entre estas técnicas y las anteriores: para las dos primeras se utiliza siempre un archivo que será el que encubra el mensaje... Sin embargo, para estas técnicas se genera un archivo desde cero a partir de los datos a ocultar, basándose en una gramática predefinida (\cite{esteganografia-digital}). %cita
+
+\subsection{Clasificación moderna}
+
+A diferencia de \ref{sec:trad}, esta clasificación se basa en cómo y dónde se ocultan los datos. Es idónea para representar las técnicas desarrolladas en la esteganografía moderna.
+
+\subsubsection{Técnicas basadas en la inserción (Insertion-Based)}
+
+En esencia, se trata de técnicas cuyo objetivo es ocultar datos insertándolos en un archivo sin afectar a su representación, aunque se aumente su tamaño.
+
+Lo bueno de estas técnicas es que se pueden introducir datos en el archivo sin afectar ni modificar el contenido existente. Lo malo es el incremento de tamaño, lo cual es un claro indicador de que se han introducido datos añadidos al archivo.
+
+\subsubsection{Técnicas basadas en la sustitución (Substitution-Based)}
+
+Estas técnicas se basan en sustituir partes del archivo encubridor por los datos a ocultar. De esta forma el tamaño del archivo no varía y, a priori, podría parecer un archivo normal y corriente.
+
+No obstante, es importante aclarar que la sustitución de datos no puede realizarse en cualquier zona del archivo: se corre el riesgo de que al modificarlo, haya partes que queden inservibles o visualmente defectuosas. La clave es encontrar zonas redundantes del archivo y modificarlas para que no se dé ningún impacto.
+
+Otro factor que hay que tener en cuenta es la cantidad de datos que se pueden ocultar en el archivo hasta que éste finalmente no pueda ejecutarse correctamente. En general es una técnica muy buena siempre y cuando se cumplan estas reglas.
+
+\subsubsection{Técnicas de generación (Generation-Based)}
+
+De la misma forma que hemos visto en las técnicas de \ref{sec:trad}, éstas tienen una principal diferencia que cabe destacar: el archivo (o los datos) a ocultar es utilizado para crear el archivo definitivo.
+
+De esta forma, si se consigue únicamente este archivo no debería haber problemas para que el usuario no detecte el mensaje oculto. Si se consigue el archivo original y se compara con el que tiene los datos ocultos se verá que tiene una composición binaria diferente, y la detección esteganográfica será más complicada de realizar.
+
+\subsection{Stegosploit}
+
+Hemos visto qué clase de técnicas existen para ocultar información en archivos sin que ésta se detecte. No obstante, dentro de las atribuciones de este trabajo nos centraremos en sólo una de ellas, la de sustitución, que es en la que se basa la herramienta que vamos a utilizar para introducir malware en imágenes y sobre la que pretendemos resolver este problema: \textbf{Stegosploit} (\cite{stegosploit}). %cita
+
+Stegosploit es una herramienta creada por el experto en seguridad Saumil Shah (\cite{saumil-shah}) cuyo objetivo es cifrar exploits ``Drive-By Browser'' en imágenes usando esteganografía. De forma resumida, la herramienta cifra los exploits en imágenes JPG y PNG; tras ello, la imagen resultante se fusiona con un HTML con un decodificador en Javascript formando así un \textbf{políglota}: el políglota parece una imagen normal a simple vista, pero se decodifica y se activa en el navegador de la víctima (\cite{stegosploit}). %cita %cita
+
+En el siguiente capítulo, explicaremos en detalle el proceso de encriptado de la herramienta.
+
+\section{Deep Learning para esteganografía en imágenes}
+
+La tecnología Deep Learning se puede usar en una gran cantidad de aplicaciones de distinta índole. Sin embargo, en este proyecto nos vamos a centrar en lo que a esteganografía en imágenes se refiere.
+
+Como tal, no hay una serie de trabajos realizados sobre Deep Learning que sirvan para detectar esteganografía en imágenes, y mucho menos uno en concreto que se centre en los políglotas de Stegosploit. No obstante, tras realizar la búsqueda de artículos académicos, hemos podido comprobar que la \textbf{clasificación de imágenes} es un método muy acertado (no tan eficaz en Machine Learning como cabría esperar con Deep Learning, pero igualmente es una solución adecuada al problema que nos atañe).
+
+Los trabajos que a continuación pasamos a explicar se basan en métodos de Machine Learning, aunque con diferentes enfoques y aplicaciones. 
 
 \section{Uso de Machine Learning para detectar imágenes con políglotas maliciosos}
 
@@ -45,9 +120,9 @@ A continuación, pasamos a explicar la última parte de este modelo:
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=16cm]{Figuras/Estado\_del\_Arte/Shawat-3.png}
+  \includegraphics[width=18cm, height=6cm]{Figuras/Estado\_del\_Arte/Shawat-3.png}
   \label{fig:shawat-3}
-  \caption{Detección de políglotas}
+  \caption{Detección de políglotas (\cite{ml-stenography-shawat})}
 \end{figure}
 
 Comenzamos extrayendo 20.000 imágenes del dataset \textbf{CIFAR-10} (\cite{cifar10}) para después insertar en la mitad de ellas código malicioso mediante Stegosploit (\cite{stegosploit}). %cita #cita
@@ -96,7 +171,7 @@ En general, el proceso es como se ve en la imagen, en el contexto de una aplicac
   \centering
   \includegraphics[width=0.60\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/Modelo\_Autores.png}
   \label{fig:modelo-autores}
-  \caption{Modelo de los autores}
+  \caption{Modelo de los autores (\cite{stegomalware})}
 \end{figure}
 
 \begin{itemize}
@@ -141,7 +216,7 @@ Esta métrica es muy útil para evaluar la calidad de la imagen. Se puede usar p
   	\label{fig:MSE}
   	\caption{MSE}
   \end{subfigure}
-  \caption{Ecuaciones de PSNR}
+  \caption{Ecuaciones de PSNR (\cite{stegomalware})}
 \end{figure}
 
 Donde la \textit{N} es la máxima diferencia entre píxeles en una imagen. Si el \ac{MSE} es alto en un algoritmo de esteganografía, es más complicado realizar el estegoanálisis que en un algoritmo con el \ac{MSE} bajo. Con la métrica \ac{PSNR} pasa lo mismo: si tiene un valor alto, es más complejo saber si una imagen tiene o no datos introducidos por esteganografía. Dicho de otra forma, si el \ac{PSNR} está por encima de los 30 dB, es muy difícil para el ojo humano saber distinguir entre una imagen con esteganografía y otra sin ella.
@@ -154,7 +229,7 @@ La métrica \ac{SSIM} se utiliza para la medida de la calidad de imagen. La fór
   \centering
   \includegraphics[width=0.60\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/SSIM.png}
   \label{fig:SSIM}
-  \caption{SSIM}
+  \caption{SSIM (\cite{stegomalware})}
 \end{figure}
 
 En general, los valores de las variables \textit{K1} y \textit{K2} serán de 0.01 y 0.03 respectivamente. Los resultados de \ac{SSIM} pueden variar desde -1 a 1, siendo el primero un indicativo de que las imágenes con esteganografía son más difíciles de identificar que las imágenes sin ésta. Para un buen algoritmo esteganográfico, lo mejor sería tener un valor bajo en esta métrica.
@@ -217,7 +292,7 @@ El \ac{MAE} se identifica como el promedio del valor absoluto de los errores. El
   \centering
   \includegraphics[width=0.45\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/MAE.png}
   \label{fig:MAE}
-  \caption{MAE}
+  \caption{MAE (\cite{stegomalware})}
 \end{figure}
 
 Siendo \textit{A} y \textit{B} dos imágenes monocromáticas con una anchura \textit{W} y una altura \textit{H}.
@@ -232,7 +307,7 @@ El \ac{QI} es la medida de la distorsión de la imagen usando factores como la p
   \centering
   \includegraphics[width=0.45\linewidth]{Figuras/Estado\_del\_Arte/Stegomalware/QI.png}
   \label{fig:QI}
-  \caption{QI}
+  \caption{QI (\cite{stegomalware})}
 \end{figure}
 
 La \textit{x} y \textit{y} son las imágenes normales y con esteganografía respectivamente, y la media y la varianza de los valores de los píxeles de éstas se representan como \textit{$\bar{x}$}, \textit{$x^{2}$} y \textit{$\bar{y}$}, \textit{$y^{2}$} (\cite{qi}).%#cita
@@ -257,7 +332,7 @@ El funcionamiento de MalJPEG se basa en extraer estadísticamente, es decir, sin
   \centering
   \includegraphics[width=0.75\linewidth]{Figuras/Estado\_del\_Arte/MalJPEG.png}
   \label{fig:MalJPEG}
-  \caption{Esquema de MalJPEG}
+  \caption{Esquema de MalJPEG (\cite{maljpeg})}
 \end{figure}
 
 \subsubsection{Métodos genéricos de extracción de características}
@@ -275,14 +350,14 @@ Generalmente existen dos métodos de extracción de características que, en est
   \centering
   \includegraphics[width=0.75\linewidth]{Figuras/Estado\_del\_Arte/Entropia.png}
   \label{fig:entropia}
-  \caption{Fórmula de la entropía}
+  \caption{Fórmula de la entropía (\cite{entropia})}
 \end{figure}
 
 \end{itemize}
 \item \textbf{Min-Hash}
 \begin{itemize}
 \item Esta técnica se basa en estimar rápidamente cómo de similares son dos objetos. El método Min-Hash genera una firma de tamaño \textit{N} para un archivo dado basada en \textit{N} simples funciones hash (\cite{min-hash}). Después se calcula la distancia de Hamming entre las firmas de los dos objetos a comparar: cuanto más pequeña la distancia, más coincidencias en las firmas (\cite{hamming}). %cita
-\item La firma de Min-Hash se basa en \textit{shingles} extraídas del archivo. Un shingle es una secuencia de longitud fija con unidades básicas del archivo (bytes, caracteres...). Cada shingle se extrae mediante una ventana de tamaño \textit{W} con un salto de \textit{S} bytes por todo el archivo (como las ventanas de tamaño \textit{K} en los histogramas basados en entropía de bytes). Se aplican \textit{N} funciones hash en cada shingle extraído, y los resultados de los hashes se guardan en un vector de tamaño \textit{N}.
+\item La firma de Min-Hash se basa en \textit{shingles} extraídas del archivo. Un shingle es una secuencia de longitud fija con unidades básicas del archivo (bytes, caracteres, entre otras). Cada shingle se extrae mediante una ventana de tamaño \textit{W} con un salto de \textit{S} bytes por todo el archivo (como las ventanas de tamaño \textit{K} en los histogramas basados en entropía de bytes). Se aplican \textit{N} funciones hash en cada shingle extraído, y los resultados de los hashes se guardan en un vector de tamaño \textit{N}.
 \item Finalmente, se consigue la firma, la cual es un vector de tamaño \textit{N} que contiene el mínimo valor de hash producido por cada función hash, a través de todos los shingles.
 \end{itemize}
 \end{itemize}
@@ -332,7 +407,7 @@ La solución propuesta puede servir, además, para evitar amenazas de seguridad 
   \centering
   \includegraphics[width=0.75\linewidth]{Figuras/Estado\_del\_Arte/ImageDetox.png}
   \label{fig:ImageDetox}
-  \caption{Esquema de ImageDetox}
+  \caption{Esquema de ImageDetox (\cite{imagedetox})}
 \end{figure}
 
 De forma resumida, ImageDetox funciona de la siguiente manera:

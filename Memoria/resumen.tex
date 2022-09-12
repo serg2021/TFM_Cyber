@@ -1,7 +1,7 @@
 \chapter{Resumen}
 %\textcolor{red}{Resumen de 100 palabras MÁXIMO}\\
 
-En el siguiente trabajo, presentamos un modelo de \ac{IA} capaz de detectar malware oculto en imágenes. Para ello usamos la herramienta Stegosploit (\cite{stegosploit}) con la que introducimos un exploit dentro de un set de imágenes que, más tarde, utilizaremos para entrenar una serie de modelos de Deep Learning que servirán para detectar el código oculto. Para realizar la detección se partirá de la base de una clasificación de imágenes: los modelos clasificarán las imágenes en \textbf{``imágenes normales''} y en \textbf{``imágenes con exploit''}. Durante los entrenamientos, se usarán distintas métricas para poder valorar y decidir cuál es el mejor modelo para la detección. Como veremos más adelante, el modelo ganador es \textbf{ResNet-34} (\cite{resnet34}), y nos servirá para que en un futuro se pueda utilizar en distintas aplicaciones de la misma índole. %cita %cita
+La introducción de código malicioso en imágenes usando esteganografía es un problema muy grave que puede afectar a todos los usuarios de un equipo, ya que si se descarga la imagen y se ejecuta el malware que tiene en su interior el sistema podría quedar infectado. Para solucionarlo, proponemos el uso de un modelo de \ac{IA} con la capacidad suficiente para detectar estos códigos en imágenes. Para ello, hemos cotejado tres posibles modelos que hemos entrenado usando Stegosploit como herramienta principal para introducir malware en imágenes. Como veremos más adelante, el modelo ganador es \textbf{ResNet-34}, y nos servirá para que en un futuro se pueda utilizar en distintas aplicaciones de la misma índole. %cita %cita
 
 %TODO_DONE: Completa esto y luego lo traduces al Inglés abajo.
 
@@ -20,7 +20,7 @@ En el siguiente trabajo, presentamos un modelo de \ac{IA} capaz de detectar malw
 \chapter{Abstract}
 %\textcolor{red}{Resumen de 100 palabras MÁXIMO - Es OBLIGATORIO}\\
 
-In this work, we show an AI model capable of detecting hidden malware on images by stenography. We begin using the Stegosploit toolkit to introduce an exploit inside of an image dataset, and then use that images to train a set of Deep Learning models to detect the malware on that images. The detection will be made on the basis of an image classification problem: the models will classify the images between two classes (\textbf{``normal images''} and \textbf{``exploit images''}). During the training, we will use different metrics to assess and decide which one is the best model to do the detection. As we'll see later, the winning model is \textbf{ResNet-34}, and this one will lead into a future in which it can be used in different applications of the same nature.
+The introduction of malicious code on images by using stenography is a very serious problem which can affect to every user on a computer, because if the image is downloaded and the malware inside is executed the system could get infected. To solve it, we propose the use of an AI model capable of detecting this hidden codes on images. Thus, we have compared three models we have trained by mainly using the Stegosploit toolkit to introduce the malware on images. As we'll see later, the winning model is \textbf{ResNet-34}, and this one will lead into a future in which it can be used in different applications of the same nature.
 
 \vspace{0.5cm}
 
