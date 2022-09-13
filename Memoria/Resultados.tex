@@ -9,15 +9,15 @@ A continuación vamos a explicar en qué consisten las métricas en las que nos 
 
 \subsection{Error Rate}
 
-Para saber con cuánta veracidad y exactitud se han clasificado las imágenes usaremos esta métrica denominada \textbf{``Error Rate''} (o \textbf{Tasa de errores}) (\cite{error-rate}). Simplemente indica el número de imágenes bien clasificadas junto con el número de imágenes mal clasificadas; a continuación se calcula en base a estos datos qué porcentaje de error ha habido durante la clasificación.
+Para saber con cuánta veracidad y exactitud se han clasificado las imágenes usaremos esta métrica denominada \textbf{``Error Rate''} (o \textbf{Tasa de errores}) (\cite{error-rate}). Simplemente indica el número de imágenes bien clasificadas junto con el número de imágenes mal clasificadas, usando para ello valores como los verdaderos y los falsos positivos; a continuación se calcula en base a estos datos qué porcentaje de error ha habido durante la clasificación.
 
-Realmente es una métrica muy común usada en una gran cantidad de ramas científicas, de modo que no es de sorprender que la hayamos escogido para este proyecto.
+A menudo se suele utilizar junto a la \textbf{precisión} y \textbf{sensibilidad}, dos métricas que a continuación veremos en el siguiente punto y que se sirven igualmente de las relaciones entre verdadero y falso positivo y verdadero y falso negativo (\cite{error-rate}).
 
 \subsection{Average Precision Score}
 
 Con esta métrica se pretende evaluar la precisión media de los resultados de las predicciones. Para ello, se realiza la llamada curva \ac{PR} (o curva de \textbf{Precisión-Sensibilidad}) (\cite{curvas-pr}); con ella se puede ver si la clasificación de las imágenes se ha realizado correctamente, es decir, sin falsos positivos en la misma (\textbf{Precisión}), y si se han detectado bien las imágenes por el modelo dentro de todo el set de imágenes , es decir, si han habido falsos negativos durante el proceso y si dentro de los mismos (y de los positivos reales) se han detectado correctamente los positivos (\textbf{Sensibilidad}). %cita
 
-De formaresumida, simplemente indica la efectividad del sistema en términos de falsos positivos y falsos negativos. En la curva los dos ejes están muy relacionados entre sí: si se aumenta la precisión, disminuirá la sensibilidad (y al revés).
+De forma resumida, simplemente indica la efectividad del sistema en términos de falsos positivos y falsos negativos. En la curva los dos ejes están muy relacionados entre sí: si se aumenta la precisión, disminuirá la sensibilidad (y al revés).
 
 Sin embargo, esta curva no es la métrica que aquí explicamos. La precisión media se calcula a partir de la misma y es, a grandes rasgos, una forma de representar todos los valores de la curva en uno solo.
 
@@ -29,19 +29,23 @@ AP = \sum_{n}(R_n - R_{n-1})P_n
 
 donde $P_n$ es la \textbf{Precisión} y $R_n$ es la \textbf{Sensibilidad} en el umbral \textbf{n}. Cuanto más cercana a 1 esta métrica, mejor será el sistema.
 
-Esta métrica realmente es muy buena para nuestros objetivos porque está pensada para usarse en un set de imágenes \textbf{no balanceado}, es decir, con más elementos del set con una etiqueta que con otra (recordemos que nuestro set se compone de 5000 imágenes, de las cuales 250 tienen un exploit en su interior).
+Esta métrica realmente es muy buena para nuestros objetivos porque está pensada para usarse en un set de imágenes \textbf{no balanceado}, es decir, con más elementos del set con una etiqueta que con otra (recordemos que nuestro set se compone de 5000 imágenes, de las cuales 250 tienen un exploit en su interior). Por otro lado, suele ser utilizada comúnmente en trabajos de detección de objetos en imágenes, algo que no dista demasiado de nuestro trabajo; ya que igualmente hemos realizado una detección de la misma índole, con la diferencia de que los objetos detectados no se pueden ver a simple vista en la composición de la imagen (\cite{apscore-2}).
 
 \subsection{Balanced Accuracy}
 
 \textbf{Balanced Accuracy} es una métrica diseñada precisamente para problemas de clasificación con set de imágenes no balanceados, tanto para problemas de clasificación binarios (con dos etiquetas) como de multiclase (con más de dos etiquetas).
 
-Esta métrica se define como la media de la \textbf{Sensibilidad} obtenida de cada clase (recordemos que la \textbf{Sensibilidad} sirve para medir cuántos positivos han sido detectados por el modelo correctamente). Se utiliza para evaluar el rendimiento de un modelo de clasificación. Cuanto más cercano a 1 su valor, mejor será el modelo (\cite{balanced-accuracy}, \cite{balanced-accuracy-2}). %cita
+Esta métrica se define como la media de la \textbf{Sensibilidad} obtenida de cada clase (recordemos que la \textbf{Sensibilidad} sirve para medir cuántos positivos han sido detectados por el modelo correctamente). Cuanto más cercano a 1 su valor, mejor será el modelo (\cite{balanced-accuracy}, \cite{balanced-accuracy-2}). %cita
+
+Como podemos comprobar, esta métrica toma como referencia los datos obtenidos en la métrica anterior (\textbf{Sensibilidad}), y sirve para evaluar el rendimiento de un modelo de clasificación en lo que a datos no balanceados se refiere: En nuestro caso, tenemos un set de imágenes con esas características, sin embargo, la precisión que obtenemos de los modelos no es correcta del todo debido a que la precisión se está haciendo en base a unos valores de verdaderos positivos y negativos muy altos (recordemos que el set de imágenes se compone de 5000 archivos, por lo que es lógico pensar que una gran mayoría serán detectados correctamente). No obstante, habrá un pequeño porcentaje de falsos positivos y negativos que no se corresponda con el porcentaje real de positivos y negativos. Al usar \textbf{Balanced Accuracy} se consiguen obtener los porcentajes reales (o, al menos, mejor estimados) de la precisión en la clasificación, ya que se le está dando a ambas clases el mismo peso; de modo que una, por más cantidad de objetos que tenga, no desvirtuará los datos de la precisión del modelo (\cite{balanced-accuracy-3}).
 
 \subsection{ROC AUC Score}
 
 Como ya vimos en el capítulo \ref{ch:sota}, la curva \ac{ROC} se crea a partir de los valores de la \ac{TPR} y la \ac{FPR} en distintos umbrales. Consecuentemente, la \ac{AUC} se puede calcular a partir de la \ac{ROC}, y es el área bajo la curva formada por ésta. Cuanto mayor sea su valor, más completo y eficaz será el modelo, ya que así se ve cómo aumenta el valor de la \ac{TPR} y cómo decrece el valor de la \ac{FPR}.
 
 Todo este proceso se realiza bajo el contexto de la predicción realizada por el modelo para clasificar las imágenes. Se puede usar tanto para clasificación binaria como para multiclase (\cite{roc-auc-score}). %cita
+
+Una vez más podemos ver cómo esta métrica se utiliza bajo los mismos parámetros que las otras: los verdaderos y falsos positivos. En esencia, podemos esclarecer de nuevo la precisión y el rendimiento del modelo viéndolo desde un enfoque más gráfico basado en dichos parámetros.
 
 \section{Modelos}
 
@@ -119,6 +123,8 @@ En términos de \textbf{``Error Rate''}, el mejor modelo es \textbf{ResNet-18}: 
 
 Un apunte muy interesante es ver cómo con ResNet-34 se obtiene un valor en la última iteración muy parecido al de ResNet-18; recordemos que ResNet-18 es un modelo muy parecido a ResNet-34 pero con menos capas convolucionales, es decir, ResNet-34 es un modelo más ``completo''. Sin embargo, ResNet-18 consigue un mejor resultado en la última iteración (aunque sea por muy poco). Esto no es un indicativo para elegir a ResNet-18 como el mejor modelo, porque aunque tenga mejor resultado, ResNet-34 se queda muy cerca y hay más métricas que valorar. No obstante, es interesante ver cómo dos modelos de la misma familia con diferente número de capas consiguen resultados muy parejos.
 
+Con esta métrica, en esencia, hemos podido ver la poca tasa de error que han tenido todos los modelos, lo que nos hace pensar que la cantidad de verdaderos positivos es abrumadora con respecto a los falsos positivos. De hecho, tal y como veremos a continuación en la siguiente métrica, la precisión y la sensibilidad tendrán valores muy parejos, lo cual es un claro indicativo de que los modelos están efectuando bien la clasificación.
+
 \subsection{Average Precision Score}
 
 Para esta métrica, el mejor valor en la primera iteración se obtiene con \textbf{ResNet-34} (\textbf{0.60}), mientras que en la última iteración se obtiene con \textbf{ResNet-18} (\textbf{1}).
@@ -126,6 +132,8 @@ Para esta métrica, el mejor valor en la primera iteración se obtiene con \text
 Con esta métrica medíamos en un solo valor de 0 a 1 la curva \ac{PR}, por lo que como se puede ver para ambos modelos, se obtienen cifras muy parecidas y realmente buenas que indican que la precisión del modelo (junto con la sensibilidad del mismo) son las mejores que cabrían esperar para el set de imágenes que hemos entrenado.
 
 Por el contrario, con \textbf{AlexNet} no se consiguen datos tan brillantes, pero ello tampoco es indicativo de que sea un mal modelo. Simplemente, no consigue las mismas prestaciones que ambos ResNet.
+
+Una vez más hemos podido comprobar que la clasificación de los modelos, en términos de verdaderos y falsos positivos, sigue siendo correcta. No obstante, en la siguiente métrica veremos cómo obtener una mayor fiabilidad en los datos por tratarse de un set de imágenes no balanceado, de forma que la precisión obtenida será más fiel a la realidad.
 
 \subsection{Balanced Accuracy}
 
@@ -135,6 +143,8 @@ Conviene señalar un punto muy importante para la primera iteración de esta mé
 
 Recordemos que esta métrica es muy importante para sets de imágenes no equilibrados, esto es, que hay más elementos de una clase que de otra. De este modo, al estar trabajando con un set de imágenes con tan pocos elementos con exploits en su interior, en comparación con el resto de imágenes, podemos declarar que esta métrica tomará un papel muy importante para decidir qué modelo es el mejor.
 
+Esta métrica indica que la precisión en la clasificación se realiza dándole el mismo peso a ambas clases a pesar de estar claramente descompensadas, de modo que se obtienen unos valores adecuados a la realidad del set de imágenes bajo el que se mueve el modelo. Por otro lado, podemos ver que la sensibilidad toma un papel muy importante en el cálculo de esta métrica, por lo que se puede decir que tanto esta como la anterior están directamente relacionadas: prueba de ello es el comportamiento final de los modelos en la última iteración, donde se obtienen los mejores resultados para ambas métricas (todo ello sin contar con \textbf{``Error Rate''}, aunque igualmente es una métrica que sigue estando muy presente entre éstas).
+
 \subsection{ROC AUC Score}
 
 Por último, pasamos a observar y comentar los resultados obtenidos para \textbf{ROC AUC Score}. Al igual que con el resto de métricas, los mejores valores oscilan entre los dos modelos más representativos del trabajo: \textbf{ResNet-34} y \textbf{ResNet-18}.
@@ -143,14 +153,41 @@ A pesar de que el mejor valor para la primera iteración lo consiguió el modelo
 
 A modo de conclusión, para \textbf{ROC AUC Score} lo mejor es utilizar los modelos de la familia ResNet. AlexNet, por el contrario, no ha resultado ser tan prometedor como cabría esperar.
 
+Al igual que con el resto de métricas, podemos comprobar que esta igualmente complementa al resto, ya que nos permite utilizar los verdaderos y falsos positivos de forma que podemos ver con qué exactitud se clasifican correctamente las imágenes. Con esta métrica se consigue para ResNet-34 un valor de 1, lo cual indica que para este modelo no ha habido ningún falso positivo en este experimento, algo que, en términos de eficacia, nos interesa que sea así.
+
 \subsection{Conclusión}
 
 Como ya hemos explicado en el punto anterior, la diferencia entre los modelos \textbf{ResNet-34} y \textbf{ResNet-18} reside en la profundidad de su red neuronal... aun así se puede apreciar cómo ambos modelos son de la misma familia aunque tengan sus diferencias, ya que los valores en dichas iteraciones son muy parecidos en la mayoría de las métricas.
 
-Por otro lado, y como contraste, podemos ver cómo \textbf{AlexNet} ha acabado resultando ser uno de los peores modelos. A pesar de tener buenos resultados, no ha podido compararse con las tan buenas prestaciones servidas por los modelos de ResNet.
+Por otro lado, y como contraste, podemos ver cómo \textbf{AlexNet} ha acabado resultando ser un modelo no tan bueno. A pesar de tener buenos resultados, no ha podido compararse con las tan buenas prestaciones servidas por los modelos de ResNet.
 
-En definitiva, podemos aventurarnos a decidir cuál ha sido el mejor modelo de entre todos los experimentos realizados: en nuestra opinión, y viendo los resultados obtenidos, hemos decidido que el mejor modelo es \textbf{ResNet-34}.
+Hay que tener en cuenta que las diferencias entre los modelos han sido muy pequeñas, por lo tanto se puede deducir que la arquitectura de la red de los modelos ha tenido poco que ver para destacar uno de ellos por encima del resto. Un factor muy relevante para obtener estos resultados ha podido ser la aleatoriedad en los entrenamientos, la cual ha sido suficiente como para presentar unos valores finales muy parejos entre sí.
+
+Otro factor de relevancia es el rendimiento de cada modelo en una iteración (\textbf{``Epoch''} o inferencia). A continuación podemos ver el tiempo que ha tardado cada modelo en calcular el ``Error Rate'' para una inferencia:
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[H]{0.45\linewidth}
+  	\includegraphics[width=\linewidth]{Figuras/Resultados/Error\_Rate\_Resnet34.png}
+  	\caption{Tiempo por inferencia con ResNet-34}
+  \end{subfigure}
+  \begin{subfigure}[H]{0.45\linewidth}
+  	\includegraphics[width=\linewidth]{Figuras/Resultados/Error\_Rate\_Resnet18.png}
+  	\caption{Tiempo por inferencia con ResNet-18}
+  \end{subfigure}
+  \begin{subfigure}[H]{0.45\linewidth}
+  	\includegraphics[width=\linewidth]{Figuras/Resultados/Error\_Rate\_Alexnet.png}
+  	\caption{Tiempo por inferencia con AlexNet}
+  \end{subfigure}
+  \caption{Rendimiento por inferencia}
+\end{figure}
+
+Podemos ver cómo el que mejor rendimiento presenta es AlexNet con casi 1 minuto por inferencia, seguido de ResNet-18 con un valor cercano al minuto y medio, y de ResNet-34 con más de 2 minutos y medio. En términos de rendimiento, deberíamos elegir ResNet-18 como un firme candidato para poder utilizarlo en páginas web o antivirus asegurando buenos resultados con un tiempo de procesado relativamente bajo. Igualmente no podemos olvidarnos de ResNet-34, puesto que se han obtenido valores similares y, en varias ocasiones mejores, pero el tiempo de procesado y el coste computacional derivado son demasiado altos para aplicaciones que necesitan una cierta rapidez en su proceso de detección de malware.
+
+Finalmente, concluimos en decidir como mejor modelo \textbf{ResNet-34}.
 
 Es una decisión un tanto controvertida, porque se ha observado cómo en varias métricas \textbf{ResNet-18} ha podido ser mejor, pero tiene un fundamento: \textbf{ResNet-34} es un modelo que a la larga, puede proporcionar mejores resultados que \textbf{ResNet-18}. Esto es, si entrenamos ambos modelos con un set de imágenes mayor, y con un número de iteraciones más grande, la precisión en la detección de malware será mejor en aquel modelo cuya profundidad, en cuanto a capas convolucionales se refiere, sea mayor; ya que analizará las imágenes con mayor detalle y las clasificará mejor. Todo ello, sin olvidarnos de un motivo no menos importante: con la métrica \textbf{Balanced Accuracy} podemos ver el rendimiento de los modelos, y siendo ResNet-34 el que mejores valores ha obtenido podemos concluir en que este modelo, a la larga, será el apropiado para futuras aplicaciones.
 
-En el siguiente capítulo, finalizaremos este trabajo señalando qué conclusiones e ideas finales hemos sacado en claro.
+Por otro lado, y volviendo al tema del rendimiento, deberíamos considerar \textbf{ResNet-18} como un buen modelo a utilizar. Sin embargo, el baremo para tomar la decisión del mejor modelo se centra en las métricas utilizadas mayormente, junto con la arquitectura de la red que los conforman, es por ello que nos seguimos manteniendo en la misma postura con ResNet-34. Aun así, tomaremos en cuenta ResNet-18 para el próximo capítulo.
+
+En el siguiente capítulo, finalizaremos este trabajo señalando qué conclusiones e ideas finales hemos sacado en claro, junto con una serie de trabajos futuros y aplicaciones a usar para estos modelos.

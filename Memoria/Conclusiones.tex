@@ -5,17 +5,38 @@
 
 Durante el desarrollo de este proyecto hemos introducido código malicioso en imágenes y hemos utilizado una serie de modelos de Deep Learning para detectar dicho código en las imágenes. Al implementar dichos modelos hemos comprobado, en base a una serie de métricas, cómo de buenos han sido a la hora de la detección del malware y cuál de ellos ha sido el mejor.
 
+\subsection{Comparación con el estado del arte}
+
+Tomando en consideración trabajos como \ref{sec:ml} o \ref{sec:maljpeg}, es interesante ver cómo la variedad de soluciones aportadas para la realización de este trabajo distan en gran medida del mismo. Es decir, nuestro proyecto se basa en modelos de Deep Learning entrenados para realizar una clasificación de imágenes, mientras que el resto de trabajos utilizan metodologías y enfoques distintos cuyo único factor común es el uso de Machine Learning, exceptuando \ref{sec:ml} y \ref{sec:imagedetox}; los cuales utilizan una metodología de clasificación de imágenes usando un método de Machine Learning (árboles de decisión) y una metodología al margen de la tecnología de Machine Learning para detectar el malware sin tener previamente información acerca del mismo, respectivamente.
+
+Por otro lado, trabajos como \ref{sec:stegomalware} y \ref{sec:maljpeg} toman la iniciativa de crear métodos de detección originales con la premisa de la utilización de la tecnología Machine Learning. Stegomalware por ejemplo hace una revisión de diferentes técnicas de estegoanálisis y en base a ellas crea un modelo a utilizar dentro del ámbito empresarial para detectar el malware en imágenes; es un trabajo no tan técnico como el resto, sin embargo, es muy útil saber qué técnicas de estegoanálisis y qué modelos de Deep Learning se proponen para realizar la detección de esteganografía (no de malware) en imágenes. MalJPEG por otra parte incluye un método de detección muy interesante basado por completo en la información estadística que se puede extraer de la imagen para después realizar una clasificación de imágenes.
+
+De este modo podemos ver claramente las diferencias y semejanzas existentes entre dichos trabajos y el nuestro.
+
+\subsection{Resolución final}
+
 En el capítulo \ref{ch:res} ya comprobamos en una tabla comparativa los tres modelos utilizados, y resolvimos finalmente en declarar como mejor modelo \textbf{ResNet-34}. Un factor muy importante para decidirlo fue ver las semejanzas que tenía con el segundo mejor modelo \textbf{ResNet-18} y cómo en la métrica de \textbf{Balanced Accuracy}, ResNet-34 superaba con creces al resto de modelos (\textbf{0.92} y \textbf{1}); dicha métrica, tal y como redactamos anteriormente, resulta ser un factor de gran relevancia para tomar la decisión de elegir a ResNet-34 como el mejor modelo posible de entre los tres valorados.
 
-Cabe recordar de nuevo que \textbf{Balanced Accuracy} sirve para medir la exactitud media de los modelos, es decir, es una forma de medir su rendimiento. Es por ello que la tomamos en tanta consideración para discernir cual es, de entre todos, el mejor modelo.
+Cabe recordar de nuevo que \textbf{Balanced Accuracy} sirve para medir la exactitud media de los modelos, es decir, es una forma de medir su rendimiento. Es por ello que la tomamos en tanta consideración para discernir cuál es, de entre todos, el mejor modelo.
 
-Por todo ello, hemos concluido en que el modelo adecuado para realizar la detección de malware es \textbf{ResNet-34}, con el cual a largo plazo, prevemos que se obtendrán unos resultados incluso mejores que los actuales.
+Otro apunte que conviene recordar es el rendimiento del modelo por cada iteración, en donde el claro ganador es \textbf{ResNet-18} por obtener muy buenos resultados y por no tardar tanto tiempo como ResNet-34. Sin embargo, hemos preferido priorizar los resultados de las métricas por encima del rendimiento mostrado, ya que ese era el objetivo inicial. 
+
+Por tanto, hemos concluido en que el mejor modelo para realizar la detección de malware es  \textbf{ResNet-34}, con el cual a largo plazo, prevemos que se obtendrán unos resultados incluso mejores que los actuales.
+
+\subsection{Implantación}
+
+Para poder implantarlo en algún tipo de servicio como por ejemplo un antivirus, en una red privada o incluso en un servicio capaz de detectar un sitio web malicioso comprobando las imágenes del mismo para saber si tienen stegosploits en su interior; el principal problema es el rendimiento: ResNet-34 no es un modelo adecuado para llevarlo a la práctica porque tardaría demasiado en realizar la detección. ResNet-18 es más rápido que el anterior modelo y tiene resultados muy parecidos, de dmodo que podría ser una opción más viable... Pero sigue siendo demasiado lento.
+
+Por otro lado tenemos AlexNet, el cual es el más rápido a pesar de no tener tan buenos resultados como los anteriores y podría ser un buen candidato para este fin. Sin embargo, con AlexNet no se cotejarían adecuadamente todas las imágenes y podría haber errores en la clasificación para sets de imágenes más grandes.
+
+El modelo ideal para una futura implantación en cualquiera de estos servicios es ResNet-18, el cual aún siendo un modelo lento para una implantación en servicios que requieren de una respuesta casi en tiempo real, es el más adecuado para su distribución en la práctica. Teóricamente, y basándonos en los resultados de las métricas (es decir, sin tener en cuenta el coste computacional y con recursos más avanzados) el mejor sigue siendo ResNet-34.
 
 \section{Trabajo futuro}
 
 Con vistas al futuro, hemos pensado las siguientes aplicaciones para esta línea de trabajo:
 
 \begin{itemize}
+\item Implementación en servicios como antivirus, redes privadas o en servicios que detecten sitios web maliciosos a través de las imágenes que los componen para ver si tienen stegosploits en su interior.
 \item Mayor número de imágenes en el set para entrenar y optimizar los resultados del modelo.
 \item Buscar y probar con nuevos modelos de Deep Learning para obtener mejores resultados.
 \item Probar la detección con nuevas formas de ocultación de malware por esteganografía, usando otras herramientas aparte de Stegosploit y utilizando otro tipo de exploits como código a introducir en las imágenes.

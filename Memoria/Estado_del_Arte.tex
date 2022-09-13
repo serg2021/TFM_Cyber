@@ -74,11 +74,12 @@ En el siguiente capítulo, explicaremos en detalle el proceso de encriptado de l
 
 La tecnología Deep Learning se puede usar en una gran cantidad de aplicaciones de distinta índole. Sin embargo, en este proyecto nos vamos a centrar en lo que a esteganografía en imágenes se refiere.
 
-Como tal, no hay una serie de trabajos realizados sobre Deep Learning que sirvan para detectar esteganografía en imágenes, y mucho menos uno en concreto que se centre en los políglotas de Stegosploit. No obstante, tras realizar la búsqueda de artículos académicos, hemos podido comprobar que la \textbf{clasificación de imágenes} es un método muy acertado (no tan eficaz en Machine Learning como cabría esperar con Deep Learning, pero igualmente es una solución adecuada al problema que nos atañe).
+Como tal, no hay una serie de trabajos realizados sobre Deep Learning que sirvan para detectar esteganografía en imágenes, y mucho menos uno en concreto que se centre en los políglotas de Stegosploit. No obstante, tras realizar la búsqueda de artículos académicos, hemos podido comprobar que la \textbf{clasificación de imágenes} es un método muy acertado (no es tan eficaz en Machine Learning como cabría esperar con Deep Learning, pero igualmente es una solución adecuada al problema que nos atañe).
 
-Los trabajos que a continuación pasamos a explicar se basan en métodos de Machine Learning, aunque con diferentes enfoques y aplicaciones. 
+Los trabajos que a continuación pasamos a explicar se basan en métodos aplicados al Machine Learning, aunque con diferentes enfoques y aplicaciones. 
 
-\section{Uso de Machine Learning para detectar imágenes con políglotas maliciosos}
+\section{Uso de Machine Learning para detectar políglotas maliciosos}
+\label{sec:ml}
 
 El objetivo de este proyecto no era otro que hacer una herramienta de Machine Learning para detectar políglotas maliciosos en imágenes (\cite{ml-stenography-shawat}). A continuación, pasaremos a listar y explicar de forma resumida el proceso que realizaron los autores para ello. %cita
 
@@ -134,6 +135,7 @@ Los resultados finales vienen representados según una gráfica en la que se uti
 Con esta métrica se quiere comprobar a qué velocidad detecta este método el código cifrado en las imágenes dependiendo de la densidad del cifrado y de la profundidad del árbol; es decir, dependiendo de en cuántos bytes se han modificado los bits y con qué distancia están separados éstos entre sí, y dependiendo de la cantidad de ramificaciones del árbol de decisión según las reglas que ha ido adoptando.
 
 \section{Stegomalware}
+\label{sec:stegomalware}
 
 Uno de los trabajos más recientes en cuanto a detección de malware en imágenes se refiere nos presenta una revisión de los modelos de detección usados durante los últimos tiempos junto con una propuesta de modelo original generada con la base de los mismos (\cite{stegomalware}). %cita
 
@@ -317,6 +319,7 @@ La \textit{x} y \textit{y} son las imágenes normales y con esteganografía resp
 Dentro de todas las posibilidades vistas, y de forma convencional, las métricas usadas en la evaluación de rendimiento para estegoanálisis en imágenes suelen ser \ac{DER} y \ac{DA}. Cuando llegue el momento de realizar los experimentos las tendremos en cuenta.
 
 \section{MalJPEG}
+\label{sec:maljpeg}
 
 En este proyecto se trata una solución basada en Machine Learning para detectar imágenes JPEG maliciosas. Al igual que con Stegomalware primero veremos cómo es la solución propuesta por los autores y bajo qué condiciones puede actuar, seguido de las métricas utilizadas para sus experimentos.
 
@@ -387,6 +390,7 @@ IDR = TPR*(1 - FPR) = TPR*TNR
 La \ac{IDR} indica el punto del clasificador en el que se ha optimizado adecuadamente, y todo pasa por tener un valor muy alto en \ac{TPR} y uno muy bajo en \ac{FPR}. Cuanto mayor sea la \ac{IDR}, tendremos un mejor clasificador.
 
 \section{ImageDetox}
+\label{sec:imagedetox}
 
 Esta solución se creó con el objetivo de detectar y neutralizar código malicioso oculto en imágenes, aunque para ello no utilice tecnología de Machine Learning (\cite{imagedetox}). Sin embargo, es interesante comprobar en qué consiste y qué métricas decidieron utilizar los autores. %cita
 
